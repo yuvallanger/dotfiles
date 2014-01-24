@@ -1,3 +1,3 @@
 Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'vaxe'
+Bundle 'jdonaldson/vaxe'
 Bundle 'hylang/vim-hy'
