@@ -1,0 +1,103 @@
+" Some Linux distributions set filetype in /etc/vimrc.
+" Clear filetype flags before changing runtimepath to force Vim to reload them.
+
+filetype off " required by github.com/gmarik/vundle
+filetype plugin indent off
+
+set runtimepath+=$GOROOT/misc/vim
+
+set nocompatible " be iMproved
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+
+set runtimepath+=$GOROOT/misc/vim " set by Golang
+
+Bundle 'gmarik/vundle'
+
+"Bundle 'jceb/vim-orgmode'
+Bundle 'bitc/vim-hdevtools'
+Bundle 'lukerandall/haskellmode-vim'
+Bundle 'eagletmt/ghcmod-vim'
+
+Bundle 'hsitz/VimOrganizer'
+Bundle 'NrrwRgn'
+Bundle 'utl.vim'
+
+Bundle 'Syntastic'
+
+Bundle 'VOoM'
+
+"Bundle 'scrooloose/syntastic'
+
+Bundle 'Blackrush/vim-gocode'
+
+Bundle 'ivanov/vim-ipython'
+
+Bundle 'Python-mode-klen'
+
+Bundle 'davidhalter/jedi-vim'
+
+Bundle 'neocomplcache'
+Bundle 'neco-ghc'
+
+set expandtab
+set smartindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set smarttab
+set shiftround
+set nojoinspaces
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Sample .vimrc file by Martin Brochhaus
+" Presented at PyCon APAC 2012
+
+
+" Automatic reloading of .vimrc
+autocmd! bufwritepost .vimrc source %
+
+
+" Better copy & paste
+" When you want to paste large blocks of code into vim, press F2 before you
+" paste. At the bottom you should see ``-- INSERT (paste) --``.
+" Doesn't work on gnome-terminal because of its own keybindings.
+
+"" set pastetoggle=<F2>
+"" set clipboard=unnamed
+
+
+" Rebind <Leader> key
+" I like to have it here becuase it is easier to reach than the default and
+" it is next to ``m`` and ``n`` which I use for navigating between tabs.
+"" let mapleader = ","
+
+
+" Bind nohl
+" Removes highlight of your last search
+" ``<C>`` stands for ``CTRL`` and therefore ``<C-n>`` stands for ``CTRL+n``
+"noremap <C-n> :nohl<CR>
+"vnoremap <C-n> :nohl<CR>
+"inoremap <C-n> :nohl<CR>
+
+
+" Quicksave command
+"noremap <C-Z> :update<CR>
+"vnoremap <C-Z> <C-C>:update<CR>
+"inoremap <C-Z> <C-O>:update<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""
+
+filetype plugin indent on " required by github/gmarik/vundle
+filetype on
+syntax on
+
+set number
+
+
+"https://github.com/hsitz/VimOrganizer/blob/master/INSTALL.txt
+au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
+au BufEnter *.org            call org#SetOrgFileType()
