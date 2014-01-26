@@ -86,9 +86,3 @@
     " Require a special keypress to enter multiple cursors mode
     "   let g:multi_cursor_start_key='+'
 " }
-
-" Use fork before if available {
-    if filereadable(expand("~/.vimrc.before.fork"))
-        source ~/.vimrc.before.fork
-    endif
-" }
