@@ -28,3 +28,5 @@ au Syntax * RainbowParenthesesLoadBraces
 let g:pymode_rope_complete_on_dot = 0
 
 set wrap
+
+let g:haddock_browser = "/usr/bin/lynx"
