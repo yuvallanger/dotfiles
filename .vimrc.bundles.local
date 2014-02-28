@@ -19,3 +19,5 @@ Bundle 'dahu/vimple'
 Bundle 'Floobits/floobits-vim'
 
 Bundle 'pbrisbin/html-template-syntax'
+
+Bundle 'hsitz/VimOrganizer'
