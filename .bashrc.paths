@@ -30,7 +30,7 @@
 
 # elixirlang {
 
-    when_dir_exist_add_path $HOME/.local/opt/elixir-0.12.4/bin
+    __when_dir_exist_add_path $HOME/.local/opt/elixir-0.12.4/bin
 
 # }
 
@@ -49,24 +49,24 @@
 
 # haskell {
 
-    when_dir_exist_add_path $HOME/.cabal/bin:$PATH
+    __when_dir_exist_add_path $HOME/.cabal/bin:$PATH
 
 # }
 
 # .local {
 
-    when_dir_exist_add_path $HOME/.local/bin:$PATH
+    __when_dir_exist_add_path $HOME/.local/bin:$PATH
 
 # }
 
 # git-annex {
 
-    when_dir_exist_add_path $HOME/.local/opt/git-annex.linux
+    __when_dir_exist_add_path $HOME/.local/opt/git-annex.linux
 
 # }
 
 # gem {
 
-    when_dir_exist_add_path $HOME/.gem/ruby/1.9.1/bin
+    __when_dir_exist_add_path $HOME/.gem/ruby/1.9.1/bin
 
 # }
