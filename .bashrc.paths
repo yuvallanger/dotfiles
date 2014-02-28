@@ -1,7 +1,7 @@
 # python {
 
     # added by Anaconda 1.7.0 installer {
-        #export PATH="/home/yankel/anaconda/bin:$PATH"
+        # __when_dir_exist_add_path $HOME/anaconda/bin
     # }
 
 
