@@ -1,9 +1,9 @@
 dotfiles
 ========
-[[yuvallanger/dotfiles-bash]]
+[bash](yuvallanger/dotfiles-bash)
 
-[[yuvallanger/dotfiles-vim]]
+[vim](yuvallanger/dotfiles-vim)
 
-[[yuvallanger/dotfiles-git]]
+[git](yuvallanger/dotfiles-git)
 
-[[yuvallanger/dotfiles-mr]]
+[mr](yuvallanger/dotfiles-mr)
