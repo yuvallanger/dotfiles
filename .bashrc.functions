@@ -1,0 +1,5 @@
+function when_dir_exist_add_path {
+    if [ -d $1 ]; then
+        export PATH=$1:$PATH
+    fi
+}
