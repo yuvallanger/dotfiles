@@ -1,9 +1,9 @@
 dotfiles
 ========
-[bash](yuvallanger/dotfiles-bash)
+[bash](https://github.com/yuvallanger/dotfiles-bash)
 
-[vim](yuvallanger/dotfiles-vim)
+[vim](https://github.com/yuvallanger/dotfiles-vim)
 
-[git](yuvallanger/dotfiles-git)
+[git](https://github.com/yuvallanger/dotfiles-git)
 
-[mr](yuvallanger/dotfiles-mr)
+[mr](https://github.com/yuvallanger/dotfiles-mr)
