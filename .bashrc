@@ -65,6 +65,14 @@ xterm*|rxvt*)
     ;;
 esac
 
+# functions {
+
+    if [ -f ~/.bashrc.functions ]; then
+        . ~/.bashrc.functions
+    fi
+
+# }
+
 # PATH {
 
     if [ -f ~/.bashrc.paths ]; then
