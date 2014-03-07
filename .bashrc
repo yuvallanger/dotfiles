@@ -65,30 +65,64 @@ xterm*|rxvt*)
     ;;
 esac
 
-# functions {
+# bash {
+
+  # functions {
 
     if [ -f ~/.bashrc.functions ]; then
-        . ~/.bashrc.functions
+        source ~/.bashrc.functions
     fi
 
+  # }
+
+  # PATH {
+
+    __when_file_exist_do_source $HOME/.bashrc.paths
+
+  # }
+
+  # Alias definitions. {
+
+    # You may want to put all your additions into a separate file like
+    # ~/.bashrc.aliases, instead of adding them here directly.
+    # See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+    __when_file_exist_do_source ~/.bashrc.aliases
+
+  # }
+
+  # Local bash changes {
+
+    # PATH {
+
+      __when_file_exist_do_source ~/.bashrc.paths.local
+
+    # }
+
+    # functions {
+
+      __when_file_exist_do_source $HOME/.bashrc.functions.local
+
+    # }
+
+
+    # Alias definitions. {
+
+      # You may want to put all your additions into a separate file like
+      # ~/.bashrc.aliases, instead of adding them here directly.
+      # See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+      __when_file_exist_do_source $HOME/.bashrc.aliases.local
+
+    # }
+
+    # bashrc {
+
+      __when_file_exist_do_source $HOME/.bashrc.local
+
+    # }
+
 # }
-
-# PATH {
-
-    if [ -f ~/.bashrc.paths ]; then
-        . ~/.bashrc.paths
-    fi
-
-# }
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bashrc.aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bashrc.aliases ]; then
-    . ~/.bashrc.aliases
-fi
 
 # python {
 
@@ -103,11 +137,11 @@ fi
 
 
     # http://saghul.github.io/pythonz/ {
-    
+
         [[ -s $HOME/.pythonz/etc/bashrc ]] && source $HOME/.pythonz/etc/bashrc
-    
+
     # }
-    
+
     # pythonz {
         # http://virtualenvwrapper.readthedocs.org/en/latest/
         export WORKON_HOME=~/.pythonz/venvs
@@ -119,30 +153,15 @@ fi
 # }
 
 
+# tab completion {
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-    . /etc/bash_completion
-fi
+  # enable programmable completion features (you don't need to enable
+  # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+  # sources /etc/bash.bashrc).
+  if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+      source /etc/bash_completion
+  fi
 
-# No clue why that's here.
-#export CLASSPATH=$CLASSPATH:/usr/share/java/libreadline-java.jar
-#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/jni/
-#export PYTHONPATH=${PYTHONPATH}:/usr/lib/python2.7/dist-packages/IPython
+# }
 
-# rm alias
-# if [ -n "$PS1" ] ; then
-#     rm () 
-#     {
-#         ls -FCsd "$@"
-#         realpath "$@"
-#         echo 'remove[ny]? ' | tr -d '\012' ; read
-#         if [ "_$REPLY" = "_y" ]; then
-#                       /usr/bin/safe-rm -rf "$@"
-#         else
-#             echo '(cancelled)'
-#         fi
-#     }
-# fi
+__when_file_exist_do_source $HOME/liquidprompt/liquidprompt

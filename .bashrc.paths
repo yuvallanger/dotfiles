@@ -1,7 +1,7 @@
 # python {
 
     # added by Anaconda 1.7.0 installer {
-        # __when_dir_exist_add_path $HOME/anaconda/bin
+        # __when_dir_exist_do_add_path $HOME/anaconda/bin
     # }
 
 
@@ -30,7 +30,7 @@
 
 # elixirlang {
 
-    __when_dir_exist_add_path $HOME/.local/opt/elixir-0.12.4/bin
+    __when_dir_exist_do_add_path $HOME/.local/opt/elixir-0.12.4/bin
 
 # }
 
@@ -49,24 +49,30 @@
 
 # haskell {
 
-    __when_dir_exist_add_path $HOME/.cabal/bin:$PATH
+    __when_dir_exist_do_add_path $HOME/.cabal/bin
 
 # }
 
 # .local {
 
-    __when_dir_exist_add_path $HOME/.local/bin:$PATH
+    __when_dir_exist_do_add_path $HOME/.local/bin
+
+# }
+
+# bin {
+
+    __when_dir_exist_do_add_path $HOME/bin
 
 # }
 
 # git-annex {
 
-    __when_dir_exist_add_path $HOME/.local/opt/git-annex.linux
+    __when_dir_exist_do_add_path $HOME/.local/opt/git-annex.linux
 
 # }
 
 # gem {
 
-    __when_dir_exist_add_path $HOME/.gem/ruby/1.9.1/bin
+    __when_dir_exist_do_add_path $HOME/.gem/ruby/1.9.1/bin
 
 # }
