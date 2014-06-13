@@ -16,7 +16,7 @@
 Bundle 'dahu/LearnVim'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'dahu/vimple'
-Bundle 'Floobits/floobits-vim'
+" Bundle 'Floobits/floobits-vim'
 
 Bundle 'pbrisbin/html-template-syntax'
 
