@@ -21,3 +21,4 @@ Bundle 'dahu/vimple'
 Bundle 'pbrisbin/html-template-syntax'
 
 Bundle 'hsitz/VimOrganizer'
+Bundle 'eagletmt/ghcmod-vim'
