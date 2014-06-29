@@ -14,15 +14,14 @@
 
 # golang {
 
-    GOROOT="$HOME/go"
-    GOPATH="$HOME/mine/foo/strife/golang"
-    GOPATH="$HOME/local/gopath:$GOPATH"
-    GOBIN="$GOROOT/bin"
-    PATH="$GOBIN:$PATH"
+    GOROOT="$HOME/local/go"
+    gopath_mine="$HOME/mine/foo/gopath"
+    gopath_local="$HOME/local/gopath"
+    GOPATH="$gopath_local:$gopath_mine"
+    PATH="$GOROOT/bin:$gopath_local/bin:$gopath_mine/bin:$PATH"
 
     export GOROOT
     export GOPATH
-    export GOBIN
     export PKG_CONFIG_PATH=$HOME/local/pkgconfig:$PKG_CONFIG_PATH
     export PATH
 
@@ -74,5 +73,11 @@
 # gem {
 
     __when_dir_exist_do_add_path $HOME/.gem/ruby/1.9.1/bin
+
+# }
+
+# local {
+
+    __when_dir_exist_do_add_path $HOME/local/bin
 
 # }
