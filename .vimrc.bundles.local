@@ -1,10 +1,13 @@
-" lisp {
-    Bundle 'kien/rainbow_parentheses.vim'
-    Bundle 'hylang/vim-hy'
+" Hylang {
+    if count(g:spf13_bundle_groups, 'hylang')
+        Bundle 'hylang/vim-hy'
+    endif
 " }
 
 " Haxe {
-    Bundle 'jdonaldson/vaxe'
+    if count(g:spf13_bundle_groups, 'haxe')
+        Bundle 'jdonaldson/vaxe'
+    endif
 " }
 
 " HTML {
@@ -20,5 +23,12 @@ Bundle 'dahu/vimple'
 
 Bundle 'pbrisbin/html-template-syntax'
 
-Bundle 'hsitz/VimOrganizer'
-Bundle 'eagletmt/ghcmod-vim'
+Bundle 'jceb/vim-orgmode'
+" Bundle 'hsitz/VimOrganizer'
+Bundle 'speeddating.vim'
+
+Bundle 'ivanov/vim-ipython'
+
+Bundle 'kien/rainbow_parentheses.vim'
+
+Bundle 'idris-hackers/idris-vim'

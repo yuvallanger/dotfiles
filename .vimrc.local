@@ -31,7 +31,7 @@ set wrap
 
 let g:haddock_browser = "/usr/bin/lynx"
 
-set tabstop=8
-set softtabstop=8
-set shiftwidth=8
-set noexpandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
