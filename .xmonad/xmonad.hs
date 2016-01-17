@@ -1,13 +1,22 @@
 module Main where
 
-
-import XMonad
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
-import XMonad.Layout.LayoutModifier (ModifiedLayout)
-import XMonad.Util.Run (spawnPipe)
-import XMonad.Util.EZConfig (additionalKeys)
-import System.IO
+import           Data.Monoid                  (All)
+import           Graphics.X11.Xlib.Extras     (Event)
+import           XMonad                       (Choose, Full, KeyMask (..),
+                                               KeySym (..), Mirror,
+                                               Modifier (..), MonadIO (..),
+                                               Tall, Window, controlMask,
+                                               defaultConfig, handleEventHook,
+                                               layoutHook, mod1Mask, mod2Mask,
+                                               mod3Mask, mod4Mask, modMask,
+                                               shiftMask, spawn, startupHook,
+                                               xK_Print, xK_Return, xK_z,
+                                               xmonad, (.|.), (<+>))
+import           XMonad.Core                  (X)
+import           XMonad.Hooks.EwmhDesktops    (ewmh, fullscreenEventHook)
+import           XMonad.Hooks.ManageDocks     (AvoidStruts, avoidStruts)
+import           XMonad.Layout.LayoutModifier (ModifiedLayout)
+import           XMonad.Util.EZConfig         (additionalKeys)
 
 
 myTerminal :: String
@@ -22,66 +31,37 @@ myModMask :: Modifier
 myModMask = mod4Mask
 
 
-myWorkspaces :: [String]
-myWorkspaces =
-  [ "web"
-  , "code"
-  , "shell"
-  , "music"
-  , "irc"
-  , "mail"
-  , "rss"
-  , "im"
-  , "system"
-  ]
-
-
-myManageHook :: ManageHook
-myManageHook = composeAll
-  [ className =? "firefox" --> doShift "web"
-  , className =? "gnome-terminal" --> doShift "shell"
-  , className =? "pidgin" --> doShift "im"
-  , className =? "keepassx" --> doShift "system"
-  , manageDocks
-  , manageHook defaultConfig
-  ]
-
-
 myStartupHook :: MonadIO m => m ()
 myStartupHook = do
-  spawn "setxkbmap -option grp:switch,grp:alt_shift_toggle,grp_led:scroll us,il"
-  spawn "trayer"
+		spawn "sleep 10; redshift -O 3500"
+		spawn "trayer"
+		spawn "keynav"
+		spawn "setxkbmap -option grp:switch,grp:alt_shift_toggle us,il"
 
 
 myLayoutHook :: ModifiedLayout AvoidStruts (Choose Tall (Choose (Mirror Tall) Full)) Window
-myLayoutHook = avoidStruts  $  layoutHook defaultConfig
+myLayoutHook = avoidStruts $ layoutHook defaultConfig
 
 
-myLogHook :: Handle -> X ()
-myLogHook xmproc =
-    dynamicLogWithPP xmobarPP
-                    { ppOutput = hPutStrLn xmproc
-                    , ppTitle = xmobarColor "green" "" . shorten 50
-                    }
-
-
-myAdditionalKeys :: MonadIO m => [((KeyMask, KeySym), m ())]
-myAdditionalKeys = 
+myAdditionalKeys ::
+    MonadIO m =>
+    [((KeyMask, KeySym), m ())]
+myAdditionalKeys =
     [ ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
     , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
     , ((0, xK_Print), spawn "scrot")
     -- , ((mod1Mask, xK_Escape), spawn "setxkbmap -option grp:switch,grp:alt_shift_toggle,grp_led:scroll us,il")
+    , ((controlMask .|. shiftMask, xK_Return), spawn "xsel -b | festival --tts")
     ]
 
 
+myHandleEventHook :: Graphics.X11.Xlib.Extras.Event -> XMonad.Core.X Data.Monoid.All
+myHandleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
+
 main :: IO ()
-main = do
-  xmproc <- spawnPipe "/home/yuval/.cabal/bin/xmobar"
-  xmonad $ defaultConfig
-    { manageHook = myManageHook -- manageDocks <+> manageHook defaultConfig
-    , layoutHook = myLayoutHook
-    , logHook = myLogHook xmproc
-    , modMask = myModMask
-    , startupHook = myStartupHook
-    } `additionalKeys`
-    myAdditionalKeys
+main = xmonad $ ewmh defaultConfig
+	{ modMask         = myModMask
+	, startupHook     = myStartupHook
+	, layoutHook      = myLayoutHook
+    , handleEventHook = myHandleEventHook
+	} `additionalKeys` myAdditionalKeys
