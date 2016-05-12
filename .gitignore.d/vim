@@ -1,0 +1,14 @@
+*
+!/dotfiles
+!/dotfiles/vim
+!/dotfiles/vim/README.md
+!/mine
+!/mine/backups
+!/mine/backups/vim-backups
+!/mine/backups/vim-backups/.vimrc-2013-12
+!/mine/backups/vim-backups/.vimrc.20131209_1386604044
+!/.vimrc.before
+!/.vimrc.before.fork
+!/.vimrc.before.local
+!/.vimrc.bundles.local
+!/.vimrc.local
