@@ -1,0 +1,83 @@
+# python {
+
+    # added by Anaconda 1.7.0 installer {
+        # __when_dir_exist_do_add_path $HOME/anaconda/bin
+    # }
+
+
+# mobile ubuntu {
+
+    # https://developer.ubuntu.com/get-started/gomobile/
+    # export PATH=/opt/qt5/bin:$PATH
+
+# }
+
+# golang {
+
+    GOROOT="$HOME/local/go"
+    gopath_mine="$HOME/mine/foo/gopath"
+    gopath_local="$HOME/local/gopath"
+    GOPATH="$gopath_local:$gopath_mine"
+    PATH="$GOROOT/bin:$gopath_local/bin:$gopath_mine/bin:$PATH"
+
+    export GOROOT
+    export GOPATH
+    export PKG_CONFIG_PATH=$HOME/local/pkgconfig:$PKG_CONFIG_PATH
+    export PATH
+
+# }
+
+# elixirlang {
+
+    __when_dir_exist_do_add_path $HOME/.local/opt/elixir-0.12.4/bin
+
+# }
+
+# Heroku {
+
+    ### Added by the Heroku Toolbelt
+    #export PATH="/usr/local/heroku/bin:$PATH"
+
+# }
+
+# urbit {
+
+    # export URBIT_HOME=/download/software/repos/github.com/urbit/urbit/urb
+
+# }
+
+# haskell {
+
+    __when_dir_exist_do_add_path $HOME/.cabal/bin
+
+# }
+
+# .local {
+
+    __when_dir_exist_do_add_path $HOME/.local/bin
+
+# }
+
+# bin {
+
+    __when_dir_exist_do_add_path $HOME/bin
+
+# }
+
+# git-annex {
+
+    __when_dir_exist_do_add_path $HOME/.local/opt/git-annex.linux
+
+# }
+
+# gem {
+
+    __when_dir_exist_do_add_path $HOME/.gem/ruby/1.9.1/bin
+
+# }
+
+# local {
+
+    __when_dir_exist_do_add_path $HOME/local/bin
+
+# }
