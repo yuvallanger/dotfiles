@@ -1,0 +1,29 @@
+[user]
+	name = Yuval Langer
+	email = yuval.langer@gmail.com
+	signingkey = 92DEA7D8
+[gui]
+	fontdiff = -family Inconsolata -size 16 -weight normal -slant roman -underline 0 -overstrike 0
+[core]
+	editor = vim
+	excludesfile = /home/yankel/.gitignore_global
+[diff]
+	tool = diff
+[difftool]
+	tool = meld
+[push]
+	default = tracking
+[alias]
+	lg = log --all --graph --decorate --color
+	df = diff --word-diff
+	l = log --graph --decorate --color --oneline
+[mergetool]
+	cmd = meld "$LOCAL" "$MERGED" "$REMOTE"
+[github]
+	user = yuvallanger
+[merge]
+	tool = meld
+[color]
+	ui = true
+[branch]
+	autosetuprebase = always
