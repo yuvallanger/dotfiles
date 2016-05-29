@@ -3,11 +3,14 @@
 # for examples
 
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+case $- in
+    *i*) ;;
+      *) return;;
+esac
 
-# don't put duplicate lines in the history. See bash(1) for more options
-# ... or force ignoredups and ignorespace
-HISTCONTROL=ignoredups:ignorespace
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -20,17 +23,21 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color) color_prompt=yes;;
+    xterm-color|*-256color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -40,12 +47,12 @@ esac
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48
-    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-    # a case would tend to support setf rather than setaf.)
-        color_prompt=yes
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
     else
-        color_prompt=
+	color_prompt=
     fi
 fi
 
@@ -65,103 +72,47 @@ xterm*|rxvt*)
     ;;
 esac
 
-# bash {
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
 
-  # functions {
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
 
-    if [ -f ~/.bashrc.functions ]; then
-        source ~/.bashrc.functions
-    fi
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-  # }
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 
-  # PATH {
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-    __when_file_exist_do_source $HOME/.bashrc.paths
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-  # }
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
 
-  # Alias definitions. {
-
-    # You may want to put all your additions into a separate file like
-    # ~/.bashrc.aliases, instead of adding them here directly.
-    # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-    __when_file_exist_do_source ~/.bashrc.aliases
-
-  # }
-
-  # Local bash changes {
-
-    # PATH {
-
-      __when_file_exist_do_source ~/.bashrc.paths.local
-
-    # }
-
-    # functions {
-
-      __when_file_exist_do_source $HOME/.bashrc.functions.local
-
-    # }
-
-
-    # Alias definitions. {
-
-      # You may want to put all your additions into a separate file like
-      # ~/.bashrc.aliases, instead of adding them here directly.
-      # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-      __when_file_exist_do_source $HOME/.bashrc.aliases.local
-
-    # }
-
-    # bashrc {
-
-      __when_file_exist_do_source $HOME/.bashrc.local
-
-    # }
-
-# }
-
-# python {
-
-    # vim-ipython {
-
-        # https://github.com/ivanov/vim-ipython#known-issues
-        # http://munkymorgy.blogspot.co.il/2008/07/screen-ctrl-s-bug.html
-        # Ctrl-s calls the software flow control method XOFF which stops the character flow to the terminal
-        stty stop undef # to unmap ctrl-s
-
-    # }
-
-
-    # http://saghul.github.io/pythonz/ {
-
-        [[ -s $HOME/.pythonz/etc/bashrc ]] && source $HOME/.pythonz/etc/bashrc
-
-    # }
-
-    # pythonz {
-        # http://virtualenvwrapper.readthedocs.org/en/latest/
-        export WORKON_HOME=~/.pythonz/venvs
-        export VIRTUALENVWRAPPER_SCRIPT=$HOME/.local/bin/virtualenvwrapper.sh
-        [[ -s $HOME/.local/bin/virtualenvwrapper_lazy.sh ]] && source $HOME/.local/bin/virtualenvwrapper_lazy.sh
-        #export PIP_REQUIRE_VIRTUALENV=true
-    # }
-
-# }
-
-
-# tab completion {
-
-  # enable programmable completion features (you don't need to enable
-  # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-  # sources /etc/bash.bashrc).
-  if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-      source /etc/bash_completion
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
   fi
-
-# }
-
-__when_file_exist_do_source $HOME/liquidprompt/liquidprompt
+fi
+[ -r /home/yuvallanger/.byobu/prompt ] && . /home/yuvallanger/.byobu/prompt   #byobu-prompt#
