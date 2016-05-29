@@ -1,4 +1,4 @@
-call plug#begin('~/.nvim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/vim-easy-align'
@@ -103,4 +103,4 @@ let g:necoghc_enable_detailed_browse = 1
 set noexpandtab
 
 autocmd FileType cabal setlocal softtabstop=4 shiftwidth=4 tabstop=4 expandtab
-autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2 noexpandtab
+autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
