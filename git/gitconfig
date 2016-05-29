@@ -1,7 +1,6 @@
 [user]
 	name = Yuval Langer
 	email = yuval.langer@gmail.com
-	signingkey = 92DEA7D8
 [gui]
 	fontdiff = -family Inconsolata -size 16 -weight normal -slant roman -underline 0 -overstrike 0
 [core]
@@ -11,19 +10,15 @@
 	tool = diff
 [difftool]
 	tool = meld
-[push]
-	default = tracking
 [alias]
+	s = status
 	lg = log --all --graph --decorate --color
+	d = diff
 	df = diff --word-diff
-	l = log --graph --decorate --color --oneline
+	l = log --all --graph --decorate --oneline
 [mergetool]
 	cmd = meld "$LOCAL" "$MERGED" "$REMOTE"
-[github]
-	user = yuvallanger
 [merge]
 	tool = meld
 [color]
 	ui = true
-[branch]
-	autosetuprebase = always
