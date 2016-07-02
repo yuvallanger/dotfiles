@@ -5,7 +5,7 @@
 	fontdiff = -family Inconsolata -size 16 -weight normal -slant roman -underline 0 -overstrike 0
 [core]
 	editor = vim
-	excludesfile = /home/yankel/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [diff]
 	tool = diff
 [difftool]
@@ -13,11 +13,14 @@
 [alias]
 	s = status
 	lg = log --all --graph --decorate --color
+	c = checkout
 	d = diff
 	df = diff --word-diff
 	l = log --all --graph --decorate --oneline
 [mergetool]
 	cmd = meld "$LOCAL" "$MERGED" "$REMOTE"
+[push]
+	default = simple
 [merge]
 	tool = meld
 [color]
