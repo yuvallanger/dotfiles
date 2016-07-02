@@ -34,7 +34,12 @@ import           XMonad
     , (.|.)
     , (<+>)
     )
-import           XMonad.Core                  (X)
+import           XMonad.Core                  (X, logHook)
+import           XMonad.Hooks.DynamicLog
+    ( defaultPP
+    , dynamicLogString
+    , xmonadPropLog
+    )
 import           XMonad.Hooks.EwmhDesktops    (ewmh, fullscreenEventHook)
 import           XMonad.Hooks.ManageDocks     (AvoidStruts, avoidStruts)
 import           XMonad.Layout.LayoutModifier (ModifiedLayout)
@@ -55,6 +60,7 @@ myStartupHook = do
     spawn "sleep 2; redshift -O 3500"
     spawn "keynav"
     spawn "setxkbmap -option grp:switch,grp:alt_shift_toggle us,il"
+    spawn "xmobar"
 
 -- Use this to start everything considered costly.
 -- Recommended to be bound to a key combination instead of `startupHook`.
@@ -77,20 +83,24 @@ myAdditionalKeys =
     , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
     , ((0, xK_Print), spawn "scrot")
     -- , ((mod1Mask, xK_Escape), spawn "setxkbmap -option grp:switch,grp:alt_shift_toggle,grp_led:scroll us,il")
-    , ((controlMask .|. shiftMask, xK_Return), spawn "xsel -b | festival --tts")
+    -- , ((controlMask .|. shiftMask, xK_Return), spawn "xsel -b | festival --tts")
     , ((mod4Mask .|. shiftMask, xK_Return), spawn myTerminal)
     ]
 
 myHandleEventHook :: Graphics.X11.Xlib.Extras.Event -> XMonad.Core.X Data.Monoid.All
 myHandleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
 
+myLogHook :: X ()
+myLogHook = dynamicLogString defaultPP >>= xmonadPropLog
+
 main :: IO ()
 main = do
     dbus <- D.connectSession
     -- getWellKnownName dbus
     xmonad $ ewmh defaultConfig
-        { modMask         = myModMask
-        , startupHook     = myStartupHook
+        { handleEventHook = myHandleEventHook
         , layoutHook      = myLayoutHook
-        , handleEventHook = myHandleEventHook
+        , logHook         = myLogHook
+        , modMask         = myModMask
+        , startupHook     = myStartupHook
         } `additionalKeys` myAdditionalKeys
