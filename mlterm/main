@@ -1,0 +1,24 @@
+#cursor_fg_color = #a4a400000000
+#cursor_bg_color = #e9e9b9b96e6e
+#encoding = UTF-8
+#type_engine = xft
+#box_drawing_font = unicode
+#scrollbar_view_name = mozmodern
+#use_variable_column_width = false
+#mod_meta_mode = esc
+#use_combining = false
+#receive_string_via_ucs = false
+
+# mine
+
+fontsize = 20
+
+bg_color = black
+fg_color = white
+
+bel_mode = visual
+logsize = 4096
+
+#unicode_noconv_areas = true
+
+#iso8859_font_for_usascii = true
