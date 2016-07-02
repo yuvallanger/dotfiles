@@ -1,13 +1,6 @@
-# Yuval Langer's dotfile repository
+Mirrors:
 
-* [NeoVim](dotnvim/)
-* [git](dotgit/)
-* [bash](dotbash/)
-* [xmonad](dotxmonad/)
-
-## Mirrors on:
-
-* [gitgud](https://gitgud.io/yuvallanger/dotfiles.git)
-* [gitlab](https://gitlab.com/yuvallanger/dotfiles.git)
-* [bitbucket](https://bitbucket.org/yuvallanger/dotfiles.git)
-* [github](https://github.com/yuvallanger/dotfiles.git)
+* <https://bitbucket.org/yuvallanger/dotfiles>
+* <https://gitgud.io/yuvallanger/dotfiles>
+* <https://github.com/yuvallanger/dotfiles>
+* <https://gitlab.com/yuvallanger/dotfiles>
