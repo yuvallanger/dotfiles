@@ -1,5 +1,7 @@
 call plug#begin('~/.config/nvim/plugged')
 
+Plug 'jceb/vim-orgmode'
+
 Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/vim-easy-align'
 
@@ -8,7 +10,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'chrisbra/NrrwRgn'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
 
 " Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 " Plug 'scrooloose/syntastic'
@@ -21,12 +23,12 @@ Plug 'dannyob/quickfixstatus'
 
 Plug 'benekastah/neomake'
 
-Plug 'eagletmt/neco-ghc'
-Plug 'eagletmt/ghcmod-vim'
-" Plug 'bitc/vim-hdevtools' " , { 'for': 'hs' }
-Plug 'lukerandall/haskellmode-vim' " , { 'for': 'hs' }
-Plug 'Shougo/vimproc'
-Plug 'dan-t/vim-hsimport'
+Plug 'eagletmt/neco-ghc', { 'for': 'hs' }
+Plug 'eagletmt/ghcmod-vim', { 'for': 'hs' }
+Plug 'bitc/vim-hdevtools', { 'for': 'hs' }
+Plug 'lukerandall/haskellmode-vim', { 'for': 'hs' }
+Plug 'Shougo/vimproc', { 'for': 'hs' }
+Plug 'dan-t/vim-hsimport', { 'for': 'hs' }
 
 Plug 'majutsushi/tagbar'
 
@@ -46,7 +48,7 @@ call plug#end()
 syntax on
 filetype plugin on
 
-autocmd! BufWritePost * Neomake
+"autocmd! BufWritePost * Neomake
 
 let g:haddock_browser = "firefox"
 
@@ -68,12 +70,12 @@ smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
+"imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"\ "\<Plug>(neosnippet_expand_or_jump)"
+"\: pumvisible() ? "\<C-n>" : "\<TAB>"
+"smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"\ "\<Plug>(neosnippet_expand_or_jump)"
+"\: "\<TAB>"
 
 " For conceal markers.
 if has('conceal')
@@ -100,7 +102,7 @@ let g:necoghc_enable_detailed_browse = 1
 " " set softtabstop=4
 " set shiftwidth=4
 " set shiftround
-set noexpandtab
+"set noexpandtab
 
 autocmd FileType cabal setlocal softtabstop=4 shiftwidth=4 tabstop=4 expandtab
-autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab formatprg=stylish-haskell\ -c\ ~/.stylish-haskell.conf
