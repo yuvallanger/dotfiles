@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -24,3 +26,27 @@ alias gl='g l'
 alias gs='g s'
 alias gc='g c'
 alias gd='g d'
+
+alias ec="emacsclient"
+
+alias hebdate="hdate --hebrew|cut -f 3 -d ','|grep -v '^$'"
+alias emptify="truncate -c -s 0"
+
+pip3ls () {
+    pip3 freeze --user | sed 's#==.*##'
+}
+alias pip3i="pip3 install --user --upgrade"
+pip3up () {
+    pip3i `pip3ls`
+}
+alias pip3un="pip3 uninstall"
+
+# http://cs-syd.eu/posts/2015-06-21-gtd-with-taskwarrior-part-2-collection.html
+alias in='task add +in'
+tickle () {
+	deadline="$1"
+	shift
+	in +tickle wait:"$deadline" $@
+}
+alias tick=tickle
+alias think='tickle +1d'
