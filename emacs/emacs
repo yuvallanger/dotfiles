@@ -1,6 +1,46 @@
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list
+	'package-archives
+	'("melpa" . "https://melpa.org/packages/"))
+(when (< emacs-major-version 24) (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize)
 
-(add-to-list 'load-path "~/.emacs.d/evil")
+
 (require 'evil)
 (evil-mode 1)
+
+
+(require 'helm-config)
+(global-set-key (kbd "M-x") 'helm-M-x)
+
+
+(require 'sublimity)
+(require 'sublimity-scroll)
+(require 'sublimity-map)
+
+
+(elpy-enable)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(display-battery-mode t)
+ '(electric-indent-mode nil)
+ '(elpy-rpc-python-command "python3")
+ '(haskell-hoogle-url "https://www.fpcomplete.com/hoogle?q=%s")
+ '(haskell-stylish-on-save t)
+ '(haskell-tags-on-save t)
+ '(indent-tabs-mode nil)
+ '(proof-autosend-enable t)
+ '(proof-electric-terminator-enable t)
+ '(proof-shell-quiet-errors nil)
+ '(python-check-command "flake8"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
