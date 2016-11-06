@@ -1,0 +1,11 @@
+bipython
+bpython
+cmigemo
+httpie
+jupyter
+pandas
+percol
+ptpython
+six
+toga
+youtube-dl
