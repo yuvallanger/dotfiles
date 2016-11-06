@@ -133,3 +133,4 @@ export PATH
 
 # http://cs-syd.eu/posts/2015-06-21-gtd-with-taskwarrior-part-2-collection.html
 export PS1='$(task +in +PENDING count)i$(task count)t '$PS1
+if command -v find_pycompletion.sh>/dev/null; then source `find_pycompletion.sh`; fi
