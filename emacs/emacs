@@ -1,12 +1,8 @@
 (require 'package)
-(add-to-list
-	'package-archives
-	'("melpa" . "https://melpa.org/packages/"))
-(when (< emacs-major-version 24) (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
 
-(require 'evil)
 (evil-mode 1)
 
 
@@ -14,12 +10,8 @@
 (global-set-key (kbd "M-x") 'helm-M-x)
 
 
-(require 'sublimity)
-(require 'sublimity-scroll)
-(require 'sublimity-map)
-
-
 (elpy-enable)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
