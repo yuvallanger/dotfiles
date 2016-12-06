@@ -1,11 +1,13 @@
 bipython
 bpython
 cmigemo
+deadlock
 httpie
 jupyter
 pandas
 percol
 ptpython
+safety
 six
 toga
 youtube-dl
