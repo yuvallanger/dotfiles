@@ -41,9 +41,6 @@
     (windmove-default-keybindings)
   #+END_SRC
 
-  #+RESULTS:
-  : windmove-down
-
 * swiper-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -167,6 +164,16 @@ Org bullets makes things look pretty.
   #+END_SRC
 
 * Programming modes
+
+** elisp
+
+*** paredit
+
+#+begin_src emacs-lisp
+  (use-package
+    paredit
+    :ensure t)
+#+end_src
 
 ** Python
 
