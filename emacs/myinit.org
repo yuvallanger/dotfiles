@@ -127,44 +127,75 @@
       :config (global-set-key (kbd "M-x") 'helm-M-x))
   #+END_SRC
 
-* Org-mode
+* org-mode
+** org-bullets
 
 Org bullets makes things look pretty.
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package org-bullets
-      :ensure t
-      :config
-        (add-hook 'org-mode-hook
-          (lambda () (org-bullets-mode 1))))
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook
+      (lambda () (org-bullets-mode 1))))
+#+END_SRC
 
-** Customize
+*** Customize
 
-  What is:
-
+- What is [0/4]:
   - [ ] org-export-html-postamble
   - [ ] org-hide-leading-stars
   - [ ] org-startup-folded and (quote overview)
   - [ ] org-startup-indented
 
-  #+BEGIN_SRC emacs-lisp
-    (setq-default org-confirm-babel-evaluate nil)
-    ; Don't prompt me to confirm every time I want to evaluate a block.
-    (setq-default org-directory "~/foo/orgmode")
-    (setq-default org-default-notes-file
-        (concat org-directory "/notes.org"))
-    (setq-default org-export-html-postamble nil)
-    (setq-default org-hide-leading-stars t)
-    (setq-default org-startup-folded (quote overview))
-    (setq-default org-startup-indented t)
+#+BEGIN_SRC emacs-lisp
+  (setq-default org-confirm-babel-evaluate nil)
+  ; Don't prompt me to confirm every time I want to evaluate a block.
+  (setq-default org-directory "~/foo/orgmode")
+  (setq-default org-default-notes-file
+    (concat org-directory "/notes.org"))
+  (setq-default org-export-html-postamble nil)
+  (setq-default org-hide-leading-stars t)
+  (setq-default org-startup-folded (quote overview))
+  (setq-default org-startup-indented t)
+  (setq-default org-agenda-files "~/.agenda_files")
 
-    (add-hook 'org-babel-after-execute-hook
-      'org-display-inline-images 'append)
-  #+END_SRC
+  (add-hook 'org-babel-after-execute-hook
+    'org-display-inline-images 'append)
+#+END_SRC
+
+*** org-ref
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-ref
+    :ensure t
+    :config
+    ; The following is from the README.org
+    ; https://github.com/jkitchin/org-ref/blob/master/README.org
+    (setq
+     reftex-default-bibliography
+     '("~/ownCloud/bibliography/references.bib")
+
+     org-ref-bibliography-notes
+     "~/ownCloud/bibliography/notes.org")
+
+     org-ref-default-bibliography
+     '("~/ownCloud/bibliography/references.bib")
+
+     org-ref-pdf-directory
+     "~/ownCloud/bibliography/bibtex-pdfs/"
+
+     bibtex-completion-bibliography
+     "~/ownCloud/bibliography/references.bib"
+
+     bibtex-completion-library-path
+     "~/ownCloud/bibliography/bibtex-pdfs"
+
+     bibtex-completion-notes-path
+     "~/ownCloud/bibliography/helm-bibtex-notes"))
+#+END_SRC
 
 * Programming modes
-
 ** elisp
 
 *** paredit
@@ -231,16 +262,89 @@ Org bullets makes things look pretty.
 
 *** Customize
 
+** Magit
+A git mode recommended on the wiki.
+
+#+BEGIN_QUOTE
+Magit is the most popular front end for Git. If you are new to Git and
+do not need support for other vcs this is likely the package you
+should try first.
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t
+    :config
+    (global-set-key (kbd "C-x g") 'magit-status)
+    (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
+#+END_SRC
+
 * Communication
-
 ** IRC
-
 *** ERC
-
 **** Customize
 
   #+BEGIN_SRC emacs-lisp
-    (setq-default log-mode t)
-    (setq-default erc-log-write-after-insert t)
-    (setq-default erc-log-write-after-send t)
+    (use-package
+      erc
+      :ensure t
+      :config
+      (setq-default log-mode t)
+      (setq-default erc-log-write-after-insert t)
+      (setq-default erc-log-write-after-send t))
   #+END_SRC
+
+* Accessability
+
+** TODO thumb-through
+
+Skim web pages? XXX
+
+#+begin_src emacs-lisp
+  (use-package
+    thumb-through
+    :ensure t)
+#+end_src
+
+** eloud
+
+Reads bits off the buffer.
+
+#+begin_src emacs-lisp
+  (use-package
+    eloud
+    :ensure t
+    :config (setq-default eloud-mode t))
+#+end_src
+
+** TODO ereader
+
+XXX
+
+#+begin_src emacs-lisp
+  (use-package
+    ereader
+    :ensure t)
+#+end_src
+
+** spray
+
+A speed reader.
+
+#+begin_src emacs-lisp
+  (use-package
+    spray
+    :ensure t
+    :config (setq-default spray-save-point t))
+#+end_src
+
+** TODO emacspeak
+
+How do we make this work? XXX
+
+#+begin_src emacs-lisp
+  ;(use-package
+  ;  emacspeak
+  ;  :ensure t
+  ;)
+#+end_src

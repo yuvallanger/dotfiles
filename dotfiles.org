@@ -1,0 +1,551 @@
+* dot files
+:PROPERTIES:
+:tangle-mode: '#o600'
+:END:
+
+** desktop
+
+*** bash
+
+**** bash_aliases
+
+#+BEGIN_SRC bash :tangle ~/.bash_aliases
+  #!/bin/bash
+
+  # enable color support of ls and also add handy aliases
+  if [ -x /usr/bin/dircolors ]; then
+      test -r ~/.dircolors
+      if [[ $? == 0 ]]; then
+              eval "$(dircolors -b ~/.dircolors)";
+      else
+              eval "$(dircolors -b)"
+      fi
+      alias ls='ls --color=auto'
+      #alias dir='dir --color=auto'
+      #alias vdir='vdir --color=auto'
+
+      alias grep='grep --color=auto'
+      alias fgrep='fgrep --color=auto'
+      alias egrep='egrep --color=auto'
+  fi
+
+  # some more ls aliases
+  alias ll='ls -alF'
+  alias la='ls -A'
+  alias l='ls -CF'
+
+  # Add an "alert" alias for long running commands.  Use like so:
+  #   sleep 10; alert
+  alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+  alias g=git
+  alias gl='g l'
+  alias gs='g s'
+  alias gc='g c'
+  alias gd='g d'
+
+  alias ec="emacsclient"
+
+  alias hebdate="hdate --hebrew|cut -f 3 -d ','|grep -v '^$'"
+  alias emptify="truncate -c -s 0"
+
+  function pip3fr () { pip3 freeze --user; }
+  function pip3i () { pip3 install --user --upgrade $@; }
+  function pip3up () { pip3i "$( pip3fr | sed 's#==.*##' )"; }
+  function pip3un () { pip3 uninstall "$*"; }
+
+  # http://cs-syd.eu/posts/2015-06-21-gtd-with-taskwarrior-part-2-collection.html
+  function inn () { task add +in $@; }
+  function tickle () {
+          deadline="$1"
+          shift
+          inn +tickle wait:"$deadline" "$*"
+  }
+  alias tick=tickle
+  alias think='tickle +1d'
+
+  alias tracli="transmission-remote-cli"
+  alias trarem="transmission-remote"
+
+  function ppgrep ()
+  {
+          if [[ $1 == "" ]];
+          then
+                  PERCOL=percol
+          else
+                  PERCOL="percol --query $1"
+          fi
+          ps aux | eval "$PERCOL" | awk '{ print $2 }'
+  }
+
+  function ppkill ()
+  {
+          if [[ $1 =~ ^- ]];
+          then
+                  QUERY=""
+          else
+                  QUERY=$1
+                  [[ $# -gt 0 ]] && shift
+          fi
+          ppgrep $QUERY | xargs kill $*
+  }
+
+#+END_SRC
+
+**** bashrc
+
+#+begin_src bash :tangle ~/.bashrc
+  #!/bin/bash
+
+  # ~/.bashrc: executed by bash(1) for non-login shells.
+  # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+  # for examples
+
+  # If not running interactively, don't do anything
+  case $- in
+      ,*i*) ;;
+        ,*) return;;
+  esac
+
+  # don't put duplicate lines or lines starting with space in the history.
+  # See bash(1) for more options
+  HISTCONTROL=ignoreboth
+
+  # append to the history file, don't overwrite it
+  shopt -s histappend
+
+  # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+  HISTSIZE=1000
+  HISTFILESIZE=2000
+
+  # check the window size after each command and, if necessary,
+  # update the values of LINES and COLUMNS.
+  shopt -s checkwinsize
+
+  # If set, the pattern "**" used in a pathname expansion context will
+  # match all files and zero or more directories and subdirectories.
+  #shopt -s globstar
+
+  # make less more friendly for non-text input files, see lesspipe(1)
+  [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+  # set variable identifying the chroot you work in (used in the prompt below)
+  [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ] && debian_chroot="$(cat /etc/debian_chroot)"
+
+  # set a fancy prompt (non-color, unless we know we "want" color)
+  case "$TERM" in
+      xterm-color|*-256color) color_prompt=yes;;
+  esac
+
+  # uncomment for a colored prompt, if the terminal has the capability; turned
+  # off by default to not distract the user: the focus in a terminal window
+  # should be on the output of commands, not on the prompt
+  #force_color_prompt=yes
+
+  if [ -n "$force_color_prompt" ]; then
+      if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+          # We have color support; assume it's compliant with Ecma-48
+          # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+          # a case would tend to support setf rather than setaf.)
+          color_prompt=yes
+      else
+          color_prompt=
+      fi
+  fi
+
+  if [ "$color_prompt" = yes ]; then
+      PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+  else
+      PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+  fi
+  unset color_prompt force_color_prompt
+
+  # If this is an xterm set the title to user@host:dir
+  case "$TERM" in
+  xterm*|rxvt*)
+      PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+      ;;
+  ,*)
+      ;;
+  esac
+
+  # enable color support of ls and also add handy aliases
+  if [ -x /usr/bin/dircolors ]; then
+      test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+      alias ls='ls --color=auto'
+      #alias dir='dir --color=auto'
+      #alias vdir='vdir --color=auto'
+
+      alias grep='grep --color=auto'
+      alias fgrep='fgrep --color=auto'
+      alias egrep='egrep --color=auto'
+  fi
+
+  # colored GCC warnings and errors
+  #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+  # some more ls aliases
+  alias ll='ls -alF'
+  alias la='ls -A'
+  alias l='ls -CF'
+
+  # Add an "alert" alias for long running commands.  Use like so:
+  #   sleep 10; alert
+  alias alert='notify-send --urgency=low -i "$( [ $? = 0 ] && echo terminal || echo error ; )" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+  # Alias definitions.
+  # You may want to put all your additions into a separate file like
+  # ~/.bash_aliases, instead of adding them here directly.
+  # See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+  [ -f ~/.bash_aliases ] && . ~/.bash_aliases
+
+  PYTHONPATH="$HOME/.local/lib/python3.5/dist-packages:$PYTHONPATH"
+
+  if [ -d "$HOME/gopath" ] ; then
+          GOPATH="$HOME/gopath"
+          PATH="$GOPATH/bin:$PATH"
+  fi
+
+  # enable programmable completion features (you don't need to enable
+  # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+  # sources /etc/bash.bashrc).
+  if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+      . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+      . /etc/bash_completion
+    fi
+  fi
+  [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt   #byobu-prompt#
+
+  VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+  . ~/.local/bin/virtualenvwrapper_lazy.sh
+  #. ~/.local/lib/python3.5/site-packages/pyvenvwrapper/pyvenvwrapper_settings
+  #source ~/.local/lib/python3.5/site-packages/pyvenvwrapper/pyvenvwrapper
+
+  export PYTHONPATH
+  export GOPATH
+  export PATH
+
+  # http://cs-syd.eu/posts/2015-06-21-gtd-with-taskwarrior-part-2-collection.html
+  #export PS1='$(task +in +PENDING count)i$(task count)t '$PS1
+  if command -v find_pycompletion.sh>/dev/null; then source `find_pycompletion.sh`; fi
+#+end_src
+
+*** bin
+
+**** qrfeh
+
+#+begin_src sh :tangle ~/bin/qrfeh :tangle-mode '#o700'
+  #!/bin/sh
+
+  qrencode -o - "$@" | feh -
+#+end_src
+
+**** pip3i
+
+#+begin_src sh :tangle ~/bin/pip3i :tangle-mode '#o700'
+  #!/bin/sh
+
+  pip3 install --user --upgrade $@
+#+end_src
+
+**** pip3ls
+
+#+begin_src sh :tangle ~/bin/pip3ls :tangle-mode '#o700'
+  #!/bin/sh
+
+  pip3 freeze --user
+#+end_src
+
+**** pip3up
+
+#+begin_src sh :tangle ~/bin/pip3up :tangle-mode '#o700'
+  #!/bin/sh
+
+  pip3i `pip3ls | sed "s#==.*##"`
+#+end_src
+
+*** git
+
+**** gitconfig
+
+#+BEGIN_SRC conf :tangle ~/.gitconfig
+  [user]
+          name = Yuval Langer
+          email = yuval.langer@gmail.com
+  [gui]
+          fontdiff = -family Inconsolata -size 16 -weight normal -slant roman -underline 0 -overstrike 0
+  [core]
+          editor = vim
+          excludesfile = ~/.gitignore_global
+  [diff]
+          tool = diff
+  [difftool]
+          tool = meld
+  [alias]
+          s = status
+          lg = log --all --graph --decorate --color
+          c = checkout
+          d = diff
+          df = diff --word-diff
+          l = log --all --graph --decorate --oneline
+  [mergetool]
+          cmd = meld "$LOCAL" "$MERGED" "$REMOTE"
+  [push]
+          default = simple
+  [merge]
+          tool = meld
+  [color]
+          ui = true
+#+END_SRC
+
+**** global gitignore
+
+#+BEGIN_SRC conf :tangle ~/.gitignore_global
+  # Compiled source #
+  ###################
+  ,*.com
+  ,*.class
+  ,*.dll
+  ,*.exe
+  ,*.o
+  ,*.so
+
+  # Packages #
+  ############
+  # it's better to unpack these files and commit the raw source
+  # git has its own built in compression methods
+  ,*.7z
+  ,*.dmg
+  ,*.gz
+  ,*.iso
+  ,*.jar
+  ,*.rar
+  ,*.tar
+  ,*.zip
+
+  # Logs and databases #
+  ######################
+  ,*.log
+  ,*.sql
+  ,*.sqlite
+
+  # OS generated files #
+  ######################
+  .DS_Store
+  .DS_Store?
+  ._*
+  .Spotlight-V100
+  .Trashes
+  ehthumbs.db
+  Thumbs.db
+
+  # Byte-compiled / optimized / DLL files
+  __pycache__/
+  ,*.py[cod]
+
+  # C extensions
+  ,*.so
+
+  # Distribution / packaging
+  bin/
+  build/
+  develop-eggs/
+  dist/
+  eggs/
+  lib/
+  lib64/
+  parts/
+  sdist/
+  var/
+  ,*.egg-info/
+  .installed.cfg
+  ,*.egg
+
+  # Installer logs
+  pip-log.txt
+  pip-delete-this-directory.txt
+
+  # Unit test / coverage reports
+  .tox/
+  .coverage
+  .cache
+  nosetests.xml
+  coverage.xml
+
+  # Translations
+  ,*.mo
+
+  # Mr Developer
+  .mr.developer.cfg
+  .project
+  .pydevproject
+
+  # Rope
+  .ropeproject
+
+  # Django stuff:
+  ,*.log
+  ,*.pot
+
+  # Sphinx documentation
+  docs/_build/
+
+  local_settings.py
+#+END_SRC
+
+*** emacs
+**** org-mode
+
+A list of all agenda files.
+
+#+BEGIN_SRC conf :tangle ~/.agenda_files
+  ~/foo/orgmode/main.org
+  ~/foo/orgmode/notes.org
+  ~/mine/orgmode/personal.org
+#+END_SRC
+
+*** xmonad
+
+#+begin_src haskell :tangle ~/.xmonad/xmonad.hs
+  module Main where
+
+  import           Data.Monoid                  (All)
+  import qualified DBus                         as D
+  import qualified DBus.Client                  as D
+  import           Graphics.X11.Xlib.Extras     (Event)
+  import           XMonad
+      ( Choose
+      , Full
+      , KeyMask (..)
+      , KeySym (..)
+      , Mirror
+      , Modifier (..)
+      , MonadIO (..)
+      , Tall
+      , Window
+      , controlMask
+      , defaultConfig
+      , handleEventHook
+      , layoutHook
+      , mod1Mask
+      , mod2Mask
+      , mod3Mask
+      , mod4Mask
+      , modMask
+      , shiftMask
+      , spawn
+      , startupHook
+      , xK_Print
+      , xK_p
+      , xK_Return
+      , xK_i
+      , xK_z
+      , xmonad
+      , (.|.)
+      , (<+>)
+      )
+  import           XMonad.Core                  (X, logHook)
+  import           XMonad.Hooks.DynamicLog
+      ( defaultPP
+      , dynamicLogString
+      , xmonadPropLog
+      )
+  import           XMonad.Hooks.EwmhDesktops    (ewmh, fullscreenEventHook)
+  import           XMonad.Hooks.ManageDocks     (AvoidStruts, avoidStruts)
+  import           XMonad.Layout.LayoutModifier (ModifiedLayout)
+  import           XMonad.Util.EZConfig         (additionalKeys)
+
+  myTerminal :: String
+  myTerminal = "gnome-terminal"
+
+  myBorderWidth :: Int
+  myBorderWidth = 2
+
+  myStartupHook :: MonadIO m => m ()
+  myStartupHook = do
+      spawn "keynav"
+      spawn "setxkbmap -option grp:switch,grp:alt_shift_toggle us,il"
+      spawn "sleep 2; redshift -O 3500"
+      spawn "sleep 5; nm-applet"
+      spawn "sleep 5; xfce4-power-manager"
+      spawn "sleep 5; xfce4-volumed"
+      spawn "trayer"
+      spawn "xmobar"
+
+  myLayoutHook :: ModifiedLayout AvoidStruts (Choose Tall (Choose (Mirror Tall) Full)) Window
+  myLayoutHook = avoidStruts $ layoutHook defaultConfig
+
+  myAdditionalKeys ::
+      MonadIO m =>
+      [((KeyMask, KeySym), m ())]
+  myAdditionalKeys =
+      [ ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
+      , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
+      , ((mod4Mask, xK_p), spawn "LC_ALL=\"C.UTF-8\" dmenu_run")
+      , ((0, xK_Print), spawn "scrot")
+      -- , ((mod1Mask, xK_Escape), spawn "setxkbmap -option grp:switch,grp:alt_shift_toggle,grp_led:scroll us,il")
+      -- , ((controlMask .|. shiftMask, xK_Return), spawn "xsel -b | festival --tts")
+      , ((mod4Mask .|. shiftMask, xK_Return), spawn myTerminal)
+      ]
+
+  myHandleEventHook :: Graphics.X11.Xlib.Extras.Event -> XMonad.Core.X Data.Monoid.All
+  myHandleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
+
+  myLogHook :: X ()
+  myLogHook = dynamicLogString defaultPP >>= xmonadPropLog
+
+  main :: IO ()
+  main = do
+      dbus <- D.connectSession
+      -- getWellKnownName dbus
+      xmonad $ ewmh defaultConfig
+          { handleEventHook = myHandleEventHook
+          , layoutHook      = myLayoutHook
+          , logHook         = myLogHook
+          , modMask         = mod4Mask
+          , startupHook     = myStartupHook
+          } `additionalKeys` myAdditionalKeys
+#+end_src
+
+*** redshift
+
+#+begin_src conf :tangle ~/.config/redshift.conf
+  [redshift]
+  temp-day=5700
+  temp-night=1500
+  gamma=0.8
+  adjustment-method=randr
+  location-provider=manual
+
+  [manual]
+
+  lat=32.07
+  lon=34.76
+#+end_src
+** termux
+
+*** shortcuts
+
+**** org-add-note
+
+#+begin_src sh :tangle ~/.shortcuts/org-add-note :tangle-mode '#o700'
+  emacsclient -a= ~/mine/orgmode/notes.org
+#+end_src
+
+*** bin
+
+#+begin_src sh :tangle ~/.shortcuts/termux-url-opener :tangle-mode '#o700'
+  fbreader_save_dir="$HOME/storage/shared/Books/web2fbreader"
+  url="$1"
+  printf "book, img, vid, msc? "
+  cmd="$(python3 -c 'print(input())')"
+  case "$cmd" in
+          book) curl -o "${fbreader_save_dir}/$(date --rfc-3=sec).html" "$url";;
+          img) cd "${img_save_dir}" && wget -m -np -l 1 "$url";;
+          vid) cd "${vid_save_dir}" && wget -m -np -l 1 "$url";;
+          msc) cd "${music_save_dir}" && wget -m -np -l 1 "$url";;
+  esac
+#+end_src
