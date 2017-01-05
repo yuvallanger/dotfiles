@@ -192,7 +192,7 @@ Org bullets makes things look pretty.
      "~/ownCloud/bibliography/bibtex-pdfs"
 
      bibtex-completion-notes-path
-     "~/ownCloud/bibliography/helm-bibtex-notes"))
+     "~/ownCloud/bibliography/helm-bibtex-notes")
 #+END_SRC
 
 * Programming modes
