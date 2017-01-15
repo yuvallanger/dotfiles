@@ -128,19 +128,6 @@
   #+END_SRC
 
 * org-mode
-** org-bullets
-
-Org bullets makes things look pretty.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
-    :config
-    (add-hook 'org-mode-hook
-      (lambda () (org-bullets-mode 1))))
-#+END_SRC
-
-*** Customize
 
 - What is [0/4]:
   - [ ] org-export-html-postamble
@@ -172,7 +159,7 @@ Org bullets makes things look pretty.
         (call-interactively 'org-babel-tangle))))
 #+END_SRC
 
-*** org-ref
+** org-ref
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-ref
@@ -201,6 +188,18 @@ Org bullets makes things look pretty.
 
      bibtex-completion-notes-path
      "~/ownCloud/bibliography/helm-bibtex-notes")
+#+END_SRC
+
+** org-bullets
+
+Org bullets makes things look pretty.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook
+      (lambda () (org-bullets-mode 1))))
 #+END_SRC
 
 * Programming modes
