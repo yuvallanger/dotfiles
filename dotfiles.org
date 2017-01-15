@@ -267,6 +267,14 @@
   pip3i `pip3ls | sed "s#==.*##"`
 #+end_src
 
+**** glock
+
+#+begin_src sh :tangle ~/bin/glock :tangle-mode '#o700'
+  #!/bin/sh
+
+  gnome-screensaver-command --lock
+#+end_src
+
 *** git
 
 **** gitconfig

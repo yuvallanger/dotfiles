@@ -48,8 +48,8 @@
   (use-package swiper-helm
     :ensure t
     :config
-    (ivy-mode 1)
-    (setq-default ivy-use-virtual-buffers t)
+      (ivy-mode 1)
+      (setq-default ivy-use-virtual-buffers t)
     :bind
       ("C-r" . counsel-expression-history)
       ("\C-s" . swiper)
@@ -149,19 +149,27 @@ Org bullets makes things look pretty.
   - [ ] org-startup-indented
 
 #+BEGIN_SRC emacs-lisp
-  (setq-default org-confirm-babel-evaluate nil)
-  ; Don't prompt me to confirm every time I want to evaluate a block.
-  (setq-default org-directory "~/foo/orgmode")
-  (setq-default org-default-notes-file
-    (concat org-directory "/notes.org"))
-  (setq-default org-export-html-postamble nil)
-  (setq-default org-hide-leading-stars t)
-  (setq-default org-startup-folded (quote overview))
-  (setq-default org-startup-indented t)
-  (setq-default org-agenda-files "~/.agenda_files")
+  (use-package org
+    :ensure t
+    :config
+    (setq-default org-confirm-babel-evaluate nil)
+    ; Don't prompt me to confirm every time I want to evaluate a block.
+    (setq-default org-directory "~/foo/orgmode")
+    (setq-default org-default-notes-file
+      (concat org-directory "/notes.org"))
+    (setq-default org-export-html-postamble nil)
+    (setq-default org-hide-leading-stars t)
+    (setq-default org-startup-folded (quote overview))
+    (setq-default org-startup-indented t)
+    (setq-default org-agenda-files "~/.agenda_files")
 
-  (add-hook 'org-babel-after-execute-hook
-    'org-display-inline-images 'append)
+    (add-hook 'org-babel-after-execute-hook
+      'org-display-inline-images 'append)
+
+    (defun org-babel-tangle-block ()
+      (interactive)
+      (let ((current-prefix-arg '(4)))
+        (call-interactively 'org-babel-tangle))))
 #+END_SRC
 
 *** org-ref
