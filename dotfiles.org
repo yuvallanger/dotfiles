@@ -1,17 +1,22 @@
 * dot files
 :PROPERTIES:
-:tangle-mode: '#o600'
+:header-args: :tangle-mode '#o600' :noweb yes :comments noweb
 :END:
 
+** README
+
+You might find mirrors in the following addresses:
+
+- <https://bitbucket.org/yuvallanger/dotfiles>
+- <https://gitgud.io/yuvallanger/dotfiles>
+- <https://github.com/yuvallanger/dotfiles>
+- <https://gitlab.com/yuvallanger/dotfiles>
+
 ** desktop
-
 *** bash
-
 **** bash_aliases
 
-#+BEGIN_SRC bash :tangle ~/.bash_aliases
-  #!/bin/bash
-
+#+BEGIN_SRC sh :tangle ~/.bash_aliases
   # enable color support of ls and also add handy aliases
   if [ -x /usr/bin/dircolors ]; then
       test -r ~/.dircolors
@@ -94,7 +99,7 @@
 
 **** bashrc
 
-#+begin_src bash :tangle ~/.bashrc
+#+begin_src sh :tangle ~/.bashrc
   #!/bin/bash
 
   # ~/.bashrc: executed by bash(1) for non-login shells.
@@ -219,22 +224,20 @@
   fi
   [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt   #byobu-prompt#
 
-  VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-  . ~/.local/bin/virtualenvwrapper_lazy.sh
-  #. ~/.local/lib/python3.5/site-packages/pyvenvwrapper/pyvenvwrapper_settings
+  source ~/.local/bin/virtualenvwrapper_lazy.sh
+  #source ~/.local/lib/python3.5/site-packages/pyvenvwrapper/pyvenvwrapper_settings
   #source ~/.local/lib/python3.5/site-packages/pyvenvwrapper/pyvenvwrapper
-
-  export PYTHONPATH
-  export GOPATH
-  export PATH
 
   # http://cs-syd.eu/posts/2015-06-21-gtd-with-taskwarrior-part-2-collection.html
   #export PS1='$(task +in +PENDING count)i$(task count)t '$PS1
   if command -v find_pycompletion.sh>/dev/null; then source `find_pycompletion.sh`; fi
+
+  export PYTHONPATH
+  export GOPATH
+  export PATH
 #+end_src
 
 *** bin
-
 **** qrfeh
 
 #+begin_src sh :tangle ~/bin/qrfeh :tangle-mode '#o700'
@@ -276,7 +279,6 @@
 #+end_src
 
 *** git
-
 **** gitconfig
 
 #+BEGIN_SRC conf :tangle ~/.gitconfig
@@ -475,7 +477,7 @@ A list of all agenda files.
   myStartupHook :: MonadIO m => m ()
   myStartupHook = do
       spawn "keynav"
-      spawn "setxkbmap -option grp:switch,grp:alt_shift_toggle us,il"
+      spawn "setxkbmap -option -option terminate:ctrl_alt_bksp -option grp:caps_toggle us,il"
       spawn "sleep 2; redshift -O 3500"
       spawn "sleep 5; nm-applet"
       spawn "sleep 5; xfce4-power-manager"
@@ -494,7 +496,7 @@ A list of all agenda files.
       , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
       , ((mod4Mask, xK_p), spawn "LC_ALL=\"C.UTF-8\" dmenu_run")
       , ((0, xK_Print), spawn "scrot")
-      -- , ((mod1Mask, xK_Escape), spawn "setxkbmap -option grp:switch,grp:alt_shift_toggle,grp_led:scroll us,il")
+      -- , ((mod1Mask, xK_Escape), spawn "setxkbmap -option grp:alts_toggle us,il")
       -- , ((controlMask .|. shiftMask, xK_Return), spawn "xsel -b | festival --tts")
       , ((mod4Mask .|. shiftMask, xK_Return), spawn myTerminal)
       ]
@@ -534,9 +536,7 @@ A list of all agenda files.
   lon=34.76
 #+end_src
 ** termux
-
 *** shortcuts
-
 **** org-add-note
 
 #+begin_src sh :tangle ~/.shortcuts/org-add-note :tangle-mode '#o700'
