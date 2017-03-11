@@ -215,6 +215,13 @@ Org bullets makes things look pretty.
 #+END_SRC
 
 ** Programming modes
+
+#+BEGIN_SRC emacs-lisp
+  (req-package rainbow-delimiters
+    :config
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+END_SRC
+
 *** kivy-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -285,6 +292,15 @@ Org bullets makes things look pretty.
     :require markdown-mode)
 #+END_SRC
 
+**** hylang
+
+#+BEGIN_SRC emacs-lisp
+  (req-package hy-mode
+    :config
+    (add-hook 'hy-mode-hook 'paredit-mode)
+    (add-hook 'hy-mode-hook #'smartparens-strict-mode)
+    (add-hook 'hy-mode-hook #'rainbow-delimiters-mode))
+#+END_SRC
 
 **** Customize
 
