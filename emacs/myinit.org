@@ -216,6 +216,25 @@ Org bullets makes things look pretty.
 
 ** Programming modes
 
+*** lispy
+
+#+BEGIN_SRC emacs-lisp
+  (req-package lispy
+    :config
+    (add-hook 'lisp-mode-hook (lambda () (lispy-mode 1)))
+    (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
+#+END_SRC
+
+*** smartparens
+
+#+BEGIN_SRC emacs-lisp
+  ;;(req-package smartparens
+  ;;  :config
+  ;;  (add-hook 'hy-mode-hook #'smartparens-strict-mode))
+#+END_SRC
+
+*** rainbow-delimiters
+
 #+BEGIN_SRC emacs-lisp
   (req-package rainbow-delimiters
     :config
@@ -245,7 +264,7 @@ Org bullets makes things look pretty.
 **** paredit
 
 #+begin_src emacs-lisp
-  (req-package paredit)
+  ;; (req-package paredit)
 #+end_src
 
 *** Python
@@ -297,8 +316,7 @@ Org bullets makes things look pretty.
 #+BEGIN_SRC emacs-lisp
   (req-package hy-mode
     :config
-    (add-hook 'hy-mode-hook 'paredit-mode)
-    (add-hook 'hy-mode-hook #'smartparens-strict-mode)
+    (add-hook 'hy-mode-hook (lambda () (lispy-mode 1)))
     (add-hook 'hy-mode-hook #'rainbow-delimiters-mode))
 #+END_SRC
 
