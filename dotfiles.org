@@ -522,7 +522,7 @@ A list of all agenda files.
 
 *** redshift
 
-#+begin_src conf :tangle ~/.config/redshift.conf
+#+begin_src conf :tangle ~/.config/redshift.conf :comments no
   [redshift]
   temp-day=5700
   temp-night=1500

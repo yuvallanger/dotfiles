@@ -9,4 +9,6 @@
         (package-refresh-contents)
         (package-install 'use-package))
 
+(use-package req-package :ensure t)
+
 (org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))

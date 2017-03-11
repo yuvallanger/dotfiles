@@ -1,55 +1,55 @@
 #+STARTUP: overview
 
-* User Interface tweaks
+* myinit
+** User Interface tweaks
 
   - [ ] What is revert-buffer?
 
-  #+BEGIN_SRC emacs-lisp
-    (setq-default inhibit-startup-message t)
-    (setq-default column-number-mode t)
-    (setq-default electric-indent-mode nil)
-    (setq-default indent-tabs-mode nil)
-    (setq-default display-battery-mode t)
-    (setq-default word-wrap t)
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t
+        column-number-mode t
+        electric-indent-mode nil
+        indent-tabs-mode nil
+        display-battery-mode t
+        word-wrap t)
+#+END_SRC
 
-** Customize keys
-
-  #+BEGIN_SRC emacs-lisp
-    (global-set-key (kbd "<f5>") 'revert-buffer)
-  #+END_SRC
-
-** Customize buffer list
-
-  #+BEGIN_SRC emacs-lisp
-    (defalias 'list-buffers 'ibuffer-other-window)
-  #+END_SRC
-
-* Ido-mode
-
-  #+BEGIN_SRC emacs-lisp
-    (setq-default ido-enable-flex-matching t)
-    (setq-default ido-everywhere t)
-
-    (ido-mode 1)
-  #+END_SRC
-
-* winner-mode
-
-  #+BEGIN_SRC emacs-lisp
-    (winner-mode 1)
-    (windmove-default-keybindings)
-  #+END_SRC
-
-* swiper-mode
+*** Customize keys
 
 #+BEGIN_SRC emacs-lisp
-  (use-package counsel :ensure t)
-  (use-package swiper-helm
-    :ensure t
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+#+END_SRC
+
+*** Customize buffer list
+
+#+BEGIN_SRC emacs-lisp
+  (defalias 'list-buffers 'ibuffer-other-window)
+#+END_SRC
+
+** Ido-mode
+
+#+BEGIN_SRC emacs-lisp
+  (setq ido-enable-flex-matching t
+        ido-everywhere t)
+
+  (ido-mode 1)
+#+END_SRC
+
+** winner-mode
+
+#+BEGIN_SRC emacs-lisp
+  (winner-mode 1)
+  (windmove-default-keybindings)
+#+END_SRC
+
+** swiper-mode
+
+#+BEGIN_SRC emacs-lisp
+  (req-package counsel)
+  (req-package swiper-helm
     :config
       (ivy-mode 1)
-      (setq-default ivy-use-virtual-buffers t)
+      (setq ivy-use-virtual-buffers t)
     :bind
       ("C-r" . counsel-expression-history)
       ("\C-s" . swiper)
@@ -68,11 +68,10 @@
       ("C-S-o" . counsel-rhythmbox))
 #+END_SRC
 
-* ace-window-mode
+** ace-window-mode
 
 #+BEGIN_SRC emacs-lisp
-(use-package ace-window
-  :ensure t
+(req-package ace-window
   :init
   (progn
     (global-set-key [remap other-window] 'ace-window)
@@ -81,53 +80,54 @@
        ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
 #+END_SRC
 
-* tabber-mode
+** tabber-mode
 
 #+BEGIN_SRC emacs-lisp
-(use-package tabbar
-  :ensure t
+(req-package tabbar
   :config
   (tabbar-mode 1))
 #+END_SRC
 
-* Evil-mode
+** Evil-mode
 
-  Turn Emacs into a VIM clone.
+Turn Emacs into a VIM clone.
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package evil
-      :ensure t
-      :config (evil-mode 1))
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (req-package evil
+    :config (evil-mode 1)
+    (add-to-list 'evil-emacs-state-modes 'elfeed-show-mode)
+    (add-to-list 'evil-emacs-state-modes 'elfeed-search-mode))
+#+END_SRC
 
-* try-mode
+** try-mode
 
-  Try packages by temporarily installing them.
+Try packages by temporarily installing them.
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package try
-      :ensure t)
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (req-package try)
+#+END_SRC
 
-* which key
+** which key
 
-  Brings up some help in the middle of a key sequence.
+Brings up some help in the middle of a key sequence.
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package which-key
-      :ensure t
-      :config (which-key-mode))
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (req-package which-key
+    :config (which-key-mode))
+#+END_SRC
 
-* Helm-mode
+** Helm-mode
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package helm
-      :ensure t
-      :config (global-set-key (kbd "M-x") 'helm-M-x))
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (req-package helm
+    :config
+      (global-set-key (kbd "M-x") 'helm-M-x)
+    :bind
+      ("C-x c f" . helm-multi-files)
+      ("M-x" . helm-M-x))
+#+END_SRC
 
-* org-mode
+** org-mode
 
 - What is [0/4]:
   - [ ] org-export-html-postamble
@@ -136,156 +136,188 @@
   - [ ] org-startup-indented
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :ensure t
+  (req-package org
     :config
-    (setq-default org-confirm-babel-evaluate nil)
-    ; Don't prompt me to confirm every time I want to evaluate a block.
-    (setq-default org-directory "~/foo/orgmode")
-    (setq-default org-default-notes-file
-      (concat org-directory "/notes.org"))
-    (setq-default org-export-html-postamble nil)
-    (setq-default org-hide-leading-stars t)
-    (setq-default org-startup-folded (quote overview))
-    (setq-default org-startup-indented t)
-    (setq-default org-agenda-files "~/.agenda_files")
+    (setq org-confirm-babel-evaluate nil ; Don't prompt me to confirm every time I want to evaluate a block.
+          org-directory "~/foo/my-org-mode-notes"
+          org-default-notes-file (concat org-directory "/notes.org")
+          org-export-html-postamble nil
+          org-hide-leading-stars t
+          org-startup-folded (quote overview)
+          org-startup-indented t
+          org-agenda-files (list "~/mine/orgmode/" org-directory))
+
     (add-to-list
      'org-babel-tangle-lang-exts
      '('("haskell" . "hs")))
 
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((ipython . t)
+       (emacs-lisp . t)))
+
     (add-hook 'org-babel-after-execute-hook
       'org-display-inline-images 'append)
+
 
     (defun org-babel-tangle-block ()
       (interactive)
       (let ((current-prefix-arg '(4)))
-        (call-interactively 'org-babel-tangle))))
+        (call-interactively 'org-babel-tangle)))
+
+    :bind ("C-c b" . org-babel-tangle-block))
 #+END_SRC
 
-** org-ref
+*** org-ref
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-ref
-    :ensure t
-    :config
-    ; The following is from the README.org
-    ; https://github.com/jkitchin/org-ref/blob/master/README.org
-    (setq
-     reftex-default-bibliography
-     '("~/ownCloud/bibliography/references.bib")
-
-     org-ref-bibliography-notes
-     "~/ownCloud/bibliography/notes.org")
-
-     org-ref-default-bibliography
-     '("~/ownCloud/bibliography/references.bib")
-
-     org-ref-pdf-directory
-     "~/ownCloud/bibliography/bibtex-pdfs/"
-
-     bibtex-completion-bibliography
-     "~/ownCloud/bibliography/references.bib"
-
-     bibtex-completion-library-path
-     "~/ownCloud/bibliography/bibtex-pdfs"
-
-     bibtex-completion-notes-path
-     "~/ownCloud/bibliography/helm-bibtex-notes")
+  '(req-package org-ref
+   :config
+     ; The following is from the README.org
+     ; https://github.com/jkitchin/org-ref/blob/master/README.org
+     (setq reftex-default-bibliography '("~/ownCloud/bibliography/references.bib")
+           org-ref-bibliography-notes "~/ownCloud/bibliography/notes.org"
+           org-ref-default-bibliography '("~/ownCloud/bibliography/references.bib")
+           org-ref-pdf-directory "~/ownCloud/bibliography/bibtex-pdfs/"
+           bibtex-completion-bibliography "~/ownCloud/bibliography/references.bib"
+           bibtex-completion-library-path "~/ownCloud/bibliography/bibtex-pdfs"
+           bibtex-completion-notes-path "~/ownCloud/bibliography/helm-bibtex-notes"))
 #+END_SRC
 
-** org-bullets
+*** org-bullets
 
 Org bullets makes things look pretty.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
+  (req-package org-bullets
     :config
     (add-hook 'org-mode-hook
       (lambda () (org-bullets-mode 1))))
 #+END_SRC
 
-* Programming modes
-** elisp
+*** org-caldav
 
-*** paredit
+#+BEGIN_SRC emacs-lisp
+  (req-package org-caldav
+    :config
+    (setq org-caldav-url "https://owncloud.kaka.farm/remote.php/caldav/calendars/yuvallanger"
+          org-caldav-calendar-id "org-mode"
+          org-caldav-calendars
+          '((:url "https://owncloud.kaka.farm/remote.php/caldav/calendars/yuvallanger"
+             :calendar-id "org-mode"
+             :files ("~/mine/orgmode/calendar.org")
+             :inbox "~/mine/orgmode/caldav-sync-calendar-inbox.org")
+
+            (:url "https://owncloud.kaka.farm/remote.php/dav/calendars/yuvallanger"
+             :calendar-id "org-mode"
+             :files ("~/mine/orgmode/tasks.org")
+             :inbox "~/mine/orgmode/caldav-sync-tasks-inbox.org"))))
+#+END_SRC
+
+** Programming modes
+*** kivy-mode
+
+#+BEGIN_SRC emacs-lisp
+  (req-package kivy-mode)
+#+END_SRC
+
+*** yasnippet
+
+#+BEGIN_SRC emacs-lisp
+  (req-package yasnippet
+    :config
+    (setq yas-snippet-dirs
+          (append '("~/foo/myasnippets")
+                  yas-snippet-dirs))
+    (yas-reload-all)
+    (yas-global-mode 1))
+#+END_SRC
+
+*** elisp
+
+**** paredit
 
 #+begin_src emacs-lisp
-  (use-package
-    paredit
-    :ensure t)
+  (req-package paredit)
 #+end_src
 
-** Python
+*** Python
+**** pyvenv
 
-*** pyvenv
+#+BEGIN_SRC emacs-lisp
+  (req-package pyvenv
+    :config
+      (pyvenv-mode))
+#+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package pyvenv
-      :ensure t)
-  #+END_SRC
+**** live-py-mode
 
-*** live-py-mode
+#+BEGIN_SRC emacs-lisp
+  (req-package live-py-mode)
+#+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package live-py-mode
-      :ensure t)
-  #+END_SRC
+**** elpy
 
-*** elpy
+#+BEGIN_SRC emacs-lisp
+  (req-package elpy
+    :config
+      (elpy-enable)
+      (elpy-use-ipython))
+#+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package elpy
-      :ensure t
-      :config
-        (elpy-enable))
-  #+END_SRC
-
-*** ob-ipython
+**** ob-ipython
 
   org-babel for Jupyter.
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package ob-ipython
-      :ensure t
-      :config
-      (org-babel-do-load-languages
-        'org-babel-load-languages
-        '((ipython . t)))
-      (add-hook 'org-babel-after-execute-hook
-        'org-display-inline-images 'append)
-        ; display/update images in the buffer after I evaluate.
-    )
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (req-package ob-ipython
+    :config
+    (add-hook 'org-babel-after-execute-hook
+      'org-display-inline-images 'append)
+      ; display/update images in the buffer after I evaluate.
+  )
+#+END_SRC
 
-*** Customize
+**** EIN
 
-  #+BEGIN_SRC emacs-lisp
-    (setq-default python-check-command "flake8")
-    (setq python-indent-offset 4)
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (req-package ein
+    :require markdown-mode)
+#+END_SRC
 
-** Haskell
 
-*** Customize
+**** Customize
 
-  #+BEGIN_SRC emacs-lisp
-    (setq-default haskell-hoogle-url "https://www.fpcomplete.com/hoogle?q=%s")
-    (setq-default haskell-stylish-on-save t)
-    (setq-default haskell-tags-on-save t)
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq python-check-command "flake8"
+        python-indent-offset 4)
+#+END_SRC
 
-** Coq (hehehe… it says "coq"…)
+*** Haskell
 
-  #+BEGIN_SRC emacs-lisp
-    (setq-default proof-autosend-enable t)
-    (setq-default proof-electric-terminator-enable t)
-    (setq-default proof-shell-quiet-errors nil)
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (req-package haskell-mode)
+#+END_SRC
 
-*** Customize
+**** Customize
 
-** Magit
+#+BEGIN_SRC emacs-lisp
+  (setq haskell-hoogle-url "https://www.fpcomplete.com/hoogle?q=%s"
+        haskell-stylish-on-save t
+        haskell-tags-on-save t)
+#+END_SRC
+
+*** Coq (hehehe… it says "coq"…)
+
+#+BEGIN_SRC emacs-lisp
+  (setq proof-autosend-enable t
+        proof-electric-terminator-enable t
+        proof-shell-quiet-errors nil)
+#+END_SRC
+
+**** Customize
+
+*** Magit
 A git mode recommended on the wiki.
 
 #+BEGIN_QUOTE
@@ -295,79 +327,107 @@ should try first.
 #+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :ensure t
+  (req-package magit
     :config
     (global-set-key (kbd "C-x g") 'magit-status)
     (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
 #+END_SRC
 
-* Communication
-** IRC
-*** ERC
-**** Customize
+*** flycheck
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package
-      erc
-      :ensure t
-      :config
-      (setq-default log-mode t)
-      (setq-default erc-log-write-after-insert t)
-      (setq-default erc-log-write-after-send t))
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (req-package flycheck
+    :init (global-flycheck-mode t))
+#+END_SRC
 
-* Accessability
+*** company-mode
 
-** TODO thumb-through
+#+BEGIN_SRC emacs-lisp
+  (req-package company
+    :config
+      (global-company-mode))
+#+END_SRC
+
+
+** Communication
+*** IRC
+**** ERC
+***** Customize
+
+#+BEGIN_SRC emacs-lisp
+  (req-package
+    erc
+    :config
+    (setq
+     log-mode t
+     erc-log-write-after-insert t
+     erc-log-write-after-send t))
+#+END_SRC
+
+** Accessability
+
+*** TODO thumb-through
 
 Skim web pages? XXX
 
 #+begin_src emacs-lisp
-  (use-package
-    thumb-through
-    :ensure t)
+  (req-package thumb-through)
 #+end_src
 
-** eloud
+*** eloud
 
 Reads bits off the buffer.
 
 #+begin_src emacs-lisp
-  (use-package
-    eloud
-    :ensure t
-    :config (setq-default eloud-mode t))
+  (req-package eloud
+    :config
+    (setq eloud-mode t
+          eloud-speech-rate 200))
 #+end_src
 
-** TODO ereader
+*** TODO ereader
 
 XXX
 
 #+begin_src emacs-lisp
-  (use-package
-    ereader
-    :ensure t)
+  (req-package ereader)
 #+end_src
 
-** spray
+*** spray
 
 A speed reader.
 
 #+begin_src emacs-lisp
-  (use-package
-    spray
-    :ensure t
-    :config (setq-default spray-save-point t))
+  (req-package spray
+    :config (setq spray-save-point t))
 #+end_src
 
-** TODO emacspeak
+*** TODO emacspeak
 
 How do we make this work? XXX
 
 #+begin_src emacs-lisp
-  ;(use-package
+  ;(req-package
   ;  emacspeak
-  ;  :ensure t
   ;)
 #+end_src
+
+** RSS
+#+BEGIN_SRC emacs-lisp
+  (req-package elfeed-goodies)
+  (req-package elfeed-org
+    :config
+      (elfeed-org)
+      (setq rmh-elfeed-org-files
+            (list "~/foo/my-org-mode-notes/elfeed.org"
+                  "~/mine/elfeed/private.org")
+            elfeed-curl-max-connections 1)
+    :bind
+      ("C-x w" . elfeed))
+#+END_SRC
+
+* req-package-finish
+
+#+BEGIN_SRC emacs-lisp
+  (req-package-finish)
+#+END_SRC
