@@ -14,6 +14,14 @@
         word-wrap t)
 #+END_SRC
 
+*** Custom face
+
+#+BEGIN_SRC emacs-lisp
+  (custom-set-faces
+   '(aw-leading-char-face
+     ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+#+END_SRC
+
 *** Customize keys
 
 #+BEGIN_SRC emacs-lisp
@@ -71,13 +79,9 @@
 ** ace-window-mode
 
 #+BEGIN_SRC emacs-lisp
-(req-package ace-window
-  :init
-  (progn
-    (global-set-key [remap other-window] 'ace-window)
-    (custom-set-faces
-     '(aw-leading-char-face
-       ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
+  (req-package ace-window
+    :init
+    (global-set-key [remap other-window] 'ace-window))
 #+END_SRC
 
 ** tabber-mode
@@ -145,7 +149,11 @@ Brings up some help in the middle of a key sequence.
           org-hide-leading-stars t
           org-startup-folded (quote overview)
           org-startup-indented t
-          org-agenda-files (list "~/mine/orgmode/" org-directory))
+          org-agenda-files (list
+			    "~/foo/my-org-mode-notes/"
+			    "~/mine/orgmode/"
+			    "~/mine/syncthing/sg3/shared/orgmode/"
+			    "~/mine/syncthing/sg3/shared/orgzly/"))
 
     (add-to-list
      'org-babel-tangle-lang-exts
@@ -154,6 +162,7 @@ Brings up some help in the middle of a key sequence.
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((ipython . t)
+       (python . t)
        (emacs-lisp . t)))
 
     (add-hook 'org-babel-after-execute-hook
@@ -163,7 +172,7 @@ Brings up some help in the middle of a key sequence.
     (defun org-babel-tangle-block ()
       (interactive)
       (let ((current-prefix-arg '(4)))
-        (call-interactively 'org-babel-tangle)))
+	(call-interactively 'org-babel-tangle)))
 
     :bind ("C-c b" . org-babel-tangle-block))
 #+END_SRC
@@ -381,7 +390,6 @@ should try first.
     :config
       (global-company-mode))
 #+END_SRC
-
 
 ** Communication
 *** IRC
