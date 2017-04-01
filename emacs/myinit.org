@@ -405,7 +405,21 @@ should try first.
      erc-log-write-after-insert t
      erc-log-write-after-send t))
 #+END_SRC
+**** circe
+#+BEGIN_SRC emacs-lisp
+  (req-package circe
+    ;;:config
+    ;;(setq
+    ;; log-mode t
+    ;; erc-log-write-after-insert t
+    ;; erc-log-write-after-send t))
+    )
+#+END_SRC
+***** helm-circe
 
+#+BEGIN_SRC emacs-lisp
+  (req-package helm-circe)
+#+END_SRC
 ** Accessability
 
 *** TODO thumb-through
