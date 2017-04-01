@@ -482,6 +482,12 @@ How do we make this work? XXX
       ("C-x w" . elfeed))
 #+END_SRC
 
+** uptimes
+
+#+BEGIN_SRC emacs-lisp
+  (req-package uptimes)
+#+END_SRC
+
 * req-package-finish
 
 #+BEGIN_SRC emacs-lisp
