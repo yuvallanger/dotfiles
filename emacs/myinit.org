@@ -426,6 +426,13 @@ should try first.
 #+BEGIN_SRC emacs-lisp
   (req-package helm-circe)
 #+END_SRC
+*** Matrix
+**** matrix-client
+
+#+BEGIN_SRC emacs-lisp
+  (req-package matrix-client)
+#+END_SRC
+
 ** Accessability
 
 *** TODO thumb-through
