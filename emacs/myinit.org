@@ -430,7 +430,7 @@ should try first.
 **** matrix-client
 
 #+BEGIN_SRC emacs-lisp
-  (req-package matrix-client)
+  ;;;;;;(req-package matrix-client)
 #+END_SRC
 
 ** Accessability
