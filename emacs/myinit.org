@@ -225,6 +225,10 @@ Org bullets makes things look pretty.
 
 ** Programming modes
 
+*** geiser
+#+BEGIN_SRC emacs-lisp
+  (req-package geiser)
+#+END_SRC
 *** racket-mode
 #+BEGIN_SRC emacs-lisp
   (req-package racket-mode)
