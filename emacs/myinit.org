@@ -225,6 +225,10 @@ Org bullets makes things look pretty.
 
 ** Programming modes
 
+*** racket-mode
+#+BEGIN_SRC emacs-lisp
+  (req-package racket-mode)
+#+END_SRC
 *** arduino-mode
 
 #+BEGIN_SRC emacs-lisp
