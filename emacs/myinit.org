@@ -102,7 +102,13 @@ Turn Emacs into a VIM clone.
     (add-to-list 'evil-emacs-state-modes 'elfeed-show-mode)
     (add-to-list 'evil-emacs-state-modes 'elfeed-search-mode))
 #+END_SRC
+*** evil-goggles
 
+#+BEGIN_SRC emacs-lisp
+  (req-package evil-goggles
+    :config
+    (evil-goggles-mode))
+#+END_SRC
 ** try-mode
 
 Try packages by temporarily installing them.
