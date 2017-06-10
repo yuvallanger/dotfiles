@@ -288,6 +288,13 @@ Org bullets makes things look pretty.
              :inbox "~/mine/orgmode/caldav-sync-tasks-inbox.org"))))
 #+END_SRC
 
+*** orgnav
+
+#+BEGIN_SRC emacs-lisp
+  (use-package orgnav
+    :loader :elpa
+    )
+#+END_SRC
 ** Programming modes
 
 *** geiser
