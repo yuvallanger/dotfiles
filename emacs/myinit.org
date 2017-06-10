@@ -9,6 +9,10 @@
     (("C-'" . better-shell-shell)
      ("C-;" . better-shell-remote-open)))
 #+END_SRC
+*** bash-completion
+#+BEGIN_SRC emacs-lisp
+  (req-package bash-completion)
+#+END_SRC
 ** User Interface tweaks
 
   - [ ] What is revert-buffer?
