@@ -304,6 +304,7 @@ You might find mirrors in the following addresses:
           d = diff
           df = diff --word-diff
           l = log --all --graph --decorate --oneline
+          hash = rev-parse HEAD
   [mergetool]
           cmd = meld "$LOCAL" "$MERGED" "$REMOTE"
   [push]
