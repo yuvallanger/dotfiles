@@ -234,6 +234,10 @@ You might find mirrors in the following addresses:
   #export PYTHONPATH
   export GOPATH
   export PATH
+
+  printf "And now for something completely different:\n\n"
+  fortune -c -a | sed 's/^/    /'
+  printf "\n"
 #+end_src
 
 *** bin
