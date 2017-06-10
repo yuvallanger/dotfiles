@@ -241,6 +241,24 @@ You might find mirrors in the following addresses:
 #+end_src
 
 *** bin
+
+**** xpwgen
+
+#+begin_src sh :tangle ~/bin/xpwgen :tangle-mode '#o700'
+  #!/bin/bash
+
+  function make_stripped_password(){
+      python3 -c """
+  import sys
+  print(sys.stdin.read().strip(), end='')
+  """ <<EOF
+  $( pwgen -B1 16 )
+  EOF
+  }
+
+  make_password | pee 'xsel' 'xsel -b'
+#+end_src
+
 **** qrfeh
 
 #+begin_src sh :tangle ~/bin/qrfeh :tangle-mode '#o700'
