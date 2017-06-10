@@ -21,9 +21,9 @@ You might find mirrors in the following addresses:
   if [ -x /usr/bin/dircolors ]; then
       test -r ~/.dircolors
       if [[ $? == 0 ]]; then
-              eval "$(dircolors -b ~/.dircolors)";
+          eval "$(dircolors -b ~/.dircolors)";
       else
-              eval "$(dircolors -b)"
+          eval "$(dircolors -b)"
       fi
       alias ls='ls --color=auto'
       #alias dir='dir --color=auto'
@@ -94,7 +94,6 @@ You might find mirrors in the following addresses:
           fi
           ppgrep $QUERY | xargs kill $*
   }
-
 #+END_SRC
 
 **** bashrc
@@ -109,7 +108,7 @@ You might find mirrors in the following addresses:
   # If not running interactively, don't do anything
   case $- in
       ,*i*) ;;
-        ,*) return;;
+      ,*) return;;
   esac
 
   # don't put duplicate lines or lines starting with space in the history.
@@ -512,12 +511,12 @@ A list of all agenda files.
       dbus <- D.connectSession
       -- getWellKnownName dbus
       xmonad $ ewmh defaultConfig
-          { handleEventHook = myHandleEventHook
-          , layoutHook      = myLayoutHook
-          , logHook         = myLogHook
-          , modMask         = mod4Mask
-          , startupHook     = myStartupHook
-          } `additionalKeys` myAdditionalKeys
+        { handleEventHook = myHandleEventHook
+        , layoutHook      = myLayoutHook
+        , logHook         = myLogHook
+        , modMask         = mod4Mask
+        , startupHook     = myStartupHook
+        } `additionalKeys` myAdditionalKeys
 #+end_src
 
 *** redshift
