@@ -5,13 +5,18 @@
 *** better-shell
 #+BEGIN_SRC emacs-lisp
   (req-package better-shell
+    :loader :elpa
+
     :bind
     (("C-'" . better-shell-shell)
-     ("C-;" . better-shell-remote-open)))
+     ("C-;" . better-shell-remote-open))
+    )
 #+END_SRC
 *** bash-completion
 #+BEGIN_SRC emacs-lisp
-  (req-package bash-completion)
+  (req-package bash-completion
+    :loader :elpa
+    )
 #+END_SRC
 ** User Interface tweaks
 
@@ -23,7 +28,8 @@
         electric-indent-mode nil
         indent-tabs-mode nil
         display-battery-mode t
-        word-wrap t)
+        word-wrap t
+        )
 #+END_SRC
 
 *** Custom face
@@ -31,26 +37,30 @@
 #+BEGIN_SRC emacs-lisp
   (custom-set-faces
    '(aw-leading-char-face
-     ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+     ((t (:inherit ace-jump-face-foreground :height 3.0))))
+   )
 #+END_SRC
 
 *** Customize keys
 
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f5>") 'revert-buffer)
+  (global-set-key (kbd "<f5>") 'revert-buffer
+                  )
 #+END_SRC
 
 *** Customize buffer list
 
 #+BEGIN_SRC emacs-lisp
-  (defalias 'list-buffers 'ibuffer-other-window)
+  (defalias 'list-buffers 'ibuffer-other-window
+    )
 #+END_SRC
 
 ** Ido-mode
 
 #+BEGIN_SRC emacs-lisp
   (setq ido-enable-flex-matching t
-        ido-everywhere t)
+        ido-everywhere t
+        )
 
   (ido-mode 1)
 #+END_SRC
@@ -65,43 +75,54 @@
 ** swiper-mode
 
 #+BEGIN_SRC emacs-lisp
-  (req-package counsel)
+  (req-package counsel
+    :loader :elpa
+    )
+
   (req-package swiper-helm
+    :loader :elpa
+
     :config
-      (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+
     :bind
-      ("C-r" . counsel-expression-history)
-      ("\C-s" . swiper)
-      ("C-c C-r" . ivy-resume)
-      ("<f6>" . ivy-resume)
-      ("C-x C-f" . counsel-find-file)
-      ("<f1> f" . counsel-describe-function)
-      ("<f1> v" . counsel-describe-variable)
-      ("<f1> l" . counsel-find-library)
-      ("<f2> i" . counsel-info-lookup-symbol)
-      ("<f2> u" . counsel-unicode-char)
-      ("C-c g" . counsel-git)
-      ("C-c j" . counsel-git-grep)
-      ("C-c k" . counsel-ag)
-      ("C-x l" . counsel-locate)
-      ("C-S-o" . counsel-rhythmbox))
+    ("C-r" . counsel-expression-history)
+    ("\C-s" . swiper) ("C-c C-r" . ivy-resume)
+    ("<f6>" . ivy-resume)
+    ("C-x C-f" . counsel-find-file)
+    ("<f1> f" . counsel-describe-function)
+    ("<f1> v" . counsel-describe-variable)
+    ("<f1> l" . counsel-find-library)
+    ("<f2> i" . counsel-info-lookup-symbol)
+    ("<f2> u" . counsel-unicode-char)
+    ("C-c g" . counsel-git)
+    ("C-c j" . counsel-git-grep)
+    ("C-c k" . counsel-ag)
+    ("C-x l" . counsel-locate)
+    ("C-S-o" . counsel-rhythmbox)
+    )
 #+END_SRC
 
 ** ace-window-mode
 
 #+BEGIN_SRC emacs-lisp
   (req-package ace-window
+    :loader :elpa
     :init
-    (global-set-key [remap other-window] 'ace-window))
+    (global-set-key [remap other-window] 'ace-window)
+    )
 #+END_SRC
 
 ** tabber-mode
 
 #+BEGIN_SRC emacs-lisp
-(req-package tabbar
-  :config
-  (tabbar-mode 1))
+  (req-package tabbar
+    :loader :elpa
+
+    :config
+    (tabbar-mode 1)
+    )
 #+END_SRC
 
 ** Evil-mode
@@ -110,23 +131,32 @@ Turn Emacs into a VIM clone.
 
 #+BEGIN_SRC emacs-lisp
   (req-package evil
-    :config (evil-mode 1)
+    :loader :elpa
+
+    :config
+    (evil-mode 1)
     (add-to-list 'evil-emacs-state-modes 'elfeed-show-mode)
-    (add-to-list 'evil-emacs-state-modes 'elfeed-search-mode))
+    (add-to-list 'evil-emacs-state-modes 'elfeed-search-mode)
+    )
 #+END_SRC
 *** evil-goggles
 
 #+BEGIN_SRC emacs-lisp
   (req-package evil-goggles
+    :loader :elpa
+
     :config
-    (evil-goggles-mode))
+    (evil-goggles-mode)
+    )
 #+END_SRC
 ** try-mode
 
 Try packages by temporarily installing them.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package try)
+  (req-package try
+    :loader :elpa
+    )
 #+END_SRC
 
 ** which key
@@ -135,18 +165,25 @@ Brings up some help in the middle of a key sequence.
 
 #+BEGIN_SRC emacs-lisp
   (req-package which-key
-    :config (which-key-mode))
+    :loader :elpa
+
+    :config (which-key-mode)
+    )
 #+END_SRC
 
 ** Helm-mode
 
 #+BEGIN_SRC emacs-lisp
   (req-package helm
+    :loader :elpa
+
     :config
-      (global-set-key (kbd "M-x") 'helm-M-x)
+    (global-set-key (kbd "M-x") 'helm-M-x)
+
     :bind
-      ("C-x c f" . helm-multi-files)
-      ("M-x" . helm-M-x))
+    ("C-x c f" . helm-multi-files)
+    ("M-x" . helm-M-x)
+    )
 #+END_SRC
 
 ** org-mode
@@ -159,6 +196,8 @@ Brings up some help in the middle of a key sequence.
 
 #+BEGIN_SRC emacs-lisp
   (req-package org
+    :loader :elpa
+
     :config
     (setq org-confirm-babel-evaluate nil ; Don't prompt me to confirm every time I want to evaluate a block.
           org-directory "~/foo/my-org-mode-notes"
@@ -168,10 +207,11 @@ Brings up some help in the middle of a key sequence.
           org-startup-folded (quote overview)
           org-startup-indented t
           org-agenda-files (list
-			    "~/foo/my-org-mode-notes/"
-			    "~/mine/orgmode/"
-			    "~/mine/syncthing/sg3/shared/orgmode/"
-			    "~/mine/syncthing/sg3/shared/orgzly/"))
+                            "~/foo/my-org-mode-notes/"
+                            "~/mine/orgmode/"
+                            "~/mine/syncthing/sg3/shared/orgmode/"
+                            "~/mine/syncthing/sg3/shared/orgzly/"
+                            ))
 
     (add-to-list
      'org-babel-tangle-lang-exts
@@ -184,24 +224,30 @@ Brings up some help in the middle of a key sequence.
        (emacs-lisp . t)))
 
     (add-hook 'org-babel-after-execute-hook
-      'org-display-inline-images 'append)
+              'org-display-inline-images 'append
+              )
 
 
     (defun org-babel-tangle-block ()
       (interactive)
       (let ((current-prefix-arg '(4)))
-	(call-interactively 'org-babel-tangle)))
+        (call-interactively 'org-babel-tangle))
+      )
 
-    :bind ("C-c b" . org-babel-tangle-block))
+    :bind
+    ("C-c b" . org-babel-tangle-block)
+    )
 #+END_SRC
 
 *** org-ref
 
 #+BEGIN_SRC emacs-lisp
   '(req-package org-ref
-   :config
-     ; The following is from the README.org
-     ; https://github.com/jkitchin/org-ref/blob/master/README.org
+     :loader :elpa
+
+     :config
+     ;; The following is from the README.org
+     ;; https://github.com/jkitchin/org-ref/blob/master/README.org
      (setq reftex-default-bibliography '("~/ownCloud/bibliography/references.bib")
            org-ref-bibliography-notes "~/ownCloud/bibliography/notes.org"
            org-ref-default-bibliography '("~/ownCloud/bibliography/references.bib")
@@ -219,7 +265,8 @@ Org bullets makes things look pretty.
   (req-package org-bullets
     :config
     (add-hook 'org-mode-hook
-      (lambda () (org-bullets-mode 1))))
+              (lambda () (org-bullets-mode 1)))
+    )
 #+END_SRC
 
 *** org-caldav
@@ -245,59 +292,78 @@ Org bullets makes things look pretty.
 
 *** geiser
 #+BEGIN_SRC emacs-lisp
-  (req-package geiser)
+  (req-package geiser
+    :loader :elpa
+    )
 #+END_SRC
 *** racket-mode
 #+BEGIN_SRC emacs-lisp
-  (req-package racket-mode)
+  (req-package racket-mode
+    :loader :elpa
+    )
 #+END_SRC
 *** arduino-mode
 
 #+BEGIN_SRC emacs-lisp
-  (req-package arduino-mode)
+  (req-package arduino-mode
+    :loader :elpa
+    )
 #+END_SRC
 
 *** lispy
 
 #+BEGIN_SRC emacs-lisp
   (req-package lispy
+    :loader :elpa
+
     :config
     (add-hook 'lisp-mode-hook (lambda () (lispy-mode 1)))
-    (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
+    (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
+    )
 #+END_SRC
 
 *** smartparens
 
 #+BEGIN_SRC emacs-lisp
-  ;;(req-package smartparens
-  ;;  :config
-  ;;  (add-hook 'hy-mode-hook #'smartparens-strict-mode))
+  ;; (req-package smartparens
+  ;;   :loader :elpa
+
+  ;;   :config
+  ;;   (add-hook 'hy-mode-hook #'smartparens-strict-mode)
+  ;;   )
 #+END_SRC
 
 *** rainbow-delimiters
 
 #+BEGIN_SRC emacs-lisp
   (req-package rainbow-delimiters
+    :loader :elpa
     :config
-    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+    )
 #+END_SRC
 
 *** kivy-mode
 
 #+BEGIN_SRC emacs-lisp
-  (req-package kivy-mode)
+  (req-package kivy-mode
+    :loader :elpa
+    )
 #+END_SRC
 
 *** yasnippet
 
 #+BEGIN_SRC emacs-lisp
   (req-package yasnippet
+    :loader :elpa
+
     :config
     (setq yas-snippet-dirs
           (append '("~/foo/myasnippets")
                   yas-snippet-dirs))
     (yas-reload-all)
-    (yas-global-mode 1))
+    (yas-global-mode 1)
+    )
 #+END_SRC
 
 *** elisp
@@ -305,7 +371,9 @@ Org bullets makes things look pretty.
 **** paredit
 
 #+begin_src emacs-lisp
-  ;; (req-package paredit)
+  ;; (req-package paredit
+  ;;   :loader :elpa
+  ;;   )
 #+end_src
 
 *** Python
@@ -313,23 +381,31 @@ Org bullets makes things look pretty.
 
 #+BEGIN_SRC emacs-lisp
   (req-package pyvenv
+    :loader :elpa
+
     :config
-      (pyvenv-mode))
+    (pyvenv-mode)
+    )
 #+END_SRC
 
 **** live-py-mode
 
 #+BEGIN_SRC emacs-lisp
-  (req-package live-py-mode)
+  (req-package live-py-mode
+    :loader :elpa
+    )
 #+END_SRC
 
 **** elpy
 
 #+BEGIN_SRC emacs-lisp
   (req-package elpy
+    :loader :elpa
+
     :config
-      (elpy-enable)
-      (elpy-use-ipython))
+    (elpy-enable)
+    (elpy-use-ipython)
+    )
 #+END_SRC
 
 **** ob-ipython
@@ -338,40 +414,51 @@ Org bullets makes things look pretty.
 
 #+BEGIN_SRC emacs-lisp
   (req-package ob-ipython
+    :loader :elpa
+
     :config
+    ;; display/update images in the buffer after I evaluate.
     (add-hook 'org-babel-after-execute-hook
-      'org-display-inline-images 'append)
-      ; display/update images in the buffer after I evaluate.
-  )
+              'org-display-inline-images 'append)
+    )
 #+END_SRC
 
 **** EIN
 
 #+BEGIN_SRC emacs-lisp
   (req-package ein
-    :require markdown-mode)
+    :loader :elpa
+
+    :require markdown-mode
+    )
 #+END_SRC
 
 **** hylang
 
 #+BEGIN_SRC emacs-lisp
   (req-package hy-mode
+    :loader :elpa
+
     :config
     (add-hook 'hy-mode-hook (lambda () (lispy-mode 1)))
-    (add-hook 'hy-mode-hook #'rainbow-delimiters-mode))
+    (add-hook 'hy-mode-hook #'rainbow-delimiters-mode)
+    )
 #+END_SRC
 
 **** Customize
 
 #+BEGIN_SRC emacs-lisp
   (setq python-check-command "flake8"
-        python-indent-offset 4)
+        python-indent-offset 4
+        )
 #+END_SRC
 
 *** Haskell
 
 #+BEGIN_SRC emacs-lisp
-  (req-package haskell-mode)
+  (req-package haskell-mode
+    :loader :elpa
+    )
 #+END_SRC
 
 **** Customize
@@ -379,7 +466,8 @@ Org bullets makes things look pretty.
 #+BEGIN_SRC emacs-lisp
   (setq haskell-hoogle-url "https://www.fpcomplete.com/hoogle?q=%s"
         haskell-stylish-on-save t
-        haskell-tags-on-save t)
+        haskell-tags-on-save t
+        )
 #+END_SRC
 
 *** Coq (hehehe… it says "coq"…)
@@ -387,7 +475,8 @@ Org bullets makes things look pretty.
 #+BEGIN_SRC emacs-lisp
   (setq proof-autosend-enable t
         proof-electric-terminator-enable t
-        proof-shell-quiet-errors nil)
+        proof-shell-quiet-errors nil
+        )
 #+END_SRC
 
 **** Customize
@@ -403,24 +492,36 @@ should try first.
 
 #+BEGIN_SRC emacs-lisp
   (req-package magit
+    :loader :elpa
+
     :config
-    (global-set-key (kbd "C-x g") 'magit-status)
-    (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
+    (global-set-key (kbd "C-x g")
+                    'magit-status)
+
+    (global-set-key (kbd "C-x M-g")
+                    'magit-dispatch-popup)
+    )
 #+END_SRC
 
 *** flycheck
 
 #+BEGIN_SRC emacs-lisp
   (req-package flycheck
-    :init (global-flycheck-mode t))
+    :loader :elpa
+
+    :init (global-flycheck-mode t)
+    )
 #+END_SRC
 
 *** company-mode
 
 #+BEGIN_SRC emacs-lisp
   (req-package company
+    :loader :elpa
+
     :config
-      (global-company-mode))
+    (global-company-mode)
+    )
 #+END_SRC
 
 ** Communication
@@ -429,34 +530,39 @@ should try first.
 ***** Customize
 
 #+BEGIN_SRC emacs-lisp
-  (req-package
-    erc
+  (req-package erc
+    :loader :elpa
+
     :config
-    (setq
-     log-mode t
-     erc-log-write-after-insert t
-     erc-log-write-after-send t))
+    (setq log-mode t
+          erc-log-write-after-insert t
+          erc-log-write-after-send t)
+    )
 #+END_SRC
 **** circe
 #+BEGIN_SRC emacs-lisp
   (req-package circe
-    ;;:config
-    ;;(setq
-    ;; log-mode t
-    ;; erc-log-write-after-insert t
-    ;; erc-log-write-after-send t))
+    :loader :elpa
+    ;; :config
+    ;; (setq log-mode t
+    ;;       erc-log-write-after-insert t
+    ;;       erc-log-write-after-send t)
     )
 #+END_SRC
 ***** helm-circe
 
 #+BEGIN_SRC emacs-lisp
-  (req-package helm-circe)
+  (req-package helm-circe
+    :loader :elpa
+    )
 #+END_SRC
 *** Matrix
 **** matrix-client
 
 #+BEGIN_SRC emacs-lisp
-  ;;;;;;(req-package matrix-client)
+  ;; (req-package matrix-client
+  ;;   :loader :elpa
+  ;;   )
 #+END_SRC
 
 ** Accessability
@@ -466,7 +572,9 @@ should try first.
 Skim web pages? XXX
 
 #+begin_src emacs-lisp
-  (req-package thumb-through)
+  (req-package thumb-through
+    :loader :elpa
+    )
 #+end_src
 
 *** eloud
@@ -475,9 +583,12 @@ Reads bits off the buffer.
 
 #+begin_src emacs-lisp
   (req-package eloud
+    :loader :elpa
+
     :config
     (setq eloud-mode t
-          eloud-speech-rate 200))
+          eloud-speech-rate 200)
+    )
 #+end_src
 
 *** TODO ereader
@@ -485,7 +596,9 @@ Reads bits off the buffer.
 XXX
 
 #+begin_src emacs-lisp
-  (req-package ereader)
+  (req-package ereader
+    :loader :elpa
+    )
 #+end_src
 
 *** spray
@@ -494,7 +607,10 @@ A speed reader.
 
 #+begin_src emacs-lisp
   (req-package spray
-    :config (setq spray-save-point t))
+    :loader :elpa
+
+    :config (setq spray-save-point t)
+    )
 #+end_src
 
 *** TODO emacspeak
@@ -502,29 +618,44 @@ A speed reader.
 How do we make this work? XXX
 
 #+begin_src emacs-lisp
-  ;(req-package
-  ;  emacspeak
-  ;)
+  ;; (req-package emacspeak
+  ;;   :loader :elpa
+  ;;   )
 #+end_src
 
 ** RSS
+
+*** elfeed-org
+
 #+BEGIN_SRC emacs-lisp
-  (req-package elfeed-goodies)
   (req-package elfeed-org
+    :loader :elpa
+
     :config
-      (elfeed-org)
-      (setq rmh-elfeed-org-files
-            (list "~/foo/my-org-mode-notes/elfeed.org"
-                  "~/mine/elfeed/private.org")
-            elfeed-curl-max-connections 1)
+    (elfeed-org)
+    (setq rmh-elfeed-org-files (list "~/foo/my-org-mode-notes/elfeed.org"
+                                     "~/mine/elfeed/private.org"))
+    (setq  elfeed-curl-max-connections 1)
+
     :bind
-      ("C-x w" . elfeed))
+    ("C-x w" . elfeed)
+    )
+#+END_SRC
+
+*** elfeed-goodies
+
+#+BEGIN_SRC emacs-lisp
+  (req-package elfeed-goodies
+    :loader :elpa
+    )
 #+END_SRC
 
 ** uptimes
 
 #+BEGIN_SRC emacs-lisp
-  (req-package uptimes)
+  (req-package uptimes
+    :loader :elpa
+    )
 #+END_SRC
 
 * req-package-finish
