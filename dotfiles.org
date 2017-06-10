@@ -205,7 +205,7 @@ You might find mirrors in the following addresses:
 
   [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
-  PYTHONPATH="$HOME/.local/lib/python3.5/dist-packages:$PYTHONPATH"
+  #PYTHONPATH="$HOME/.local/lib/python3.5/dist-packages:$PYTHONPATH"
 
   if [ -d "$HOME/gopath" ] ; then
           GOPATH="$HOME/gopath"
@@ -224,7 +224,7 @@ You might find mirrors in the following addresses:
   fi
   [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt   #byobu-prompt#
 
-  source ~/.local/bin/virtualenvwrapper_lazy.sh
+  #source ~/.local/bin/virtualenvwrapper_lazy.sh
   #source ~/.local/lib/python3.5/site-packages/pyvenvwrapper/pyvenvwrapper_settings
   #source ~/.local/lib/python3.5/site-packages/pyvenvwrapper/pyvenvwrapper
 
@@ -232,7 +232,7 @@ You might find mirrors in the following addresses:
   #export PS1='$(task +in +PENDING count)i$(task count)t '$PS1
   if command -v find_pycompletion.sh>/dev/null; then source `find_pycompletion.sh`; fi
 
-  export PYTHONPATH
+  #export PYTHONPATH
   export GOPATH
   export PATH
 #+end_src
