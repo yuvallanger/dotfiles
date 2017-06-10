@@ -293,6 +293,7 @@ You might find mirrors in the following addresses:
   [core]
           editor = vim
           excludesfile = ~/.gitignore_global
+          whitespace = tab-in-indent, trailing-space
   [diff]
           tool = diff
   [difftool]
