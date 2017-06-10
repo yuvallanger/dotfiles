@@ -558,6 +558,17 @@ A list of all agenda files.
   lat=32.07
   lon=34.76
 #+end_src
+
+*** youtube-dl
+
+#+begin_src conf :tangle ~/.config/youtube-dl/config :comments no
+  -c
+  -i
+  --output "~/Downloads/youtube-dl/%(extractor)s/%(uploader_id)s/%(upload_date)s--%(title)s--%(id)s.%(ext)s"
+  --external-downloader aria2c
+  --external-downloader-args "--max-connection-per-server=16 --split=16"
+#+end_src
+
 ** termux
 *** shortcuts
 **** org-add-note
