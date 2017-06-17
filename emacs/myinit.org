@@ -510,6 +510,14 @@ should try first.
     )
 #+END_SRC
 
+*** vc-fossil
+
+#+BEGIN_SRC emacs-lisp
+  (req-package vc-fossil
+    :loader :elpa
+    )
+#+END_SRC
+
 *** flycheck
 
 #+BEGIN_SRC emacs-lisp
