@@ -489,7 +489,8 @@ Org bullets makes things look pretty.
 **** Customize
 
 *** Magit
-A git mode recommended on the wiki.
+
+A git mode recommended on the [[https://www.emacswiki.org/emacs/Git][Emacs wiki]].
 
 #+BEGIN_QUOTE
 Magit is the most popular front end for Git. If you are new to Git and
