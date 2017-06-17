@@ -219,9 +219,13 @@ Brings up some help in the middle of a key sequence.
 
     (org-babel-do-load-languages
      'org-babel-load-languages
-     '((ipython . t)
+     '(
+       (ipython . t)
        (python . t)
-       (emacs-lisp . t)))
+       (emacs-lisp . t)
+       (ditaa . t)
+       ))
+
 
     (add-hook 'org-babel-after-execute-hook
               'org-display-inline-images 'append
