@@ -291,7 +291,7 @@ Org bullets makes things look pretty.
 *** orgnav
 
 #+BEGIN_SRC emacs-lisp
-  (use-package orgnav
+  (req-package orgnav
     :loader :elpa
     )
 #+END_SRC
