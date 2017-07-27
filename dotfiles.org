@@ -226,8 +226,6 @@ You might find mirrors in the following addresses:
   [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt   #byobu-prompt#
 
   #source ~/.local/bin/virtualenvwrapper_lazy.sh
-  #source ~/.local/lib/python3.5/site-packages/pyvenvwrapper/pyvenvwrapper_settings
-  #source ~/.local/lib/python3.5/site-packages/pyvenvwrapper/pyvenvwrapper
 
   # http://cs-syd.eu/posts/2015-06-21-gtd-with-taskwarrior-part-2-collection.html
   #export PS1='$(task +in +PENDING count)i$(task count)t '$PS1
@@ -237,13 +235,15 @@ You might find mirrors in the following addresses:
   export GOPATH
   export PATH
 
+  # https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator
+  stty -ixon
+
   printf "And now for something completely different:\n\n"
   fortune -c -a | sed 's/^/    /'
   printf "\n"
 #+end_src
 
 *** bin
-
 **** xpwgen
 
 #+begin_src sh :tangle ~/bin/xpwgen :tangle-mode '#o700'
@@ -299,6 +299,26 @@ You might find mirrors in the following addresses:
   #!/bin/sh
 
   gnome-screensaver-command --lock
+#+end_src
+
+**** e
+
+#+begin_src sh :tangle ~/bin/e :tangle-mode '#o700'
+  #!/bin/sh
+
+  emacsclient -a= -c
+#+end_src
+
+**** upgradepip
+
+#+begin_src sh :tangle ~/bin/upgradepip :tangle-mode '#o700'
+  #!/bin/sh
+
+  pip-compile -v --annotate -U --generate-hashes
+  pip install --user -r requirements.txt
+  for i in pipsi-tool pew pipenv diceware; do
+      pipsi install --python python3 $i
+  done
 #+end_src
 
 *** git
@@ -503,7 +523,7 @@ A list of all agenda files.
   myStartupHook = do
       spawn "keynav"
       spawn "setxkbmap -option -option terminate:ctrl_alt_bksp -option grp:caps_toggle us,il"
-      spawn "sleep 2; redshift -O 3500"
+      spawn "sleep 2; redshift"
       spawn "sleep 5; nm-applet"
       spawn "sleep 5; xfce4-power-manager"
       spawn "sleep 5; xfce4-volumed"
