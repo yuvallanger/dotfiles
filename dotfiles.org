@@ -225,14 +225,14 @@ You might find mirrors in the following addresses:
   fi
   [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt   #byobu-prompt#
 
-  #source ~/.local/bin/virtualenvwrapper_lazy.sh
-
   # http://cs-syd.eu/posts/2015-06-21-gtd-with-taskwarrior-part-2-collection.html
   #export PS1='$(task +in +PENDING count)i$(task count)t '$PS1
   if command -v find_pycompletion.sh>/dev/null; then source `find_pycompletion.sh`; fi
 
-  # For pipenv.
+  # For pipenv and virtualenvwrapper
   export WORKON_HOME="$HOME/.virtualenvs"
+  export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3.6"
+  source ~/.local/bin/virtualenvwrapper_lazy.sh
 
   #export PYTHONPATH
   export GOPATH
