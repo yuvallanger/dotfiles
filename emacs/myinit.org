@@ -58,6 +58,12 @@
     )
 #+END_SRC
 
+** ede-mode
+
+#+BEGIN_SRC emacs-lisp
+  (setq global-ede-mode t)
+#+END_SRC
+
 ** Ido-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -230,8 +236,9 @@ Brings up some help in the middle of a key sequence.
     (add-to-list 'org-babel-load-languages '((ipython . t)
                                              (python . t)
                                              (ditaa . t)))
-
-    (setq org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
+    (setq
+     org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar"
+     )
 
 
     (add-to-list
@@ -400,6 +407,17 @@ Org bullets makes things look pretty.
 #+end_src
 
 *** Python
+
+**** General variables
+
+#+BEGIN_SRC elisp
+  (setq
+   'python-shell-interpreter "ipython"
+   'python-shell-interpreter-args "-i --simple-prompt"
+   'python-shell-interpreter-interactive-arg "-i --simple-prompt"
+   )
+#+END_SRC
+
 **** pyvenv
 
 #+BEGIN_SRC emacs-lisp
@@ -431,9 +449,9 @@ Org bullets makes things look pretty.
     )
 #+END_SRC
 
-**** ob-ipython
+**** COMMENT ob-ipython
 
-  org-babel for Jupyter.
+org-babel for Jupyter.
 
 #+BEGIN_SRC emacs-lisp
   (req-package ob-ipython
@@ -443,7 +461,11 @@ Org bullets makes things look pretty.
     ;; display/update images in the buffer after I evaluate.
     (add-hook 'org-babel-after-execute-hook
               'org-display-inline-images 'append)
-    )
+
+    (setq
+     ob-ipython-driver-path
+     "/home/yuvallanger/.emacs.d/elpa/ob-ipython-20170628.1116/driver.py"
+     ))
 #+END_SRC
 
 **** EIN
@@ -519,6 +541,10 @@ should try first.
     :loader :elpa
 
     :config
+    (setq
+     magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256"))
+     )
+
     (global-set-key (kbd "C-x g")
                     'magit-status)
 
