@@ -105,6 +105,8 @@ You might find mirrors in the following addresses:
   # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
   # for examples
 
+  PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
   # If not running interactively, don't do anything
   case $- in
       ,*i*) ;;
@@ -517,7 +519,7 @@ A list of all agenda files.
   myAdditionalKeys =
       [ ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
       , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
-      , ((mod4Mask, xK_p), spawn "LC_ALL=\"C.UTF-8\" dmenu_run")
+      , ((mod4Mask, xK_p), spawn "dmenu_run")
       , ((0, xK_Print), spawn "scrot")
       -- , ((mod1Mask, xK_Escape), spawn "setxkbmap -option grp:alts_toggle us,il")
       -- , ((controlMask .|. shiftMask, xK_Return), spawn "xsel -b | festival --tts")

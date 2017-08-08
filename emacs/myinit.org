@@ -23,13 +23,16 @@
   - [ ] What is revert-buffer?
 
 #+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-message t
-        column-number-mode t
-        electric-indent-mode nil
-        indent-tabs-mode nil
-        display-battery-mode t
-        word-wrap t
-        )
+  (setq
+   column-number-mode t
+   display-battery-mode t
+   electric-indent-mode nil
+   indent-tabs-mode nil
+   semantic-mode t
+   show-paren-mode t
+   word-wrap t
+   inhibit-startup-message t
+   )
 #+END_SRC
 
 *** Custom face
@@ -63,6 +66,14 @@
         )
 
   (ido-mode 1)
+#+END_SRC
+
+** COMMENT projectile
+
+#+BEGIN_SRC emacs-lisp
+  (req-package
+    :loader :elpa
+    )
 #+END_SRC
 
 ** winner-mode
@@ -197,6 +208,7 @@ Brings up some help in the middle of a key sequence.
 #+BEGIN_SRC emacs-lisp
   (req-package org
     :loader :elpa
+    :require ob-ditaa ob-ipython
 
     :config
     (setq org-confirm-babel-evaluate nil
@@ -215,18 +227,16 @@ Brings up some help in the middle of a key sequence.
                             "~/mine/syncthing/sg3/shared/orgzly/"
                             ))
 
+    (add-to-list 'org-babel-load-languages '((ipython . t)
+                                             (python . t)
+                                             (ditaa . t)))
+
+    (setq org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
+
+
     (add-to-list
      'org-babel-tangle-lang-exts
      '('("haskell" . "hs")))
-
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '(
-       (ipython . t)
-       (python . t)
-       (emacs-lisp . t)
-       (ditaa . t)
-       ))
 
 
     (add-hook 'org-babel-after-execute-hook
@@ -364,7 +374,7 @@ Org bullets makes things look pretty.
     )
 #+END_SRC
 
-*** yasnippet
+*** COMMENT yasnippet
 
 #+BEGIN_SRC emacs-lisp
   (req-package yasnippet
@@ -525,7 +535,7 @@ should try first.
     )
 #+END_SRC
 
-*** flycheck
+*** COMMENT flycheck
 
 #+BEGIN_SRC emacs-lisp
   (req-package flycheck
