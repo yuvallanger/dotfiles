@@ -136,7 +136,7 @@
     )
 #+END_SRC
 
-** Evil-mode
+** COMMENT Evil-mode
 
 Turn Emacs into a VIM clone.
 
