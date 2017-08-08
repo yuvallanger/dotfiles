@@ -418,6 +418,14 @@ Org bullets makes things look pretty.
    )
 #+END_SRC
 
+**** python-x
+
+#+BEGIN_SRC emacs-lisp
+  (req-package python-x
+    :config
+    (python-x-setup))
+#+END_SRC
+
 **** pyvenv
 
 #+BEGIN_SRC emacs-lisp
