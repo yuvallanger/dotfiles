@@ -58,6 +58,15 @@
     )
 #+END_SRC
 
+** multiple-curses.el
+
+#+BEGIN_SRC emacs-lisp
+  (req-package multiple-cursors
+    :loader :elpa
+    )
+
+#+END_SRC
+
 ** undo-tree
 
 #+BEGIN_SRC emacs-lisp
