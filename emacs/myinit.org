@@ -58,6 +58,13 @@
     )
 #+END_SRC
 
+** undo-tree
+
+#+BEGIN_SRC emacs-lisp
+  (req-package undo-tree
+    :loader elpa
+    )
+#+END_SRC
 ** ede-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -422,6 +429,7 @@ Org bullets makes things look pretty.
 
 #+BEGIN_SRC emacs-lisp
   (req-package python-x
+    :loader :elpa
     :config
     (python-x-setup))
 #+END_SRC

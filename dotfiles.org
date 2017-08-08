@@ -231,6 +231,9 @@ You might find mirrors in the following addresses:
   #export PS1='$(task +in +PENDING count)i$(task count)t '$PS1
   if command -v find_pycompletion.sh>/dev/null; then source `find_pycompletion.sh`; fi
 
+  # For pipenv.
+  export WORKON_HOME="$HOME/.virtualenvs"
+
   #export PYTHONPATH
   export GOPATH
   export PATH
