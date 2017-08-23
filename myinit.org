@@ -602,16 +602,19 @@ should try first.
     (setq erc-log-write-after-send t)
     )
 #+END_SRC
-**** circe
+**** COMMENT circe
+
 #+BEGIN_SRC emacs-lisp
   (req-package circe
     :loader :elpa
-    ;; :config
-    ;; (setq log-mode t
-    ;;       erc-log-write-after-insert t
-    ;;       erc-log-write-after-send t)
+
+    :config
+    (setq log-mode t)
+    (setq erc-log-write-after-insert t)
+    (setq erc-log-write-after-send t)
     )
 #+END_SRC
+
 ***** helm-circe
 
 #+BEGIN_SRC emacs-lisp
