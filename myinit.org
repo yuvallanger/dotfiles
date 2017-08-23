@@ -23,16 +23,15 @@
   - [ ] What is revert-buffer?
 
 #+BEGIN_SRC emacs-lisp
-  (setq
-   column-number-mode t
-   display-battery-mode t
-   electric-indent-mode nil
-   indent-tabs-mode nil
-   semantic-mode t
-   show-paren-mode t
-   word-wrap t
-   inhibit-startup-message t
-   )
+  (setq column-number-mode t)
+  (setq display-battery-mode t)
+  (setq electric-indent-mode nil)
+  (setq indent-tabs-mode nil)
+  (setq semantic-mode t)
+  (setq show-paren-mode t)
+  (setq word-wrap t)
+  (setq inhibit-startup-message t)
+
 #+END_SRC
 
 *** Custom face
@@ -83,9 +82,8 @@
 ** Ido-mode
 
 #+BEGIN_SRC emacs-lisp
-  (setq ido-enable-flex-matching t
-        ido-everywhere t
-        )
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
 
   (ido-mode 1)
 #+END_SRC
@@ -233,28 +231,20 @@ Brings up some help in the middle of a key sequence.
     :require ob-ditaa ob-ipython
 
     :config
-    (setq org-confirm-babel-evaluate nil
-          ;; Don't prompt me to confirm every time I want to evaluate a block.
-          )
-    (setq org-directory "~/foo/my-org-mode-notes" )
-    (setq org-default-notes-file (concat org-directory "/notes.org") )
-    (setq org-export-html-postamble nil )
-    (setq org-hide-leading-stars t )
+    ;; Don't prompt me to confirm every time I want to evaluate a block.
+    (setq org-confirm-babel-evaluate nil)
+    (setq org-directory "~/foo/my-org-mode-notes")
+    (setq org-default-notes-file (concat org-directory "/notes.org"))
+    (setq org-export-html-postamble nil)
+    (setq org-hide-leading-stars t)
     (setq org-startup-folded (quote overview))
     (setq org-startup-indented t)
-    (setq org-agenda-files (list
-                            "~/foo/my-org-mode-notes/"
-                            "~/mine/orgmode/"
-                            "~/mine/syncthing/sg3/shared/orgmode/"
-                            "~/mine/syncthing/sg3/shared/orgzly/"
-                            ))
+    (setq org-agenda-files (list "~/foo/my-org-mode-notes/" "~/mine/orgmode/" "~/mine/syncthing/sg3/shared/orgmode/" "~/mine/syncthing/sg3/shared/orgzly/"))
 
     (add-to-list 'org-babel-load-languages '((ipython . t)
                                              (python . t)
                                              (ditaa . t)))
-    (setq
-     org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar"
-     )
+    (setq org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
 
 
     (add-to-list
@@ -313,18 +303,17 @@ Org bullets makes things look pretty.
 #+BEGIN_SRC emacs-lisp
   (req-package org-caldav
     :config
-    (setq org-caldav-url "https://owncloud.kaka.farm/remote.php/caldav/calendars/yuvallanger"
-          org-caldav-calendar-id "org-mode"
-          org-caldav-calendars
-          '((:url "https://owncloud.kaka.farm/remote.php/caldav/calendars/yuvallanger"
-             :calendar-id "org-mode"
-             :files ("~/mine/orgmode/calendar.org")
-             :inbox "~/mine/orgmode/caldav-sync-calendar-inbox.org")
+    (setq org-caldav-url "https://owncloud.kaka.farm/remote.php/caldav/calendars/yuvallanger")
+    (setq org-caldav-calendar-id "org-mode")
+    (setq org-caldav-calendars '((:url "https://owncloud.kaka.farm/remote.php/caldav/calendars/yuvallanger"
+                                       :calendar-id "org-mode"
+                                       :files ("~/mine/orgmode/calendar.org")
+                                       :inbox "~/mine/orgmode/caldav-sync-calendar-inbox.org")
 
-            (:url "https://owncloud.kaka.farm/remote.php/dav/calendars/yuvallanger"
-             :calendar-id "org-mode"
-             :files ("~/mine/orgmode/tasks.org")
-             :inbox "~/mine/orgmode/caldav-sync-tasks-inbox.org"))))
+                                 (:url "https://owncloud.kaka.farm/remote.php/dav/calendars/yuvallanger"
+                                       :calendar-id "org-mode"
+                                       :files ("~/mine/orgmode/tasks.org")
+                                       :inbox "~/mine/orgmode/caldav-sync-tasks-inbox.org"))))
 #+END_SRC
 
 *** orgnav
@@ -404,9 +393,7 @@ Org bullets makes things look pretty.
     :loader :elpa
 
     :config
-    (setq yas-snippet-dirs
-          (append '("~/foo/myasnippets")
-                  yas-snippet-dirs))
+    (setq yas-snippet-dirs (append '("~/foo/myasnippets") yas-snippet-dirs))
     (yas-reload-all)
     (yas-global-mode 1)
     )
@@ -427,11 +414,9 @@ Org bullets makes things look pretty.
 **** General variables
 
 #+BEGIN_SRC elisp
-  (setq
-   'python-shell-interpreter "ipython"
-   'python-shell-interpreter-args "-i --simple-prompt"
-   'python-shell-interpreter-interactive-arg "-i --simple-prompt"
-   )
+  (setq python-shell-interpreter "ipython")
+  (setq python-shell-interpreter-args "-i --simple-prompt")
+  (setq python-shell-interpreter-interactive-arg "-i --simple-prompt")
 #+END_SRC
 
 **** python-x
@@ -471,6 +456,8 @@ Org bullets makes things look pretty.
     :config
     (elpy-enable)
     (elpy-use-ipython)
+    (setv elpy-disable-backend-error-display nil)
+    (setv elpy-project-root "~/foo/ants/")
     )
 #+END_SRC
 
@@ -487,10 +474,8 @@ org-babel for Jupyter.
     (add-hook 'org-babel-after-execute-hook
               'org-display-inline-images 'append)
 
-    (setq
-     ob-ipython-driver-path
-     "/home/yuvallanger/.emacs.d/elpa/ob-ipython-20170628.1116/driver.py"
-     ))
+    (setq ob-ipython-driver-path "~/.emacs.d/elpa/ob-ipython-20170628.1116/driver.py")
+    )
 #+END_SRC
 
 **** EIN
@@ -518,9 +503,8 @@ org-babel for Jupyter.
 **** Customize
 
 #+BEGIN_SRC emacs-lisp
-  (setq python-check-command "flake8"
-        python-indent-offset 4
-        )
+  (setq python-check-command "flake8")
+  (setq python-indent-offset 4)
 #+END_SRC
 
 *** Haskell
@@ -534,19 +518,17 @@ org-babel for Jupyter.
 **** Customize
 
 #+BEGIN_SRC emacs-lisp
-  (setq haskell-hoogle-url "https://www.fpcomplete.com/hoogle?q=%s"
-        haskell-stylish-on-save t
-        haskell-tags-on-save t
-        )
+  (setq haskell-hoogle-url "https://www.fpcomplete.com/hoogle?q=%s")
+  (setq haskell-stylish-on-save t)
+  (setq haskell-tags-on-save t)
 #+END_SRC
 
 *** Coq (hehehe… it says "coq"…)
 
 #+BEGIN_SRC emacs-lisp
-  (setq proof-autosend-enable t
-        proof-electric-terminator-enable t
-        proof-shell-quiet-errors nil
-        )
+  (setq proof-autosend-enable t)
+  (setq proof-electric-terminator-enable t)
+  (setq proof-shell-quiet-errors nil)
 #+END_SRC
 
 **** Customize
@@ -566,9 +548,7 @@ should try first.
     :loader :elpa
 
     :config
-    (setq
-     magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256"))
-     )
+    (setq magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256")))
 
     (global-set-key (kbd "C-x g")
                     'magit-status)
@@ -617,9 +597,9 @@ should try first.
     :loader :elpa
 
     :config
-    (setq log-mode t
-          erc-log-write-after-insert t
-          erc-log-write-after-send t)
+    (setq log-mode t)
+    (setq erc-log-write-after-insert t)
+    (setq erc-log-write-after-send t)
     )
 #+END_SRC
 **** circe
@@ -669,8 +649,8 @@ Reads bits off the buffer.
     :loader :elpa
 
     :config
-    (setq eloud-mode t
-          eloud-speech-rate 200)
+    (setq eloud-mode t)
+    (setq eloud-speech-rate 200)
     )
 #+end_src
 
@@ -692,7 +672,8 @@ A speed reader.
   (req-package spray
     :loader :elpa
 
-    :config (setq spray-save-point t)
+    :config
+    (setq spray-save-point t)
     )
 #+end_src
 
@@ -716,8 +697,7 @@ How do we make this work? XXX
 
     :config
     (elfeed-org)
-    (setq rmh-elfeed-org-files (list "~/foo/my-org-mode-notes/elfeed.org"
-                                     "~/mine/elfeed/private.org"))
+    (setq rmh-elfeed-org-files (list "~/foo/my-org-mode-notes/elfeed.org" "~/mine/elfeed/private.org"))
     (setq  elfeed-curl-max-connections 1)
 
     :bind
