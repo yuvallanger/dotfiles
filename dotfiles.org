@@ -105,7 +105,14 @@ You might find mirrors in the following addresses:
   # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
   # for examples
 
-  PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+  if [ -d "$HOME/.local/bin" ] ; then
+          PATH="$HOME/.local/bin:$PATH"
+  fi
+
+  if [ -d "$HOME/bin" ] ; then
+          PATH="$HOME/bin:$PATH"
+  fi
 
   # If not running interactively, don't do anything
   case $- in
@@ -146,9 +153,9 @@ You might find mirrors in the following addresses:
   # uncomment for a colored prompt, if the terminal has the capability; turned
   # off by default to not distract the user: the focus in a terminal window
   # should be on the output of commands, not on the prompt
-  #force_color_prompt=yes
+  force_color_prompt=""
 
-  if [ -n "$force_color_prompt" ]; then
+  if [ -n "${force_color_prompt}" ]; then
       if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
           # We have color support; assume it's compliant with Ecma-48
           # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
@@ -177,7 +184,12 @@ You might find mirrors in the following addresses:
 
   # enable color support of ls and also add handy aliases
   if [ -x /usr/bin/dircolors ]; then
-      test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+      if [ -r ~/.dircolors ];
+      then
+          eval "$(dircolors -b ~/.dircolors)"
+      else
+          eval "$(dircolors -b)"
+      fi
       alias ls='ls --color=auto'
       #alias dir='dir --color=auto'
       #alias vdir='vdir --color=auto'
@@ -204,7 +216,11 @@ You might find mirrors in the following addresses:
   # ~/.bash_aliases, instead of adding them here directly.
   # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-  [ -f ~/.bash_aliases ] && . ~/.bash_aliases
+  if [ -f ~/.bash_aliases ];
+  then
+      # shellcheck source=.bash_aliases
+      source "$HOME/.bash_aliases"
+  fi
 
   #PYTHONPATH="$HOME/.local/lib/python3.5/dist-packages:$PYTHONPATH"
 
@@ -218,21 +234,29 @@ You might find mirrors in the following addresses:
   # sources /etc/bash.bashrc).
   if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
-      . /usr/share/bash-completion/bash_completion
+      source /usr/share/bash-completion/bash_completion
     elif [ -f /etc/bash_completion ]; then
-      . /etc/bash_completion
+      source /etc/bash_completion
     fi
   fi
-  [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt   #byobu-prompt#
-
-  # http://cs-syd.eu/posts/2015-06-21-gtd-with-taskwarrior-part-2-collection.html
-  #export PS1='$(task +in +PENDING count)i$(task count)t '$PS1
-  if command -v find_pycompletion.sh>/dev/null; then source `find_pycompletion.sh`; fi
+  if [ -r ~/.byobu/prompt ];
+  then
+      # shellcheck source=.byobu/prompt
+      source "$HOME/.byobu/prompt"   #byobu-prompt#
+  fi
 
   # For pipenv and virtualenvwrapper
   export WORKON_HOME="$HOME/.virtualenvs"
   export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3.6"
-  source ~/.local/bin/virtualenvwrapper_lazy.sh
+  if [ -f "$HOME/.local/binvirtualenvwrapper_lazy.sh" ]; then
+      # shellcheck source=.local/bin/virtualenvwrapper_lazy.sh
+      source "$HOME/.local/bin/virtualenvwrapper_lazy.sh"
+  fi
+
+  if [ -f "$HOME/.local/bin/find_pycompletion.sh" ]; then
+      # shellcheck source=.local/bin/find_pycompletion.sh
+      source "$(find_pycompletion.sh)"
+  fi
 
   #export PYTHONPATH
   export GOPATH
@@ -317,11 +341,9 @@ You might find mirrors in the following addresses:
 #+begin_src sh :tangle ~/bin/upgradepip :tangle-mode '#o700'
   #!/bin/sh
 
-  pip-compile -v --annotate -U --generate-hashes
-  pip install --user -r requirements.txt
-  for i in pipsi-tool pew pipenv diceware; do
-      pipsi install --python python3 $i
-  done
+  pip-compile -v --annotate -U --generate-hashes --rebuild
+  pip install --user -I -r requirements.txt
+  while read i; do pipsi upgrade $i; done < ~/pipsi-list
 #+end_src
 
 *** git
