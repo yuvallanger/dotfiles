@@ -38,8 +38,13 @@
 
 #+BEGIN_SRC emacs-lisp
   (custom-set-faces
-   '(aw-leading-char-face
-     ((t (:inherit ace-jump-face-foreground :height 3.0))))
+   '(default ((t (:inherit nil :stipple
+                           nil :background "white" :foreground "black" :inverse-video
+                           nil :box nil :strike-through nil :overline nil :underline
+                           nil :slant normal :weight normal :height 200 :width
+                           normal :foundry "PfEd" :family "Inconsolata" ))))
+   '(aw-leading-char-face ((t (:inherit
+                               ace-jump-face-foreground :height 3.0))))
    )
 #+END_SRC
 
