@@ -71,8 +71,12 @@
 #+BEGIN_SRC emacs-lisp
   (req-package undo-tree
     :loader elpa
+
+    :config
+    (global-undo-tree-mode t)
     )
 #+END_SRC
+
 ** ede-mode
 
 #+BEGIN_SRC emacs-lisp
