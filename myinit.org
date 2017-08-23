@@ -57,6 +57,13 @@
     )
 #+END_SRC
 
+*** Customize menu
+
+#+BEGIN_SRC emacs-lisp
+  (setv gnus-group-update-tool-bar t)
+  (setv menu-bar-mode nil)
+#+END_SRC
+
 ** multiple-curses.el
 
 #+BEGIN_SRC emacs-lisp
