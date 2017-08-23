@@ -31,7 +31,6 @@
   (setq show-paren-mode t)
   (setq word-wrap t)
   (setq inhibit-startup-message t)
-
 #+END_SRC
 
 *** Custom face
@@ -67,6 +66,7 @@
 #+BEGIN_SRC emacs-lisp
   (setv gnus-group-update-tool-bar t)
   (setv menu-bar-mode nil)
+  (setv tool-bar-mode nil)
 #+END_SRC
 
 ** multiple-curses.el
@@ -452,6 +452,7 @@ Org bullets makes things look pretty.
 
     :config
     (pyvenv-mode)
+    (setv pyvenv-virtualenvwrapper-python "/usr/bin/env python")
     )
 #+END_SRC
 
