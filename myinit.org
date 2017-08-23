@@ -64,9 +64,9 @@
 *** Customize menu
 
 #+BEGIN_SRC emacs-lisp
-  (setv gnus-group-update-tool-bar t)
-  (setv menu-bar-mode nil)
-  (setv tool-bar-mode nil)
+  (setq gnus-group-update-tool-bar t)
+  (setq menu-bar-mode nil)
+  (setq tool-bar-mode nil)
 #+END_SRC
 
 ** multiple-curses.el
@@ -452,7 +452,7 @@ Org bullets makes things look pretty.
 
     :config
     (pyvenv-mode)
-    (setv pyvenv-virtualenvwrapper-python "/usr/bin/env python")
+    (setq pyvenv-virtualenvwrapper-python "/usr/bin/env python")
     )
 #+END_SRC
 
@@ -473,8 +473,8 @@ Org bullets makes things look pretty.
     :config
     (elpy-enable)
     (elpy-use-ipython)
-    (setv elpy-disable-backend-error-display nil)
-    (setv elpy-project-root "~/foo/ants/")
+    (setq elpy-disable-backend-error-display nil)
+    (setq elpy-project-root "~/foo/ants/")
     )
 #+END_SRC
 
