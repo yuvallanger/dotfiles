@@ -373,15 +373,15 @@ Org bullets makes things look pretty.
     )
 #+END_SRC
 
-*** smartparens
+*** COMMENT smartparens
 
 #+BEGIN_SRC emacs-lisp
-  ;; (req-package smartparens
-  ;;   :loader :elpa
+  (req-package smartparens
+    :loader :elpa
 
-  ;;   :config
-  ;;   (add-hook 'hy-mode-hook #'smartparens-strict-mode)
-  ;;   )
+    :config
+    (add-hook 'hy-mode-hook #'smartparens-strict-mode)
+    )
 #+END_SRC
 
 *** rainbow-delimiters
@@ -417,12 +417,12 @@ Org bullets makes things look pretty.
 
 *** elisp
 
-**** paredit
+**** COMMENT paredit
 
 #+begin_src emacs-lisp
-  ;; (req-package paredit
-  ;;   :loader :elpa
-  ;;   )
+  (req-package paredit
+    :loader :elpa
+    )
 #+end_src
 
 *** Python
@@ -639,12 +639,12 @@ should try first.
     )
 #+END_SRC
 *** Matrix
-**** matrix-client
+**** COMMENT matrix-client
 
 #+BEGIN_SRC emacs-lisp
-  ;; (req-package matrix-client
-  ;;   :loader :elpa
-  ;;   )
+  (req-package matrix-client
+    :loader :elpa
+    )
 #+END_SRC
 
 ** Accessability
@@ -696,14 +696,14 @@ A speed reader.
     )
 #+end_src
 
-*** TODO emacspeak
+*** COMMENT emacspeak
 
 How do we make this work? XXX
 
 #+begin_src emacs-lisp
-  ;; (req-package emacspeak
-  ;;   :loader :elpa
-  ;;   )
+  (req-package emacspeak
+    :loader :elpa
+    )
 #+end_src
 
 ** RSS
