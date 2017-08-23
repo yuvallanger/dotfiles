@@ -20,8 +20,6 @@
 #+END_SRC
 ** User Interface tweaks
 
-  - [ ] What is revert-buffer?
-
 #+BEGIN_SRC emacs-lisp
   (setq column-number-mode t)
   (setq display-battery-mode t)
@@ -49,9 +47,12 @@
 
 *** Customize keys
 
+- [X] What is revert-buffer?
+  - Reload buffer from its file.
+
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f5>") 'revert-buffer
-                  )
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+  (global-set-key (kbd "C-c o") (lambda () (iteractive) (find-file "~/foo/my-org-mode-notes/main.org")))
 #+END_SRC
 
 *** Customize buffer list
