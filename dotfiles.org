@@ -107,11 +107,11 @@ You might find mirrors in the following addresses:
 
 
   if [ -d "$HOME/.local/bin" ] ; then
-          PATH="$HOME/.local/bin:$PATH"
+          export PATH="$HOME/.local/bin:$PATH"
   fi
 
   if [ -d "$HOME/bin" ] ; then
-          PATH="$HOME/bin:$PATH"
+          export PATH="$HOME/bin:$PATH"
   fi
 
   # If not running interactively, don't do anything
@@ -222,11 +222,11 @@ You might find mirrors in the following addresses:
       source "$HOME/.bash_aliases"
   fi
 
-  #PYTHONPATH="$HOME/.local/lib/python3.5/dist-packages:$PYTHONPATH"
+  export PYTHONPATH="$HOME/.local/lib/python3.6:$PYTHONPATH"
 
   if [ -d "$HOME/gopath" ] ; then
-          GOPATH="$HOME/gopath"
-          PATH="$GOPATH/bin:$PATH"
+          export GOPATH="$HOME/gopath"
+          export PATH="$GOPATH/bin:$PATH"
   fi
 
   # enable programmable completion features (you don't need to enable
@@ -257,10 +257,6 @@ You might find mirrors in the following addresses:
       # shellcheck source=.local/bin/find_pycompletion.sh
       source "$(find_pycompletion.sh)"
   fi
-
-  #export PYTHONPATH
-  export GOPATH
-  export PATH
 
   # https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator
   stty -ixon
@@ -336,14 +332,25 @@ You might find mirrors in the following addresses:
   emacsclient -a= -c
 #+end_src
 
-**** upgradepip
+**** upgrade-pip-packages
 
-#+begin_src sh :tangle ~/bin/upgradepip :tangle-mode '#o700'
-  #!/bin/sh
+#+begin_src sh :tangle ~/bin/upgrade-pip-packages :tangle-mode '#o700'
+  #!/bin/bash
 
-  pip-compile -v --annotate -U --generate-hashes --rebuild
-  pip install --user -I -r requirements.txt
-  while read i; do pipsi upgrade $i; done < ~/pipsi-list
+  userpip="$HOME/.local/bin/pip"
+
+  pip3 install -U --user pip
+  "$userpip" install -U --user pipsi
+  "$userpip" install -U --user pip-tools
+
+  #pip-compile --generate-hashes -v -U --annotate "$HOME/requirements.in"
+  pip-compile -v "$HOME/requirements.in"
+  "$userpip" install --user --upgrade -r "$HOME/requirements.txt"
+
+  while read -r i
+  do
+      pipsi upgrade "$i"
+  done < "$HOME/pipsi-list"
 #+end_src
 
 *** git
