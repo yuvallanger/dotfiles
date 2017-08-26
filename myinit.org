@@ -46,13 +46,25 @@
 #+END_SRC
 
 *** Customize keys
+**** A quick way to reload the file contents into the buffer
 
 - [X] What is revert-buffer?
-  - Reload buffer from its file.
+  - Reload file into its buffer.
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<f5>") 'revert-buffer)
-  (global-set-key (kbd "C-c o") (lambda () (iteractive) (find-file "~/foo/my-org-mode-notes/main.org")))
+#+END_SRC
+
+**** This is a quick way to open up the main org file using the "C-c o" key binding.
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c o") (lambda () (interactive) (find-file "~/foo/my-org-mode-notes/main.org")))
+#+END_SRC
+
+**** Capture a quick note with "C-c c"
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c c") 'org-capture)
 #+END_SRC
 
 *** Customize buffer list
@@ -79,14 +91,14 @@
 
 #+END_SRC
 
-** undo-tree
+** undo-tree-mode
 
 #+BEGIN_SRC emacs-lisp
   (req-package undo-tree
     :loader elpa
 
     :config
-    (global-undo-tree-mode t)
+    (global-undo-tree-mode)
     )
 #+END_SRC
 
