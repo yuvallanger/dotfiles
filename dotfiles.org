@@ -353,6 +353,13 @@ You might find mirrors in the following addresses:
   done < "$HOME/pipsi-list"
 #+end_src
 
+**** pxsel - piping in all the clipboards
+
+#+begin_src sh :tangle ~/bin/pxsel :tangle-mode '#o700'
+  #!/bin/bash
+
+  pee 'xsel -b' xsel
+#+END_SRC
 *** git
 **** gitconfig
 
