@@ -300,19 +300,19 @@ Brings up some help in the middle of a key sequence.
 *** org-ref
 
 #+BEGIN_SRC emacs-lisp
-  '(req-package org-ref
-     :loader :elpa
+  (req-package org-ref
+    :loader :elpa
 
-     :config
-     ;; The following is from the README.org
-     ;; https://github.com/jkitchin/org-ref/blob/master/README.org
-     (setq reftex-default-bibliography '("~/ownCloud/bibliography/references.bib")
-           org-ref-bibliography-notes "~/ownCloud/bibliography/notes.org"
-           org-ref-default-bibliography '("~/ownCloud/bibliography/references.bib")
-           org-ref-pdf-directory "~/ownCloud/bibliography/bibtex-pdfs/"
-           bibtex-completion-bibliography "~/ownCloud/bibliography/references.bib"
-           bibtex-completion-library-path "~/ownCloud/bibliography/bibtex-pdfs"
-           bibtex-completion-notes-path "~/ownCloud/bibliography/helm-bibtex-notes"))
+    :config
+    ;; The following is from the README.org
+    ;; https://github.com/jkitchin/org-ref/blob/master/README.org
+    (setq reftex-default-bibliography '("~/ownCloud/bibliography/references.bib")
+          org-ref-bibliography-notes "~/ownCloud/bibliography/notes.org"
+          org-ref-default-bibliography '("~/ownCloud/bibliography/references.bib")
+          org-ref-pdf-directory "~/ownCloud/bibliography/bibtex-pdfs/"
+          bibtex-completion-bibliography "~/ownCloud/bibliography/references.bib"
+          bibtex-completion-library-path "~/ownCloud/bibliography/bibtex-pdfs"
+          bibtex-completion-notes-path "~/ownCloud/bibliography/helm-bibtex-notes"))
 #+END_SRC
 
 *** org-bullets
