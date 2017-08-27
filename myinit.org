@@ -292,6 +292,8 @@ Brings up some help in the middle of a key sequence.
         (call-interactively 'org-babel-tangle))
       )
 
+    (setq org-use-property-inheritance (list "STYLE"))
+
     :bind
     ("C-c b" . org-babel-tangle-block)
     )
@@ -353,6 +355,7 @@ Org bullets makes things look pretty.
     :loader :elpa
     )
 #+END_SRC
+
 ** Programming modes
 
 *** geiser
