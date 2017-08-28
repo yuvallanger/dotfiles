@@ -82,6 +82,13 @@
   (setq tool-bar-mode nil)
 #+END_SRC
 
+*** Wrap and truncation
+
+#+BEGIN_SRC emacs-lisp
+  (setq word-wrap t)
+  (setq truncate-lines t)
+#+END_SRC
+
 ** multiple-curses.el
 
 #+BEGIN_SRC emacs-lisp
