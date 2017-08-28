@@ -296,6 +296,10 @@ Brings up some help in the middle of a key sequence.
 
     :bind
     ("C-c b" . org-babel-tangle-block)
+    ("C-c l" . org-store-link)
+    ("C-c a" . org-agenda)
+    ("C-c c" . org-capture)
+    ("C-c b" . org-iswitchb)
     )
 #+END_SRC
 
