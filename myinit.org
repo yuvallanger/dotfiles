@@ -343,7 +343,7 @@ Org bullets makes things look pretty.
     )
 #+END_SRC
 
-*** org-caldav
+*** COMMENT org-caldav
 
 #+BEGIN_SRC emacs-lisp
   (req-package org-caldav
