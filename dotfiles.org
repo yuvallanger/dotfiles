@@ -246,8 +246,10 @@ You might find mirrors in the following addresses:
   fi
 
   # For pipenv and virtualenvwrapper
-  export WORKON_HOME="$HOME/.virtualenvs"
-  export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3.6"
+  if [ -d "$HOME/.virtualenvs" ]; then
+          export WORKON_HOME="$HOME/.virtualenvs"
+  fi
+  #export VIRTUALENVWRAPPER_PYTHON="/usr/bin/python3.6"
   if [ -f "$HOME/.local/binvirtualenvwrapper_lazy.sh" ]; then
       # shellcheck source=.local/bin/virtualenvwrapper_lazy.sh
       source "$HOME/.local/bin/virtualenvwrapper_lazy.sh"
