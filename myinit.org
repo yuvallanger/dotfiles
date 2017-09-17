@@ -476,12 +476,20 @@ Org bullets makes things look pretty.
 
 **** pyvenv
 
+
+- pyvenv-mode
+  - Responsible of entering and using virtualenvs.
+- pyvenv-tracking-mode
+  - Responsible of entering a virtualenv as requested in an
+    add-dir-local-variable or an add-file-local-variable.
+
 #+BEGIN_SRC emacs-lisp
   (req-package pyvenv
     :loader :elpa
 
     :config
     (pyvenv-mode)
+    (pyvenv-tracking-mode)
     (setq pyvenv-virtualenvwrapper-python "/usr/bin/env python")
     )
 #+END_SRC
