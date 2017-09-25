@@ -264,7 +264,7 @@ Brings up some help in the middle of a key sequence.
 #+BEGIN_SRC emacs-lisp
   (req-package org
     :loader :elpa
-    :require ob-ditaa ob-ipython
+    :require ob-ditaa ob-ipython htmlize
 
     :config
     ;; Don't prompt me to confirm every time I want to evaluate a block.
@@ -286,11 +286,6 @@ Brings up some help in the middle of a key sequence.
     (add-to-list
      'org-babel-tangle-lang-exts
      '('("haskell" . "hs")))
-
-
-    (add-hook 'org-babel-after-execute-hook
-              'org-display-inline-images 'append
-              )
 
 
     (defun org-babel-tangle-block ()
@@ -457,7 +452,7 @@ Org bullets makes things look pretty.
 
 *** Python
 
-**** General variables
+**** COMMENT General variables
 
 #+BEGIN_SRC elisp
   (setq python-shell-interpreter "ipython")
@@ -465,7 +460,7 @@ Org bullets makes things look pretty.
   (setq python-shell-interpreter-interactive-arg "-i --simple-prompt")
 #+END_SRC
 
-**** python-x
+**** COMMENT python-x
 
 #+BEGIN_SRC emacs-lisp
   (req-package python-x
@@ -490,11 +485,12 @@ Org bullets makes things look pretty.
     :config
     (pyvenv-mode)
     (pyvenv-tracking-mode)
-    (setq pyvenv-virtualenvwrapper-python "/usr/bin/env python")
+    ;; Let's try commenting this out.
+    ;; (setq pyvenv-virtualenvwrapper-python "/usr/bin/env python")
     )
 #+END_SRC
 
-**** live-py-mode
+**** COMMENT live-py-mode
 
 #+BEGIN_SRC emacs-lisp
   (req-package live-py-mode
@@ -511,12 +507,12 @@ Org bullets makes things look pretty.
     :config
     (elpy-enable)
     (elpy-use-ipython)
-    (setq elpy-disable-backend-error-display nil)
-    (setq elpy-project-root "~/foo/ants/")
+    ;; XXX
+    ;; (setq elpy-disable-backend-error-display nil)
     )
 #+END_SRC
 
-**** COMMENT ob-ipython
+**** ob-ipython
 
 org-babel for Jupyter.
 
@@ -527,9 +523,8 @@ org-babel for Jupyter.
     :config
     ;; display/update images in the buffer after I evaluate.
     (add-hook 'org-babel-after-execute-hook
-              'org-display-inline-images 'append)
-
-    (setq ob-ipython-driver-path "~/.emacs.d/elpa/ob-ipython-20170628.1116/driver.py")
+              'org-display-inline-images 'append
+              )
     )
 #+END_SRC
 
