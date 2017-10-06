@@ -8,8 +8,10 @@
     :loader :elpa
 
     :bind
-    (("C-'" . better-shell-shell)
-     ("C-;" . better-shell-remote-open))
+    (
+     ("C-'" . better-shell-shell)
+     ("C-;" . better-shell-remote-open)
+     )
     )
 #+END_SRC
 *** bash-completion
@@ -53,18 +55,6 @@
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<f5>") 'revert-buffer)
-#+END_SRC
-
-**** This is a quick way to open up the main org file using the "C-c o" key binding.
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-c o") (lambda () (interactive) (find-file "~/foo/my-org-mode-notes/main.org")))
-#+END_SRC
-
-**** Capture a quick note with "C-c c"
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-c c") 'org-capture)
 #+END_SRC
 
 *** Customize buffer list
@@ -154,20 +144,23 @@
     (setq ivy-use-virtual-buffers t)
 
     :bind
-    ("C-r" . counsel-expression-history)
-    ("\C-s" . swiper) ("C-c C-r" . ivy-resume)
-    ("<f6>" . ivy-resume)
-    ("C-x C-f" . counsel-find-file)
-    ("<f1> f" . counsel-describe-function)
-    ("<f1> v" . counsel-describe-variable)
-    ("<f1> l" . counsel-find-library)
-    ("<f2> i" . counsel-info-lookup-symbol)
-    ("<f2> u" . counsel-unicode-char)
-    ("C-c g" . counsel-git)
-    ("C-c j" . counsel-git-grep)
-    ("C-c k" . counsel-ag)
-    ("C-x l" . counsel-locate)
-    ("C-S-o" . counsel-rhythmbox)
+    (
+     ("<f1> f" . counsel-describe-function)
+     ("<f1> l" . counsel-find-library)
+     ("<f1> v" . counsel-describe-variable)
+     ("<f2> i" . counsel-info-lookup-symbol)
+     ("<f2> u" . counsel-unicode-char)
+     ("<f6>" . ivy-resume)
+     ("C-S-o" . counsel-rhythmbox)
+     ("C-c C-r" . ivy-resume)
+     ("C-c g" . counsel-git)
+     ("C-c j" . counsel-git-grep)
+     ("C-c k" . counsel-ag)
+     ("C-r" . counsel-expression-history)
+     ("C-x C-f" . counsel-find-file)
+     ("C-x l" . counsel-locate)
+     ("C-s" . swiper)
+     )
     )
 #+END_SRC
 
@@ -244,12 +237,11 @@ Brings up some help in the middle of a key sequence.
   (req-package helm
     :loader :elpa
 
-    :config
-    (global-set-key (kbd "M-x") 'helm-M-x)
-
     :bind
-    ("C-x c f" . helm-multi-files)
-    ("M-x" . helm-M-x)
+    (
+     ("C-x c f" . helm-multi-files)
+     ("M-x" . helm-M-x)
+     )
     )
 #+END_SRC
 
@@ -269,17 +261,26 @@ Brings up some help in the middle of a key sequence.
     :config
     ;; Don't prompt me to confirm every time I want to evaluate a block.
     (setq org-confirm-babel-evaluate nil)
+
     (setq org-directory "~/foo/my-org-mode-notes")
-    (setq org-default-notes-file (concat org-directory "/notes.org"))
+    (setq org-default-notes-file (concat org-directory "/main.org"))
     (setq org-export-html-postamble nil)
     (setq org-hide-leading-stars t)
     (setq org-startup-folded (quote overview))
     (setq org-startup-indented t)
     (setq org-agenda-files (list "~/foo/my-org-mode-notes/" "~/mine/orgmode/" "~/mine/syncthing/sg3/shared/orgmode/" "~/mine/syncthing/sg3/shared/orgzly/"))
 
-    (add-to-list 'org-babel-load-languages '((ipython . t)
-                                             (python . t)
-                                             (ditaa . t)))
+    (setq org-habit-following-days 30)
+    (setq org-habit-show-all-today t)
+    (setq org-habit-show-habits-only-for-today nil)
+
+    (add-to-list 'org-modules '(org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m))
+
+    (add-to-list 'org-babel-load-languages '(emacs-lisp . t))
+    (add-to-list 'org-babel-load-languages '(ipython . t))
+    (add-to-list 'org-babel-load-languages '(python . t))
+    (add-to-list 'org-babel-load-languages '(ditaa . t))
+
     (setq org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
 
 
@@ -296,13 +297,19 @@ Brings up some help in the middle of a key sequence.
 
     (setq org-use-property-inheritance (list "STYLE"))
 
+    (defun yuvallanger-org-find-main-file ()
+      (interactive)
+      (find-file "~/foo/my-org-mode-notes/main.org")
+      )
+
     :bind
     (
-     ("C-c b" . org-babel-tangle-block)
-     ("C-c l" . org-store-link)
      ("C-c a" . org-agenda)
-     ("C-c c" . org-capture)
+     ;; ("C-c b" . org-babel-tangle-block)
      ("C-c b" . org-iswitchb)
+     ("C-c c" . org-capture)
+     ("C-c l" . org-store-link)
+     ("C-c o" . yuvallanger-org-find-main-file)
      )
     )
 #+END_SRC
@@ -365,6 +372,16 @@ Org bullets makes things look pretty.
 #+END_SRC
 
 ** Programming modes
+*** flymake
+
+#+BEGIN_SRC emacs-lisp
+  (req-package flymake
+    :loader :elpa
+
+    :config
+    (setq flymake-start-syntax-check-on-find-file nil)
+    )
+#+END_SRC
 
 *** geiser
 #+BEGIN_SRC emacs-lisp
@@ -427,14 +444,14 @@ Org bullets makes things look pretty.
     )
 #+END_SRC
 
-*** COMMENT yasnippet
+*** yasnippet
 
 #+BEGIN_SRC emacs-lisp
   (req-package yasnippet
     :loader :elpa
 
     :config
-    (setq yas-snippet-dirs (append '("~/foo/myasnippets") yas-snippet-dirs))
+    (setq yas-snippet-dirs "~/foo/myasnippets")
     (yas-reload-all)
     (yas-global-mode 1)
     )
@@ -452,12 +469,17 @@ Org bullets makes things look pretty.
 
 *** Python
 
-**** COMMENT General variables
+**** python mode
 
 #+BEGIN_SRC elisp
-  (setq python-shell-interpreter "ipython")
-  (setq python-shell-interpreter-args "-i --simple-prompt")
-  (setq python-shell-interpreter-interactive-arg "-i --simple-prompt")
+  (req-package python
+    :loader :built-in
+
+    :config
+    (setq python-shell-interpreter "ipython")
+    (setq python-shell-interpreter-args "-i --simple-prompt")
+    (setq python-shell-interpreter-interactive-arg "-i --simple-prompt")
+    )
 #+END_SRC
 
 **** COMMENT python-x
@@ -507,7 +529,11 @@ Org bullets makes things look pretty.
     :config
     (elpy-enable)
     (elpy-use-ipython)
-    ;; XXX
+
+    (setq elpy-rpc-python-command "python3.6")
+    (setq elpy-syntax-check-command "pylint")
+
+    ;; XXX TODO
     ;; (setq elpy-disable-backend-error-display nil)
     )
 #+END_SRC
@@ -600,11 +626,11 @@ should try first.
     :config
     (setq magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256")))
 
-    (global-set-key (kbd "C-x g")
-                    'magit-status)
-
-    (global-set-key (kbd "C-x M-g")
-                    'magit-dispatch-popup)
+    :bind
+    (
+     ("C-x g" . magit-status)
+     ("C-x M-g" . magit-dispatch-popup)
+     )
     )
 #+END_SRC
 
@@ -683,7 +709,7 @@ should try first.
 
 ** Accessability
 
-*** TODO thumb-through
+*** TODO COMMENT thumb-through
 
 Skim web pages? XXX
 
@@ -707,7 +733,7 @@ Reads bits off the buffer.
     )
 #+end_src
 
-*** TODO ereader
+*** TODO COMMENT ereader
 
 XXX
 
@@ -740,7 +766,7 @@ How do we make this work? XXX
     )
 #+end_src
 
-** RSS
+** COMMENT RSS
 
 *** elfeed-org
 
@@ -754,7 +780,9 @@ How do we make this work? XXX
     (setq  elfeed-curl-max-connections 1)
 
     :bind
-    ("C-x w" . elfeed)
+    (
+     ("C-x w" . elfeed)
+     )
     )
 #+END_SRC
 
