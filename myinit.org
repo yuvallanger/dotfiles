@@ -1,6 +1,12 @@
 #+STARTUP: overview
 
 * myinit
+* globals
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.ipy\\'" . python-mode))
+#+END_SRC
+
 ** shell
 *** better-shell
 #+BEGIN_SRC emacs-lisp
@@ -27,7 +33,6 @@
   (setq display-battery-mode t)
   (setq electric-indent-mode nil)
   (setq indent-tabs-mode nil)
-  (setq semantic-mode t)
   (setq show-paren-mode t)
   (setq word-wrap t)
   (setq inhibit-startup-message t)
@@ -77,6 +82,19 @@
 #+BEGIN_SRC emacs-lisp
   (setq word-wrap t)
   (setq truncate-lines t)
+#+END_SRC
+
+** semantic-mode
+
+#+BEGIN_SRC emacs-lisp
+
+  (req-package semantic
+    :loader :built-in
+
+    :config
+    (semantic-mode 1)
+    )
+
 #+END_SRC
 
 ** multiple-curses.el
@@ -274,7 +292,7 @@ Brings up some help in the middle of a key sequence.
     (setq org-habit-show-all-today t)
     (setq org-habit-show-habits-only-for-today nil)
 
-    (add-to-list 'org-modules '(org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m))
+    '(add-to-list 'org-modules '(org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m))
 
     (add-to-list 'org-babel-load-languages '(emacs-lisp . t))
     (add-to-list 'org-babel-load-languages '(ipython . t))
@@ -765,7 +783,7 @@ How do we make this work? XXX
     )
 #+end_src
 
-** COMMENT RSS
+** RSS
 
 *** elfeed-org
 
@@ -774,9 +792,9 @@ How do we make this work? XXX
     :loader :elpa
 
     :config
+    (setq  elfeed-curl-max-connections 10)
+    (setq rmh-elfeed-org-files '("~/foo/my-org-mode-notes/elfeed.org" "~/mine/elfeed/private.org"))
     (elfeed-org)
-    (setq rmh-elfeed-org-files (list "~/foo/my-org-mode-notes/elfeed.org" "~/mine/elfeed/private.org"))
-    (setq  elfeed-curl-max-connections 1)
 
     :bind
     (
