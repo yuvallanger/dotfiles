@@ -542,14 +542,7 @@ A list of all agenda files.
 
   myStartupHook :: MonadIO m => m ()
   myStartupHook = do
-      spawn "keynav"
-      spawn "setxkbmap -option -option terminate:ctrl_alt_bksp -option grp:caps_toggle us,il"
-      spawn "sleep 2; redshift"
-      spawn "sleep 5; nm-applet"
-      spawn "sleep 5; xfce4-power-manager"
-      spawn "sleep 5; xfce4-volumed"
-      spawn "trayer"
-      spawn "xmobar"
+      spawn "~/bin/xmonadstartup"
 
   myLayoutHook :: ModifiedLayout AvoidStruts (Choose Tall (Choose (Mirror Tall) Full)) Window
   myLayoutHook = avoidStruts $ layoutHook defaultConfig
@@ -584,6 +577,27 @@ A list of all agenda files.
         , modMask         = mod4Mask
         , startupHook     = myStartupHook
         } `additionalKeys` myAdditionalKeys
+#+end_src
+
+**** xmonad startup script
+
+#+begin_src sh :tangle ~/bin/xmonadstartup :tangle-mode '#o700'
+  #!/usr/bin/env bash
+
+  keynav &
+  setxkbmap -option -option terminate:ctrl_alt_bksp -option grp:caps_toggle us,il &
+  redshift &
+  nm-applet &
+  xfce4-power-manager &
+  xfce4-volumed &
+  trayer &
+  xmobar &
+  if [ -f "$HOME/.local/bin/arbtt-capture" ];
+  then
+         "$HOME/.local/bin/arbtt-capture" &
+  else
+          arbtt-capture &
+  fi
 #+end_src
 
 *** redshift
