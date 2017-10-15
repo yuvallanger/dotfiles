@@ -400,19 +400,19 @@ Org bullets makes things look pretty.
     )
 #+END_SRC
 
-*** geiser
+*** COMMENT geiser
 #+BEGIN_SRC emacs-lisp
   (req-package geiser
     :loader :elpa
     )
 #+END_SRC
-*** racket-mode
+*** COMMENT racket-mode
 #+BEGIN_SRC emacs-lisp
   (req-package racket-mode
     :loader :elpa
     )
 #+END_SRC
-*** arduino-mode
+*** COMMENT arduino-mode
 
 #+BEGIN_SRC emacs-lisp
   (req-package arduino-mode
@@ -453,7 +453,7 @@ Org bullets makes things look pretty.
     )
 #+END_SRC
 
-*** kivy-mode
+*** COMMENT kivy-mode
 
 #+BEGIN_SRC emacs-lisp
   (req-package kivy-mode
@@ -600,7 +600,7 @@ org-babel for Jupyter.
   (setq python-indent-offset 4)
 #+END_SRC
 
-*** Haskell
+*** COMMENT Haskell
 
 #+BEGIN_SRC emacs-lisp
   (req-package haskell-mode
@@ -616,7 +616,7 @@ org-babel for Jupyter.
   (setq haskell-tags-on-save t)
 #+END_SRC
 
-*** Coq (hehehe… it says "coq"…)
+*** COMMENT Coq (hehehe… it says "coq"…)
 
 #+BEGIN_SRC emacs-lisp
   (setq proof-autosend-enable t)
@@ -651,7 +651,7 @@ should try first.
     )
 #+END_SRC
 
-*** vc-fossil
+*** COMMENT vc-fossil
 
 #+BEGIN_SRC emacs-lisp
   (req-package vc-fossil
@@ -681,7 +681,7 @@ should try first.
 #+END_SRC
 
 ** Communication
-*** IRC
+*** COMMENT IRC
 **** ERC
 ***** Customize
 
@@ -715,7 +715,7 @@ should try first.
     :loader :elpa
     )
 #+END_SRC
-*** Matrix
+*** COMMENT Matrix
 **** COMMENT matrix-client
 
 #+BEGIN_SRC emacs-lisp
@@ -736,7 +736,7 @@ Skim web pages? XXX
     )
 #+end_src
 
-*** eloud
+*** COMMENT eloud
 
 Reads bits off the buffer.
 
@@ -760,7 +760,7 @@ XXX
     )
 #+end_src
 
-*** spray
+*** COMMENT spray
 
 A speed reader.
 
