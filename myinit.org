@@ -94,8 +94,13 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package multiple-cursors
-    )
-
+    :bind
+    (
+     ("C-S-c C-S-c" . mc/edit-lines)
+     ("C->" . mc/mark-next-like-this)
+     ("C-<" . mc/mark-previous-like-this)
+     ("C-c C-<" . mc/mark-all-like-this)
+     ))
 #+END_SRC
 
 ** undo-tree-mode
@@ -103,7 +108,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :config
-    (global-undo-tree-mode 1)
+    (global-undo-tree-mode)
     )
 #+END_SRC
 
@@ -125,8 +130,7 @@
 ** COMMENT projectile
 
 #+BEGIN_SRC emacs-lisp
-  (req-package projectile
-    :loader :elpa
+  (use-package projectile
     )
 #+END_SRC
 
@@ -572,7 +576,7 @@ org-babel for Jupyter.
 *** Coq (hehehe… it says "coq"…)
 
 #+BEGIN_SRC emacs-lisp
-  (use-package proof
+  '(use-package proof
     :config
     (setq proof-autosend-enable t)
     (setq proof-electric-terminator-enable t)
