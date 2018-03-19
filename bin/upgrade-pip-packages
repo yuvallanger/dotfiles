@@ -1,0 +1,19 @@
+#!/bin/bash
+
+userpip="$HOME/.local/bin/pip"
+
+pip3 install -U --user pip
+pip install -U --user pip
+"$userpip" install -U --user pipsi
+"$userpip" install -U --user pip-tools
+
+#pip-compile --generate-hashes -v -U --annotate "$HOME/requirements.in"
+pip-compile -v "$HOME/requirements.in"
+"$userpip" install --user --upgrade -r "$HOME/requirements.txt"
+
+while read -r a_line
+do
+    declare -A row="$a_line"
+    pipsi install --python "${row[python]}" "${row[package]}" || pipsi install "${row[package]}"
+    pipsi upgrade "${row[package]}"
+done < "$HOME/pipsi-list"

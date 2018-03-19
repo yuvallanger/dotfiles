@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+keynav &
+setxkbmap -option -option terminate:ctrl_alt_bksp -option grp:caps_toggle us,il &
+redshift &
+nm-applet &
+xfce4-power-manager &
+xfce4-volumed &
+trayer &
+xmobar &
+if [ -f "$HOME/.local/bin/arbtt-capture" ];
+then
+       "$HOME/.local/bin/arbtt-capture" &
+else
+        arbtt-capture &
+fi

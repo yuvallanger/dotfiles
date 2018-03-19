@@ -1,0 +1,10 @@
+fbreader_save_dir="$HOME/storage/shared/Books/web2fbreader"
+url="$1"
+printf "book, img, vid, msc? "
+cmd="$(python3 -c 'print(input())')"
+case "$cmd" in
+        book) curl -o "${fbreader_save_dir}/$(date --rfc-3=sec).html" "$url";;
+        img) cd "${img_save_dir}" && wget -m -np -l 1 "$url";;
+        vid) cd "${vid_save_dir}" && wget -m -np -l 1 "$url";;
+        msc) cd "${music_save_dir}" && wget -m -np -l 1 "$url";;
+esac

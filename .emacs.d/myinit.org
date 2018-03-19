@@ -393,13 +393,13 @@ Org bullets makes things look pretty.
 #+END_SRC
 *** COMMENT racket-mode
 #+BEGIN_SRC emacs-lisp
-  (use-package racket-mode
+  '(use-package racket-mode
     )
 #+END_SRC
 *** COMMENT arduino-mode
 
 #+BEGIN_SRC emacs-lisp
-  (use-package arduino-mode
+  '(use-package arduino-mode
     )
 #+END_SRC
 
@@ -698,7 +698,7 @@ Reads bits off the buffer.
 XXX
 
 #+begin_src emacs-lisp
-  (use-package ereader
+  '(use-package ereader
     )
 #+end_src
 

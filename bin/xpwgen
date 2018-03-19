@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function make_stripped_password(){
+    python3 -c """
+import sys
+print(sys.stdin.read().strip(), end='')
+""" <<EOF
+$( pwgen -B1 16 )
+EOF
+}
+
+make_password | pee 'xsel' 'xsel -b'

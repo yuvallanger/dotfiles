@@ -29,4 +29,5 @@
 
 (setq use-package-always-ensure t)
 
-(org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
+;(org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
+(load "~/.emacs.d/myinit.el")
