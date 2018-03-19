@@ -1,29 +1,29 @@
 [user]
-        name = Yuval Langer
-        email = yuval.langer@gmail.com
+	name = Yuval Langer
+	email = yuval.langer@gmail.com
 [gui]
-        fontdiff = -family Inconsolata -size 16 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family Inconsolata -size 16 -weight normal -slant roman -underline 0 -overstrike 0
 [core]
-        editor = vim
-        excludesfile = ~/.gitignore_global
+	editor = vim
+	excludesfile = ~/.gitignore_global
         whitespace = tab-in-indent, trailing-space
 [diff]
-        tool = diff
+	tool = diff
 [difftool]
-        tool = meld
+	tool = meld
 [alias]
-        s = status
-        lg = log --all --graph --decorate --color
-        c = checkout
-        d = diff
-        df = diff --word-diff
-        l = log --all --graph --decorate --oneline
-        hash = rev-parse HEAD
+	s = status
+	lg = log --all --graph --decorate --color
+	c = checkout
+	d = diff
+	df = diff --word-diff
+	l = log --all --graph --decorate --oneline
+	hash = rev-parse HEAD
 [mergetool]
-        cmd = meld "$LOCAL" "$MERGED" "$REMOTE"
+	cmd = meld "$LOCAL" "$MERGED" "$REMOTE"
 [push]
-        default = simple
+	default = simple
 [merge]
-        tool = meld
+	tool = meld
 [color]
-        ui = true
+	ui = true
