@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+from pprint import pprint as print
 import pathlib
 import subprocess
 import sys
@@ -14,13 +15,13 @@ def main():
 
     command_list = [
         "pandoc",
-        f"--output={output_path}",
-        f"--request-header='{user_agent}'",
+        "--output", f"{output_path}",
+        "--request-header", f"{user_agent}",
         "--self-contained",
         "--verbose",
     ] + sys.argv[1:]
 
-    print(" ".join(command_list))
+    print(command_list)
 
     subprocess.run(command_list, check=True)
 
