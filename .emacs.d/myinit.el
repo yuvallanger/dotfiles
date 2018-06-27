@@ -352,7 +352,7 @@
   (setq proof-shell-quiet-errors nil)
   )
 
-'(use-package magit
+(use-package magit
   :config
   (setq magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256")))
 
