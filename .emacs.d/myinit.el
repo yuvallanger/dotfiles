@@ -352,7 +352,7 @@
   (setq proof-shell-quiet-errors nil)
   )
 
-(use-package magit
+'(use-package magit
   :config
   (setq magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256")))
 
@@ -382,14 +382,14 @@
   (setq erc-log-write-after-send t)
   )
 
-(use-package circe
+'(use-package circe
   :config
   (setq log-mode t)
   (setq erc-log-write-after-insert t)
   (setq erc-log-write-after-send t)
   )
 
-(use-package helm-circe
+'(use-package helm-circe
   )
 
 '(use-package matrix-client)
@@ -397,7 +397,7 @@
 (use-package thumb-through
   )
 
-(use-package eloud
+'(use-package eloud
   :config
   (setq eloud-mode t)
   (setq eloud-speech-rate 200)
