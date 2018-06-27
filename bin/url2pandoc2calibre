@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+"""url2pandoc2calibre.
+
+Usage:
+    url2pandoc2calibre [URL]
+"""
+
+
+import pathlib
+import string
+from subprocess import Popen
+import sys
+
+from bs4 import BeautifulSoup
+
+import docopt
+
+import requests
+
+
+LEGAL_CHARACTERS = string.ascii_letters + string.digits
+
+
+def clean_title(title):
+    for c in title:
+        if c not in LEGAL_CHARACTERS:
+            yield "-"
+            continue
+
+        yield c.lower()
+
+
+def main():
+    arguments = docopt.docopt(__doc__)
+    try:
+        url = arguments["URL"]
+    except KeyError:
+        print(docopt.printable_usage(__doc__))
+        print(arguments)
+        sys.exit(-1)
+
+    response = requests.get(url)
+
+    html = BeautifulSoup(response.text, "lxml")
+
+    title = "".join(clean_title(html.find("title").text))
+
+    output_filename = f"{title}.epub"
+    output_directory = pathlib.Path("~").expanduser() / "calibre-inbox"
+    output_path = output_directory / output_filename
+
+    process = Popen(["pandoc", url, "-o", str(output_path)])
+    process.wait()
+
+
+if __name__ == "__main__":
+    main()
