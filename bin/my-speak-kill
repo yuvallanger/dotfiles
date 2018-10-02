@@ -1,0 +1,6 @@
+#!/bin/sh
+
+myspeakdir="$HOME/.my-speak/"
+pidfilepath="$myspeakdir/pid"
+
+kill "$(cat "$pidfilepath")"

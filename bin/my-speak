@@ -1,0 +1,11 @@
+#!/bin/sh
+
+myspeakdir="$HOME/.my-speak/"
+lockfilepath="$myspeakdir/lock"
+pidfilepath="$myspeakdir/pid"
+speakngpath="$(which speak-ng)"
+
+mkdir -p "$myspeakdir"
+
+ourLine="$(xsel | unlines)"
+daemonize -l "$lockfilepath" -p "$pidfilepath" "$speakngpath" "$ourLine"
