@@ -1,7 +1,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.ipy\\'" . python-mode))
 
-(use-package better-shell
+'(use-package better-shell
   :bind
   (
    ("C-'" . better-shell-shell)
@@ -9,7 +9,7 @@
    )
   )
 
-(use-package bash-completion)
+'(use-package bash-completion)
 
 (setq column-number-mode t)
 (setq display-battery-mode t)
@@ -47,7 +47,7 @@
   (semantic-mode 1)
   )
 
-(use-package multiple-cursors
+'(use-package multiple-cursors
   :bind
   (
    ("C-S-c C-S-c" . mc/edit-lines)
@@ -209,7 +209,7 @@
    )
   )
 
-(use-package org-ref
+'(use-package org-ref
   :config
   ;; The following is from the README.org
   ;; https://github.com/jkitchin/org-ref/blob/master/README.org
@@ -275,10 +275,10 @@
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
   )
 
-(use-package kivy-mode
+'(use-package kivy-mode
   )
 
-(use-package yasnippet
+'(use-package yasnippet
   :config
   (setq yas-snippet-dirs "~/foo/myasnippets")
   (yas-reload-all)
@@ -288,7 +288,7 @@
 (use-package paredit
   )
 
-(use-package python-x
+'(use-package python-x
   :config
   (python-x-setup))
 
@@ -300,7 +300,7 @@
   ;; (setq pyvenv-virtualenvwrapper-python "/usr/bin/env python")
   )
 
-(use-package live-py-mode
+'(use-package live-py-mode
   )
 
 (use-package elpy
@@ -317,7 +317,7 @@
   ;; (setq elpy-disable-backend-error-display nil)
   )
 
-(use-package ob-ipython
+'(use-package ob-ipython
   :config
   ;; display/update images in the buffer after I evaluate.
   (add-hook 'org-babel-after-execute-hook
@@ -325,11 +325,11 @@
             )
   )
 
-(use-package ein
+'(use-package ein
   :requires markdown-mode
   )
 
-(use-package hy-mode
+'(use-package hy-mode
   :config
   (add-hook 'hy-mode-hook (lambda () (lispy-mode 1)))
   (add-hook 'hy-mode-hook #'rainbow-delimiters-mode)
@@ -338,7 +338,7 @@
 (setq python-check-command "flake8")
 (setq python-indent-offset 4)
 
-(use-package haskell-mode
+'(use-package haskell-mode
   :config
   (setq haskell-hoogle-url "https://www.fpcomplete.com/hoogle?q=%s")
   (setq haskell-stylish-on-save t)
@@ -352,6 +352,27 @@
   (setq proof-shell-quiet-errors nil)
   )
 
+;; start golang
+(use-package company-go)
+(use-package flycheck-gometalinter)
+(use-package go-autocomplete)
+(use-package go-eldoc)
+(use-package go-imports)
+(use-package go-playground)
+(use-package go-projectile)
+(use-package go-rename)
+(use-package go-scratch)
+(use-package go-snippets)
+(use-package godoctor)
+(use-package golint)
+;; end golang
+
+;; start nimlang
+'(use-package flycheck-nim)
+'(use-package flycheck-nimsuggest)
+'(use-package nim-mode)
+;; end nimlang
+
 (use-package magit
   :config
   (setq magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256")))
@@ -363,7 +384,7 @@
    )
   )
 
-(use-package vc-fossil
+'(use-package vc-fossil
   )
 
 '(use-package flycheck
@@ -375,7 +396,7 @@
   (global-company-mode)
   )
 
-(use-package erc
+'(use-package erc
   :config
   (setq log-mode t)
   (setq erc-log-write-after-insert t)
@@ -394,7 +415,7 @@
 
 '(use-package matrix-client)
 
-(use-package thumb-through
+'(use-package thumb-through
   )
 
 '(use-package eloud
@@ -406,7 +427,7 @@
 '(use-package ereader
   )
 
-(use-package spray
+'(use-package spray
   :config
   (setq spray-save-point t)
   )
