@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+tmpdir="$(realpath ~/storage/downloads)"
+
+tmpfile="$(mktemp --tmpdir="$tmpdir" --suffix=.txt)"
+
+echo "$tmpdir" "$(realpath "$tmpdir")" "$tmpfile"
+
+termux-clipboard-get > "$tmpfile"
+
+termux-share "$tmpfile"
