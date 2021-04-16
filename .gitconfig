@@ -27,3 +27,5 @@
 	tool = meld
 [color]
 	ui = true
+[init]
+	defaultBranch = master
