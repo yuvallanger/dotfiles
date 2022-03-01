@@ -3,6 +3,9 @@
 from subprocess import Popen, PIPE
 
 
+NOTIFICATION_EXPIRATION_TIME = 3000
+
+
 def get_current_active_port() -> str:
     pactl_list_sinks = Popen(["pactl", "list", "sinks"], stdout=PIPE)
 
@@ -41,6 +44,14 @@ def main() -> None:
 
     current_active_port = get_current_active_port()
     print("New current active port:", current_active_port)
+    Popen(
+        [
+            "notify-send",
+            "Pulseaudio Flip",
+            f"--expire-time={NOTIFICATION_EXPIRATION_TIME}",
+            f"New current active port: {current_active_port}",
+        ]
+    )
 
 
 if __name__ == "__main__":
