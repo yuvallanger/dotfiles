@@ -24,11 +24,13 @@
            (message (number-to-string x))
            (moo (- x 1)))))
 
-(defun kakafarm/espeak ()
+(defun kakafarm/tts ()
   (interactive)
   (let ((start (min (mark) (point)))
         (end (max (mark) (point))))
-    (shell-command-on-region start end "espeak")))
+    (shell-command-on-region start
+                             end
+                             "espeak")))
 
 (progn
   (defun kakafarm/set-key-bindings ()
