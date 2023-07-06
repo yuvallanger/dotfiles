@@ -43,9 +43,9 @@
     (global-set-key (kbd "C-c l")
                     #'dictionary-lookup-definition)
     (global-set-key (kbd "C-c c")
-                    #'kakafarm/espeak)
+                    #'kakafarm/tts)
     (global-set-key (kbd "C-c C-c")
-                    #'kakafarm/espeak))
+                    #'kakafarm/tts))
   
   (kakafarm/set-key-bindings))
 
