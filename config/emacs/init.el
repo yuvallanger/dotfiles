@@ -1,5 +1,8 @@
 (setq gc-cons-threshold (* 1024 1024 1024))
 
+;; https://emacs.stackexchange.com/questions/34322/set-default-coding-system-utf-8
+(set-language-environment "utf-8")
+
 '(use-package
    org-roam
    :ensure t
@@ -26,13 +29,6 @@
            (message (number-to-string x))
            (moo (- x 1)))))
 
-(defun kakafarm/tts ()
-  (interactive)
-  (let ((start (min (mark) (point)))
-        (end (max (mark) (point))))
-    (shell-command-on-region start
-                             end
-                             "espeak")))
 
 (progn
   (defun kakafarm/set-key-bindings ()
@@ -41,12 +37,8 @@
     (global-set-key (kbd "C-c t")
                     #'recentf-open-files)
     (global-set-key (kbd "C-c l")
-                    #'dictionary-lookup-definition)
-    (global-set-key (kbd "C-c c")
-                    #'kakafarm/tts)
-    (global-set-key (kbd "C-c C-c")
-                    #'kakafarm/tts))
-  
+                    #'dictionary-lookup-definition))
+
   (kakafarm/set-key-bindings))
 
 
@@ -86,7 +78,6 @@
 
 (progn
   ;; Uploading README.html from README.org stuff.
-
   (defun kakafarm/srht-repo-id (repository-name)
     "Returns the unique numerical I Dentification associated with
 every sourcehut repository.
@@ -151,9 +142,14 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
                                                   "-d@-"
                                                   "https://git.sr.ht/query"))))
 
-;; Use another file for the ``customize'' customisations.
-(setq custom-file (locate-user-emacs-file "custom-variables.el"))
-(load custom-file 'noerror 'nomessage)
+
+(progn
+  ;; Use another file for the ``customize'' customisations.
+  (setq custom-file (locate-user-emacs-file "custom-variables.el"))
+  (load custom-file
+        'noerror
+        'nomessage))
+
 
 (progn
   (defun kakafarm/load-theme-stuff ()
@@ -172,51 +168,62 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
           ;;modus-themes-syntax '(alt-syntax)
           modus-themes-scale-headings t
           modus-themes-org-blocks 'tinted-background)
-    
+
     (load-theme 'modus-vivendi)
     '(load-theme 'wheatgrass))
-  
+
   (kakafarm/load-theme-stuff))
 
+
+;; Display completions continuously in minibuffer.
 (icomplete-mode 1)
 
-(defun kakafarm/load-emacs-from-scratch-stuff ()
-  "Emacs From Scratch
+
+(progn
+  (defun kakafarm/load-emacs-from-scratch-stuff ()
+    "Emacs From Scratch
   https://systemcrafters.net/emacs-from-scratch/
   https://www.youtube.com/playlist?list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ"
-  
-  (setq visible-cursor t
-        visible-bell t)
 
-  ;; The Basics of Emacs Configuration
-  ;; https://systemcrafters.net/emacs-from-scratch/basics-of-emacs-configuration/
-  ;; https://www.youtube.com/watch?v=OaF-N-FuGtc
-  (progn
-    (tool-bar-mode -1) 
-    (scroll-bar-mode -1)
-    (menu-bar-mode 1)
-    (global-display-line-numbers-mode 1)
-    (hl-line-mode 1)
-    (blink-cursor-mode 1))
+    (setq visible-cursor t
+          visible-bell t)
 
-  ;; https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
-  ;; https://www.youtube.com/watch?v=51eSeqcaikM
-  (recentf-mode 1)
-  (setq history-length 25)
-  (savehist-mode 1)
-  (save-place-mode 1))
+    ;; The Basics of Emacs Configuration
+    ;; https://systemcrafters.net/emacs-from-scratch/basics-of-emacs-configuration/
+    ;; https://www.youtube.com/watch?v=OaF-N-FuGtc
+    (progn
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1)
+      (menu-bar-mode 1)
+      (global-display-line-numbers-mode 1)
+      (hl-line-mode 1)
+      (blink-cursor-mode 1))
 
-(kakafarm/load-emacs-from-scratch-stuff)
+    ;; https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
+    ;; https://www.youtube.com/watch?v=51eSeqcaikM
+    (recentf-mode 1)
+    (setq history-length 25)
+    (savehist-mode 1)
+    (save-place-mode 1))
+  (kakafarm/load-emacs-from-scratch-stuff))
+
 
 (set-fontset-font t 'hebrew "Noto Sans Hebrew")
 
-(setq-default indent-tabs-mode nil)
+
+;; Don't want tabs in any of my source files.
+(setq-default indent-tabs-mode
+              nil)
+
 
 (setq geiser-active-implementations '(guile))
 
+
 '(org-roam-db-autosync-mode)
 
+
 (add-hook 'after-init-hook 'global-company-mode)
+
 
 ;; https://www.emacswiki.org/emacs/ParEdit#h5o-1
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp mode." t)
@@ -225,60 +232,128 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
 (add-hook 'lisp-mode-hook #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook #'enable-paredit-mode)
 
+
 (defun kakafarm/percent-read ()
   "Display percent read by current cursor location vs. total characters in file."
   (interactive)
   (message "%.2f%%"
-	   (* 100
-	      (/ (float (- (point) 1))
-		 (+ 1 (buffer-size))))))
+           (* 100
+              (/ (float (- (point) 1))
+                 (+ 1 (buffer-size))))))
+
 
 (progn
   ;; Load org-roam stuff.
-  (defun roam-sitemap (title lst)
-    (message (format "~a\n" lst))
+
+  (require 'org)
+
+  (defun kakafarm/org-roam-keyword-is-filetags-p (keyword-node)
+    (equal (org-element-property :key
+                                 keyword-node)
+           "FILETAGS"))
+
+  (defun kakafarm/org-roam-filetags-keyword-is-publishable-p (filestags-keyword-node)
+    (seq-contains-p (split-string (org-element-property :value
+                                                        filestags-keyword-node)
+                                  ":")
+                    "publish"))
+
+  (defun kakafarm/org-roam-publishable-node-p (org-filename)
+    (with-temp-buffer
+      (insert-file-contents org-filename)
+      (org-element-map (org-element-parse-buffer) 'keyword
+        (lambda (keyword)
+          (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
+               (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
+        nil
+        t)))
+
+  (defun kakafarm/org-roam-sitemap (title list-of-org-links)
+    (message (format "kakafarm/org-roam-sitemap title: %S; list-of-links: %S\n"
+                     title
+                     list-of-org-links))
+    ;; (let ((a-publishable-org-roam-node
+    ;;        (seq-filter (lambda (org-link-list)
+    ;;                      (pcase org-link-list
+    ;;                        (`(,org-link)
+    ;;                         (with-temp-buffer
+    ;;                           (insert org-link)
+    ;;                           (org-element-map (org-element-parse-buffer) 'link
+    ;;                             (lambda (link)
+    ;;                               ;; Check if file linked is publishable.
+    ;;                               (kakafarm/org-roam-publishable-node-p
+    ;;                                (concat "~/mine/roam/"
+    ;;                                        (org-element-property :path
+    ;;                                                              link))))
+    ;;                             nil
+    ;;                             t)))))
+    ;;                    list-of-org-links)))
+    ;;   (message "poop %S" a-publishable-org-roam-node))
+
     (concat
+     "# -*- encoding: utf-8 -*-\n"
      "#+OPTIONS: ^:nil author:nil html-postamble:nil\n"
-     "#+SETUPFILE: ./simple_inline.theme\n"
+     ;;"#SETUPFILE: ./simple_inline.theme\n" ; No theme yet.
+     "#+FILETAGS: publish\n"
      "#+TITLE: " title "\n\n"
-     (org-list-to-org lst) "\nfile:sitemap.svg"
+     (org-list-to-org list-of-org-links) "\n"
+
+     ;; TODO: No sitemap SVG yet because it shows all the fucking
+     ;; files in the org-roam database.
+     ;;
+     ;;"file:sitemap.svg\n"
      ))
 
-  (setq my-publish-time 0)
-  (defun roam-publication-wrapper (plist filename pubdir)
-    (org-roam-graph)
-    (org-html-publish-to-html plist filename pubdir)
-    (setq my-publish-time (cadr (current-time))))
+  (setq kakafarm/org-roam-my-publish-time 0)
+  (defun kakafarm/org-roam-publication-wrapper (plist filename pubdir)
+    ;; (when (kakafarm/org-roam-publishable-node-p filename)
+    ;;   nil)
+    ;;(org-roam-graph) ; How the fuck do I make this one not show every fucking node in the org-roam database?!
+    (org-html-publish-to-html plist
+                              filename
+                              pubdir)
+    (setq kakafarm/org-roam-project-publish-time
+          (cadr (current-time))))
 
   (setq org-publish-project-alist
-        '(("roam"
-           :base-directory "~/mine/roam"
-           :auto-sitemap t
-           :sitemap-function roam-sitemap
-           :sitemap-title "Roam notes"
-           :publishing-function roam-publication-wrapper
-           :publishing-directory "~/mine/roam-export"
-           :section-number nil
-           :table-of-contents nil
-           :style "<link rel=\"stylesheet\" href=\"../other/mystyle.css\" type=\"text/css\">")))
+        (list
+         (list "roam"
+               :base-directory "~/mine/roam/publish/"
+               :auto-sitemap t
+               :sitemap-function 'kakafarm/org-roam-sitemap
+               :sitemap-title "Roam Notes"
+               :publishing-function 'kakafarm/org-roam-publication-wrapper
+               :publishing-directory "~/mine/roam-export"
+               :section-number nil
+               :table-of-contents nil
+               :include (directory-files "~/mine/roam/publish/" t ".*.org")
+               :style "<link rel=\"stylesheet\" href=\"../other/mystyle.css\" type=\"text/css\">")))
 
-  (defun org-roam-custom-link-builder (node)
-    (let ((file (org-roam-node-file node)))
-      (concat (file-name-base file) ".html")))
+  (defun kakafarm/org-roam-custom-link-builder (node)
+    (let ((node-file (org-roam-node-file node)))
+      ;; (when (kakafarm/org-roam-publishable-node-p node-file)
+      ;;   nil)
+      (message (format "kakafarm/org-roam-custom-link-builder: %S" node))
+      (concat (file-name-base node-file)
+              ".html")))
 
-  (setq org-roam-graph-link-builder 'org-roam-custom-link-builder)
+  (setq org-roam-graph-link-builder
+        'kakafarm/org-roam-custom-link-builder)
 
   (add-hook 'org-roam-graph-generation-hook
             (lambda (dot svg)
               (if (< (- (cadr (current-time))
-                        my-publish-time)
+                        kakafarm/org-roam-project-publish-time)
                      5)
                   (progn
-                    (copy-file svg "~/mine/roam-export/sitemap.svg" 't)
-                    (kill-buffer (file-name-nondirectory svg))
-                    (setq my-publish-time 0))))))
+                    (copy-file svg
+                               "~/mine/roam-export/sitemap.svg"
+                               't)
+                    (setq kakafarm/org-roam-project-publish-time
+                          0))))))
+
 
 (setq dictionary-server "localhost")
 
-(setq gc-cons-threshold (* 2 1024 1024))
 
+(setq gc-cons-threshold (* 2 1024 1024))
