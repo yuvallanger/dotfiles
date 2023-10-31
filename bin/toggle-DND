@@ -1,0 +1,37 @@
+#!/usr/bin/env -S guile -e '(toggle-dnd)' -s
+!#
+
+(define-library (toggle-dnd)
+  (import (guile)
+          (ice-9 match)
+          (ice-9 popen)
+          (ice-9 rdelim)
+          (ice-9 textual-ports))
+  (export main)
+
+  (begin
+    (define (main args)
+      (with-input-from-port
+          (open-pipe* OPEN_READ
+                      "gsettings"
+                      "get"
+                      "org.gnome.desktop.notifications"
+                      "show-banners")
+        (lambda ()
+          (match (read-line)
+            ("true"
+             (format #t "DND turn on.~%")
+             (system* "gsettings"
+                      "set"
+                      "org.gnome.desktop.notifications"
+                      "show-banners"
+                      "false"))
+            ("false"
+             (format #t "DND turn off.~%")
+             (system* "gsettings"
+                      "set"
+                      "org.gnome.desktop.notifications"
+                      "show-banners"
+                      "true"))
+            (else
+             (format #t "Something's wrong! Not a valid answer: ~A\n" current-show-banners-status)))                    )))))
