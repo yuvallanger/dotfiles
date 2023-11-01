@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -z "$(command -v xargs)" ]; then
+    printf "No xargs command!"
+    exit 1
+fi
+
+git remote | xargs -P 0 -l git push --all -v
