@@ -1,0 +1,25 @@
+#!/bin/sh
+
+if [ -z "$(command -v git)" ]; then
+    printf "Please install git.";
+    exit 1;
+fi
+
+nitter_wiki_directory="$HOME/.cache/get-nitter-instances"
+
+do_update="$1"
+
+(git clone https://github.com/zedeus/nitter.wiki.git "$nitter_wiki_directory" > /dev/null 2>&1 ||
+     (if [ "$do_update" = "--update" ]; then
+          cd "$nitter_wiki_directory"
+          git pull -v > /dev/null 2>&1
+      fi)
+) &&
+    grep white_check_mark "$nitter_wiki_directory/Instances.md" |
+        grep 'white_check_mark:\s*|\s*:white_check_mark' |
+        sed "
+s#white_check_mark.*##;
+s#.*](##;
+s#).*##" |
+        sort -h |
+        uniq
