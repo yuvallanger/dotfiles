@@ -1,0 +1,10 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: dotfiles
+Upstream-Contact: Yuval Langer <yuval.langer@gmail.com>
+Source: https://kaka.farm/stagit/dotfiles/log.html
+
+# Sample paragraph, commented out:
+#
+# Files: src/*
+# Copyright: $YEAR $NAME <$CONTACT>
+# License: ...
