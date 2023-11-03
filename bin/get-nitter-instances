@@ -11,10 +11,12 @@ fi
 
 nitter_wiki_directory="$HOME/.cache/get-nitter-instances"
 
-do_update="$1"
+if [ "$1" = "--update" ]; then
+   do_update="true"
+fi
 
 (git clone https://github.com/zedeus/nitter.wiki.git "$nitter_wiki_directory" > /dev/null 2>&1 ||
-     (if [ "$do_update" = "--update" ]; then
+     (if [ -n "$do_update" ]; then
           cd "$nitter_wiki_directory"
           git pull -v > /dev/null 2>&1
       fi)
