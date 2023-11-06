@@ -9,19 +9,21 @@ if [ -z "$(command -v git)" ]; then
     exit 1;
 fi
 
+nitter_wiki_address="https://github.com/zedeus/nitter.wiki.git"
 nitter_wiki_directory="$HOME/.cache/get-nitter-instances"
+instances_filename="Instances.md"
 
 if [ "$1" = "--update" ]; then
    do_update="true"
 fi
 
-(git clone https://github.com/zedeus/nitter.wiki.git "$nitter_wiki_directory" > /dev/null 2>&1 ||
+(git clone "$nitter_wiki_address" "$nitter_wiki_directory" > /dev/null 2>&1 ||
      (if [ -n "$do_update" ]; then
           cd "$nitter_wiki_directory"
           git pull -v > /dev/null 2>&1
       fi)
 ) &&
-    grep white_check_mark "$nitter_wiki_directory/Instances.md" |
+    grep white_check_mark "$nitter_wiki_directory/$instances_filename" |
         grep 'white_check_mark:\s*|\s*:white_check_mark' |
         sed "
 s#white_check_mark.*##;
