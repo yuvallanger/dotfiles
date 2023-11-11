@@ -21,7 +21,8 @@ Flags:
   -s, --secondary       Operate on the SECONDARY selection.
   -b, --clipboard       Operate on the CLIPBOARD selection.
   --debug               Show debug information.
-" "$0" "$0" "$0"
+" "$0" "$0" "$0" "$0" # XXX: That's a dumb looking way of providing
+                      # this one "$0" argument many times.
     exit 1
 
 }
