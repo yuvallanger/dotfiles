@@ -1,17 +1,21 @@
 (setq gc-cons-threshold (* 1024 1024 1024))
 
+(require 'use-package)
+
+(use-package nano-tts)
+
 ;; https://emacs.stackexchange.com/questions/34322/set-default-coding-system-utf-8
 (set-language-environment "utf-8")
 
 '(use-package
    org-roam
-   :ensure t
-   :custom (org-roam-directory "~/mine/roam")
+   :custom (org-roam-directory "~/mine/roam/private")
    :bind (("C-c n l" . org-roam-buffer-toggle)
           ("C-c n f" . org-roam-node-find)
           ("C-c n i" . org-roam-node-insert))
-   ;;:config (org-roam-setup)
-   )
+   :config
+   ;;(org-roam-setup)
+   (org-roam-db-autosync-mode))
 
 (show-paren-mode)
 (rainbow-delimiters-mode)
@@ -20,15 +24,6 @@
  'org-babel-load-languages
  '((scheme . t)
    (emacs-lisp . t)))
-
-'(letrec moo ((x 20))
-         (cond
-          ((< x 0)
-           (message "END"))
-          (else
-           (message (number-to-string x))
-           (moo (- x 1)))))
-
 
 (progn
   (defun kakafarm/set-key-bindings ()
@@ -142,13 +137,14 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
                                                   "-d@-"
                                                   "https://git.sr.ht/query"))))
 
-
 (progn
   ;; Use another file for the ``customize'' customisations.
   (setq custom-file (locate-user-emacs-file "custom-variables.el"))
   (load custom-file
         'noerror
-        'nomessage))
+        'nomessage)
+
+  (load (locate-user-emacs-file "local-stuff.el")))
 
 
 (progn
@@ -219,16 +215,14 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
 (setq geiser-active-implementations '(guile))
 
 
-'(org-roam-db-autosync-mode)
-
-
 (add-hook 'after-init-hook 'global-company-mode)
 
 
 ;; https://www.emacswiki.org/emacs/ParEdit#h5o-1
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp mode." t)
 (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+;; Fucks with my prompt.
+;; (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
 (add-hook 'lisp-mode-hook #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook #'enable-paredit-mode)
 
@@ -241,11 +235,10 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
               (/ (float (- (point) 1))
                  (+ 1 (buffer-size))))))
 
-
 (progn
   ;; Load org-roam stuff.
 
-  (require 'org)
+  (use-package org)
 
   (defun kakafarm/org-roam-keyword-is-filetags-p (keyword-node)
     (equal (org-element-property :key
@@ -262,11 +255,11 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
     (with-temp-buffer
       (insert-file-contents org-filename)
       (org-element-map (org-element-parse-buffer) 'keyword
-        (lambda (keyword)
-          (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
-               (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
-        nil
-        t)))
+                       (lambda (keyword)
+                         (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
+                              (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
+                       nil
+                       t)))
 
   (defun kakafarm/org-roam-sitemap (title list-of-org-links)
     (message (format "kakafarm/org-roam-sitemap title: %S; list-of-links: %S\n"
@@ -326,8 +319,8 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
                :publishing-directory "~/mine/roam-export"
                :section-number nil
                :table-of-contents nil
-               :include (directory-files "~/mine/roam/publish/" t ".*.org")
-               :style "<link rel=\"stylesheet\" href=\"../other/mystyle.css\" type=\"text/css\">")))
+               :include (directory-files "~/mine/roam/publish/" t ".*.org$")
+               :html-head "<link rel=\"stylesheet\" href=\"/index.css\" type=\"text/css\">")))
 
   (defun kakafarm/org-roam-custom-link-builder (node)
     (let ((node-file (org-roam-node-file node)))
@@ -352,8 +345,8 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
                     (setq kakafarm/org-roam-project-publish-time
                           0))))))
 
-
 (setq dictionary-server "localhost")
 
+(use-package greader)
 
 (setq gc-cons-threshold (* 2 1024 1024))
