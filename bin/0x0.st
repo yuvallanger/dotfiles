@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/bash
 
 set -e
 
@@ -6,10 +6,6 @@ if [ -z "$(command -v xsel)" ] || [ -z "$(command -v curl)" ]; then
     printf "Must install xsel and curl.\n"
     exit 1
 fi
-
-# https://www.baeldung.com/linux/bash-parse-command-line-arguments
-
-OUR_ARGUMENTS="$(getopt -o hpsb --long help,debug,primary,secondary,clipboard -- "$@" )"
 
 help_message () {
     printf "Usage:
@@ -27,6 +23,9 @@ Flags:
     # XXX: That's a dumb looking way of providing
     # this one "$0" argument many times.
 }
+
+# https://www.baeldung.com/linux/bash-parse-command-line-arguments
+OUR_ARGUMENTS="$(getopt -o hpsb --long help,debug,primary,secondary,clipboard -- "$@" )"
 
 eval set -- "$OUR_ARGUMENTS"
 while [ -n "$*" ]; do
@@ -72,29 +71,21 @@ while [ -n "$*" ]; do
                 help_message
                 exit 1
             fi
+            xsel_flag="$xsel_flag_primary$xsel_flag_secondary$xsel_flag_clipboard"
             break
             ;;
     esac
 done
 
-xsel_flag="$xsel_flag_primary"
-xsel_flag="$xsel_flag_secondary"
-xsel_flag="$xsel_flag_clipboard"
-
-cleanup () {
+remove_temporary_file () {
     if [ -n "$debug_flag" ]; then
         printf "\nRemoving \"%s\"\n" "$temp_file" 1>&2
     fi
     rm "$temp_file"
 }
 
-if [ "$#" -ne 1 ] &&
-       [ "$#" -ne 2 ]; then
-    help_message
-fi
-
 if [ -n "$xsel_flag" ]; then
-    trap cleanup EXIT
+    trap remove_temporary_file EXIT
 
     temp_file=$(mktemp)
 
