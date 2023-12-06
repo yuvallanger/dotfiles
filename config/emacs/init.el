@@ -1,24 +1,44 @@
 (setq gc-cons-threshold (* 1024 1024 1024))
 
+(setq read-process-output-max (string-to-number
+                               (with-temp-buffer
+                                 (insert-file-contents "/proc/sys/fs/pipe-max-size")
+                                 (buffer-string))))
+
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
+(setq package-archives '())
+
 (require 'use-package)
+
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode 1)
+  (setq undo-tree-auto-save-history nil))
 
 (use-package nano-tts)
 
 ;; https://emacs.stackexchange.com/questions/34322/set-default-coding-system-utf-8
 (set-language-environment "utf-8")
 
-'(use-package
+(use-package
    org-roam
-   :custom (org-roam-directory "~/mine/roam/private")
+   :custom (org-roam-directory "~/mine/roam/")
    :bind (("C-c n l" . org-roam-buffer-toggle)
           ("C-c n f" . org-roam-node-find)
           ("C-c n i" . org-roam-node-insert))
    :config
-   ;;(org-roam-setup)
-   (org-roam-db-autosync-mode))
+   (org-roam-db-autosync-enable)
+   ;(org-roam-db-autosync-mode)
+   )
 
 (show-paren-mode)
-(rainbow-delimiters-mode)
+
+(use-package rainbow-delimiters
+  :config
+  (rainbow-delimiters-mode))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -349,4 +369,4 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
 
 (use-package greader)
 
-(setq gc-cons-threshold (* 2 1024 1024))
+(setq gc-cons-threshold (* 200 1024 1024))
