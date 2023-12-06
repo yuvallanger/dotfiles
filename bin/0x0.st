@@ -7,6 +7,10 @@ if [ -z "$(command -v xsel)" ] || [ -z "$(command -v curl)" ]; then
     exit 1
 fi
 
+if [ -z "${URL_FOR_0X0_DOT_ST}" ]; then
+    URL_FOR_0X0_DOT_ST="0x0.st"
+fi
+
 self_executable="$0"
 
 help_message () {
@@ -23,9 +27,25 @@ help_message () {
     -b, --clipboard       Operate on the CLIPBOARD selection.
     -u, --url             Tell 0x0.st to mirror the file at the URL.
     --debug               Show debug information and do not upload to the 0x0.st.\n"
+    printf "\n"
+    printf "Environment Variables:
+    URL_FOR_0X0_DOT_ST (all upper case)
+        Its value will be used for the 0x0.st instance address.
+        If URL_FOR_0X0_DOT_ST is empty, 0x0.st will be used by default.\n"
 }
 
-print_provide_one_and_only_one_flag_message_flag () {
+print_variables() {
+    printf "Self executable: '%s'\n" "$self_executable" 1>&2
+
+    printf "Flags:\n" 1>&2
+    printf "    xsel_flag: '%s'\n" "$xsel_flag" 1>&2
+    printf "    target_url: '%s'\n" "$target_url" 1>&2
+
+    printf "Environment Variables:\n" 1>&2
+    printf "    URL_FOR_0X0_DOT_ST: '%s'\n" "$URL_FOR_0X0_DOT_ST" 1>&2
+}
+
+print_provide_one_and_only_one_flag_message () {
     printf "Provide only none or one of -p / --primary, -s / --secondary, -b / --clipboard, -u / --url flags.\n"
 }
 
@@ -98,6 +118,10 @@ while [ -n "$*" ]; do
     esac
 done
 
+if [ -n "$debug_flag" ]; then
+    print_variables
+fi
+
 remove_temporary_file () {
     if [ -n "$debug_flag" ]; then
         printf "\nRemoving \"%s\"\n" "$temp_file" 1>&2
@@ -115,18 +139,18 @@ if [ -n "$xsel_flag" ]; then
     if [ -n "$debug_flag" ]; then
         cat "$temp_file"
     else
-        curl -F"file=@${temp_file}" 0x0.st
+        curl -F"file=@${temp_file}" "$URL_FOR_0X0_DOT_ST"
     fi
 elif [ -n "$url_flag" ]; then
     if [ -n "$debug_flag" ]; then
         curl "$target_url"
     else
-        curl -F"url=$target_url" 0x0.st
+        curl -F"url=$target_url" "$URL_FOR_0X0_DOT_ST"
     fi
 else
     if [ -n "$debug_flag" ]; then
         cat "$filename"
     else
-        curl -F"file=@${filename}" 0x0.st
+        curl -F"file=@${filename}" "$URL_FOR_0X0_DOT_ST"
     fi
 fi
