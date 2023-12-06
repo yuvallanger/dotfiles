@@ -7,13 +7,15 @@ if [ -z "$(command -v xsel)" ] || [ -z "$(command -v curl)" ]; then
     exit 1
 fi
 
+self_executable="$0"
+
 help_message () {
     printf "Usage:\n"
-    printf "\t%s [--debug] -p, --primay\n" "$0"
-    printf "\t%s [--debug] -s, --secondary\n" "$0"
-    printf "\t%s [--debug] -b, --clipboard\n" "$0"
-    printf "\t%s [--debug] -u URL, --url URL\n" "$0"
-    printf "\t%s [--debug] FILENAME\n" "$0"
+    printf "\t%s [--debug] -p, --primay\n" "$self_executable"
+    printf "\t%s [--debug] -s, --secondary\n" "$self_executable"
+    printf "\t%s [--debug] -b, --clipboard\n" "$self_executable"
+    printf "\t%s [--debug] -u URL, --url URL\n" "$self_executable"
+    printf "\t%s [--debug] FILENAME\n" "$self_executable"
     printf "\n"
     printf "Flags:
     -p, --primary         Operate on the PRIMARY selection.
