@@ -8,22 +8,19 @@ if [ -z "$(command -v xsel)" ] || [ -z "$(command -v curl)" ]; then
 fi
 
 help_message () {
-    printf "Usage:
-\t%s [--debug] -p, --primay
-\t%s [--debug] -s, --secondary
-\t%s [--debug] -b, --clipboard
-\t%s [--debug] -u URL, --url URL
-\t%s [--debug] FILENAME
-
-Flags:
-  -p, --primary         Operate on the PRIMARY selection.
-  -s, --secondary       Operate on the SECONDARY selection.
-  -b, --clipboard       Operate on the CLIPBOARD selection.
-  -u, --url             Tell 0x0.st to mirror the file at the URL.
-  --debug               Show debug information and do not upload to the 0x0.st.
-" "$0" "$0" "$0" "$0"
-    # XXX: That's a dumb looking way of providing
-    # this one "$0" argument many times.
+    printf "Usage:\n"
+    printf "\t%s [--debug] -p, --primay\n" "$0"
+    printf "\t%s [--debug] -s, --secondary\n" "$0"
+    printf "\t%s [--debug] -b, --clipboard\n" "$0"
+    printf "\t%s [--debug] -u URL, --url URL\n" "$0"
+    printf "\t%s [--debug] FILENAME\n" "$0"
+    printf "\n"
+    printf "Flags:
+    -p, --primary         Operate on the PRIMARY selection.
+    -s, --secondary       Operate on the SECONDARY selection.
+    -b, --clipboard       Operate on the CLIPBOARD selection.
+    -u, --url             Tell 0x0.st to mirror the file at the URL.
+    --debug               Show debug information and do not upload to the 0x0.st.\n"
 }
 
 print_provide_one_and_only_one_flag_message_flag () {
