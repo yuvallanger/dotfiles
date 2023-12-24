@@ -9,9 +9,14 @@
 (unless (server-running-p)
   (server-start))
 
+(column-number-mode)
+
 (setq package-archives '())
 
 (require 'use-package)
+
+(use-package scheme-mode
+  :mode "\\.\\(scm\\|sxml\\)\\'")
 
 (use-package undo-tree
   :config
@@ -20,19 +25,26 @@
 
 (use-package nano-tts)
 
+(use-package nov
+  :mode ("\\.epub\\'" . nov-mode))
+
+(use-package greader
+  :hook ((eww-mode . greader-mode)
+         (nov-mode . greader-mode)))
+
 ;; https://emacs.stackexchange.com/questions/34322/set-default-coding-system-utf-8
 (set-language-environment "utf-8")
 
 (use-package
-   org-roam
-   :custom (org-roam-directory "~/mine/roam/")
-   :bind (("C-c n l" . org-roam-buffer-toggle)
-          ("C-c n f" . org-roam-node-find)
-          ("C-c n i" . org-roam-node-insert))
-   :config
-   (org-roam-db-autosync-enable)
-   ;(org-roam-db-autosync-mode)
-   )
+  org-roam
+  :custom (org-roam-directory "~/mine/roam/")
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
+  :config
+  (org-roam-db-autosync-enable)
+  ;;(org-roam-db-autosync-mode)
+  )
 
 (show-paren-mode)
 
@@ -366,7 +378,5 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
                           0))))))
 
 (setq dictionary-server "localhost")
-
-(use-package greader)
 
 (setq gc-cons-threshold (* 200 1024 1024))
