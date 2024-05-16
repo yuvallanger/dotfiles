@@ -31,6 +31,10 @@
   :config
   (setq dictionary-server "localhost"))
 
+(use-package elfeed
+  :config
+  (load (concat user-emacs-directory "elfeeds.el")))
+
 (use-package geiser
   :after (scheme-mode)
   :config
@@ -152,33 +156,31 @@
   ;; Don't want tabs in any of my source files.
   (setq-default indent-tabs-mode nil))
 
-(progn
-  (defun kakafarm/load-emacs-from-scratch-stuff ()
-    "Emacs From Scratch
+(defun kakafarm/load-emacs-from-scratch-stuff ()
+  "Emacs From Scratch
   https://systemcrafters.net/emacs-from-scratch/
   https://www.youtube.com/playlist?list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ"
 
-    (setq visible-cursor t
-          visible-bell t)
+  (setq visible-cursor t
+        visible-bell t)
 
-    ;; The Basics of Emacs Configuration
-    ;; https://systemcrafters.net/emacs-from-scratch/basics-of-emacs-configuration/
-    ;; https://www.youtube.com/watch?v=OaF-N-FuGtc
-    (progn
-      (tool-bar-mode -1)
-      (scroll-bar-mode -1)
-      (menu-bar-mode 1)
-      ;; (global-display-line-numbers-mode 1)
-      (hl-line-mode 1)
-      (blink-cursor-mode 1))
+  ;; The Basics of Emacs Configuration
+  ;; https://systemcrafters.net/emacs-from-scratch/basics-of-emacs-configuration/
+  ;; https://www.youtube.com/watch?v=OaF-N-FuGtc
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (menu-bar-mode -1)
+  ;; (global-display-line-numbers-mode 1)
+  (hl-line-mode 1)
+  (blink-cursor-mode 1)
 
     ;;; https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
     ;;; https://www.youtube.com/watch?v=51eSeqcaikM
-    ;;(recentf-mode 1)
-    (setq history-length 25)
-    (savehist-mode 1)
-    (save-place-mode 1))
-  (kakafarm/load-emacs-from-scratch-stuff))
+  ;;(recentf-mode 1)
+  (setq history-length 25)
+  (savehist-mode 1)
+  (save-place-mode 1))
+(kakafarm/load-emacs-from-scratch-stuff)
 
 
 (set-fontset-font t 'hebrew "Noto Sans Hebrew")
@@ -187,73 +189,9 @@
 (progn
   ;; Load org-roam stuff.
 
-  (defun kakafarm/org-roam-keyword-is-filetags-p (keyword-node)
-    (equal (org-element-property :key
-                                 keyword-node)
-           "FILETAGS"))
-
-  (defun kakafarm/org-roam-filetags-keyword-is-publishable-p (filestags-keyword-node)
-    (seq-contains-p (split-string (org-element-property :value
-                                                        filestags-keyword-node)
-                                  ":")
-                    "publish"))
-
-  (defun kakafarm/org-roam-publishable-node-p (org-filename)
-    (with-temp-buffer
-      (insert-file-contents org-filename)
-      (org-element-map (org-element-parse-buffer) 'keyword
-                       (lambda (keyword)
-                         (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
-                              (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
-                       nil
-                       t)))
-
-  (defun kakafarm/org-roam-sitemap (title list-of-org-links)
-    (message (format "kakafarm/org-roam-sitemap title: %S; list-of-links: %S\n"
-                     title
-                     list-of-org-links))
-    ;; (let ((a-publishable-org-roam-node
-    ;;        (seq-filter (lambda (org-link-list)
-    ;;                      (pcase org-link-list
-    ;;                        (`(,org-link)
-    ;;                         (with-temp-buffer
-    ;;                           (insert org-link)
-    ;;                           (org-element-map (org-element-parse-buffer) 'link
-    ;;                             (lambda (link)
-    ;;                               ;; Check if file linked is publishable.
-    ;;                               (kakafarm/org-roam-publishable-node-p
-    ;;                                (concat "~/mine/roam/"
-    ;;                                        (org-element-property :path
-    ;;                                                              link))))
-    ;;                             nil
-    ;;                             t)))))
-    ;;                    list-of-org-links)))
-    ;;   (message "poop %S" a-publishable-org-roam-node))
-
-    (concat
-     "# -*- encoding: utf-8 -*-\n"
-     "#+OPTIONS: ^:nil author:nil html-postamble:nil\n"
-     ;;"#SETUPFILE: ./simple_inline.theme\n" ; No theme yet.
-     "#+FILETAGS: publish\n"
-     "#+TITLE: " title "\n\n"
-     (org-list-to-org list-of-org-links) "\n"
-
-     ;; TODO: No sitemap SVG yet because it shows all the fucking
-     ;; files in the org-roam database.
-     ;;
-     ;;"file:sitemap.svg\n"
-     ))
+  (load (concat user-emacs-directory "org-roam-stuff.el"))
 
   (setq kakafarm/org-roam-my-publish-time 0)
-  (defun kakafarm/org-roam-publication-wrapper (plist filename pubdir)
-    ;; (when (kakafarm/org-roam-publishable-node-p filename)
-    ;;   nil)
-    ;;(org-roam-graph) ; How the fuck do I make this one not show every fucking node in the org-roam database?!
-    (org-html-publish-to-html plist
-                              filename
-                              pubdir)
-    (setq kakafarm/org-roam-project-publish-time
-          (cadr (current-time))))
 
   (setq org-publish-project-alist
         `(("roam"
@@ -267,14 +205,6 @@
            :table-of-contents nil
            :include ,(directory-files "~/mine/roam/publish/" t ".*.org$")
            :html-head "<link rel=\"stylesheet\" href=\"/index.css\" type=\"text/css\">")))
-
-  (defun kakafarm/org-roam-custom-link-builder (node)
-    (let ((node-file (org-roam-node-file node)))
-      ;; (when (kakafarm/org-roam-publishable-node-p node-file)
-      ;;   nil)
-      (message (format "kakafarm/org-roam-custom-link-builder: %S" node))
-      (concat (file-name-base node-file)
-              ".html")))
 
   (setq org-roam-graph-link-builder
         'kakafarm/org-roam-custom-link-builder)
