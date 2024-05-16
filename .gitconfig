@@ -1,31 +1,43 @@
-[user]
-	name = Yuval Langer
-	email = yuval.langer@gmail.com
-[gui]
-	fontdiff = -family Inconsolata -size 16 -weight normal -slant roman -underline 0 -overstrike 0
+[alias]
+	c = checkout
+	d = diff
+	df = diff --word-diff
+	hash = rev-parse HEAD
+	l = log --all --graph --decorate --oneline
+	lg = log --all --graph --decorate --color
+	pushall = !git remote | xargs -P 0 -l git push --all -v
+	s = status
+[color]
+	ui = true
 [core]
-	editor = vim
+	editor = e # The bin/e script.
 	excludesfile = ~/.gitignore_global
         whitespace = tab-in-indent, trailing-space
 [diff]
 	tool = diff
 [difftool]
 	tool = meld
-[alias]
-	s = status
-	lg = log --all --graph --decorate --color
-	c = checkout
-	d = diff
-	df = diff --word-diff
-	l = log --all --graph --decorate --oneline
-	hash = rev-parse HEAD
+[fetch]
+	parallel = 10
+[gc]
+	auto = 0
+[gui]
+	fontdiff = -family Inconsolata -size 16 -weight normal -slant roman -underline 0 -overstrike 0
+[init]
+	defaultBranch = master
+[merge]
+	tool = meld
 [mergetool]
 	cmd = meld "$LOCAL" "$MERGED" "$REMOTE"
 [push]
-	default = simple
-[merge]
-	tool = meld
-[color]
-	ui = true
-[init]
-	defaultBranch = master
+	default = nothing
+[user]
+	useConfigOnly = true
+	email = yuval.langer@gmail.com
+	name = Yuval Langer
+[sendemail]
+	smtpserver = smtp.gmail.com
+	smtpUser = yuval.langer@gmail.com
+	smtpencryption = tls
+	smtpserverport = 587
+	smtpPass = "zrelomqxcwgkswou"
