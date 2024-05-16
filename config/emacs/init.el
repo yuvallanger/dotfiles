@@ -9,203 +9,148 @@
 (unless (server-running-p)
   (server-start))
 
-(column-number-mode)
+(require 'benchmark-init)
 
-(setq package-archives '())
+(load (concat user-emacs-directory "kakafarm-utils.el"))
 
+'(setq package-archives '())
 (require 'use-package)
 
-(use-package scheme-mode
-  :mode "\\.\\(scm\\|sxml\\)\\'")
+(use-package company
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package cus-edit
+  :config
+  ;; Use another file for the ``customize'' customisations.
+  (setq custom-file (locate-user-emacs-file "custom-variables.el"))
+  (load custom-file 'noerror 'nomessage)
+  (load (locate-user-emacs-file "local-stuff.el")))
+
+(use-package dictionary
+  :config
+  (setq dictionary-server "localhost"))
+
+(use-package geiser
+  :after (scheme-mode)
+  :config
+  '((define-key 'geiser-mode-map)
+    (setq geiser-active-implementations '(guile))
+    (global-unset-key "C-c C-a")
+    (unbind-key "C-c C-e" geiser-mode-map)
+    (unbind-key "C-c C-a" geiser-mode-map)))
+
+(use-package greader
+  :commands (greader-mode)
+  :config
+  (add-hook 'greader-mode-hook
+            'kakafarm/sentence-end-double-nilify-for-read-only-buffers)
+  :hook (Info-mode
+         elfeed-show
+         elpher
+         eww-after-render
+         fundamental-mode
+         help-mode
+         lisp-mode
+         nov-mode
+         text-mode
+         w3m-mode))
+
+(use-package icomplete
+  :config
+  ;; Display completions continuously in minibuffer.
+  (icomplete-mode 1))
+
+(use-package mastodon
+  :init
+  (setq mastodon-active-user "kakafarm"
+        mastodon-instance-url "https://emacs.ch/"))
+
+(use-package modus-themes
+  :init
+  (setq modus-themes-mode-line '(borderless
+                                 accented
+                                 ;; 3d
+                                 padded
+                                 ;; moody
+                                 )
+        modus-themes-region '(;;accented
+                              bg-only
+                              ;;no-extend
+                              )
+        modus-themes-paren-match '(bold
+                                   intense)
+        ;;modus-themes-syntax '(alt-syntax)
+        modus-themes-scale-headings t
+        modus-themes-org-blocks 'tinted-background)
+  (load-theme 'modus-vivendi)
+  '(load-theme 'wheatgrass))
+
+(use-package mule
+  :config
+  ;;; https://emacs.stackexchange.com/questions/34322/set-default-coding-system-utf-8
+  (set-language-environment "utf-8"))
+
+'(use-package nano-tts
+  :hook (eww-after-render nov-mode Info-mode))
+
+(use-package nov
+  :mode ("\\.epub\\'" . nov-mode))
+
+(use-package org
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((scheme . t)
+     (emacs-lisp . t))))
+
+(use-package org-roam
+  :custom (org-roam-directory "~/mine/roam/")
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
+  :config
+  ;;(org-roam-db-autosync-enable)
+  ;;(org-roam-db-autosync-mode)
+  )
+
+(use-package paredit
+  :hook (emacs-lisp-mode
+         lisp-mode
+         scheme-mode))
+
+(use-package paren
+  :config
+  (show-paren-mode))
+
+(use-package rainbow-delimiters
+  :config
+  (rainbow-delimiters-mode))
+
+(use-package recentf
+  :config
+  (recentf-mode 1)
+  :bind (("C-S-t" . recentf-open-files)
+         ("C-c t" . recentf-open-files)
+         ("C-c l" . dictionary-lookup-definition)))
 
 (use-package undo-tree
   :config
   (global-undo-tree-mode 1)
   (setq undo-tree-auto-save-history nil))
 
-(use-package nano-tts)
-
-(use-package nov
-  :mode ("\\.epub\\'" . nov-mode))
-
-(use-package greader
-  :hook ((eww-mode . greader-mode)
-         (nov-mode . greader-mode)))
-
-;; https://emacs.stackexchange.com/questions/34322/set-default-coding-system-utf-8
-(set-language-environment "utf-8")
-
-(use-package
-  org-roam
-  :custom (org-roam-directory "~/mine/roam/")
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert))
-  :config
-  (org-roam-db-autosync-enable)
-  ;;(org-roam-db-autosync-mode)
+(use-package scheme-mode
+  :mode "\\.\\(scm\\|sxml\\)\\'"
+  ;; :bind (:map scheme-mode-map
+  ;;             ("C-c C-e" . arei-mode-map)
+  ;;             ("C-c C-a" . arei))
   )
 
-(show-paren-mode)
-
-(use-package rainbow-delimiters
+(use-package simple
   :config
-  (rainbow-delimiters-mode))
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((scheme . t)
-   (emacs-lisp . t)))
-
-(progn
-  (defun kakafarm/set-key-bindings ()
-    (global-set-key (kbd "C-S-t")
-                    #'recentf-open-files)
-    (global-set-key (kbd "C-c t")
-                    #'recentf-open-files)
-    (global-set-key (kbd "C-c l")
-                    #'dictionary-lookup-definition))
-
-  (kakafarm/set-key-bindings))
-
-
-(progn
-  (defun kakafarm/call-process-with-string-as-input (program &optional input-string &rest args)
-    (with-temp-buffer
-      (let ((our-output-buffer (current-buffer)))
-        (if input-string
-            (with-temp-buffer
-              (let ((our-input-buffer (current-buffer)))
-                (progn
-                  (erase-buffer)
-                  (insert input-string)
-                  (apply 'call-process-region
-                         (buffer-end -1)
-                         (buffer-end 1)
-                         program
-                         nil
-                         our-output-buffer
-                         nil
-                         args))))
-          (apply 'call-process
-                 program
-                 nil
-                 our-output-buffer
-                 nil
-                 args)))
-      (buffer-string)))
-
-  (list (kakafarm/call-process-with-string-as-input "cat"
-                                                    "cat says moo")
-        (kakafarm/call-process-with-string-as-input "echo"
-                                                    nil
-                                                    "-n"
-                                                    "echo echo echo")))
-
-
-(progn
-  ;; Uploading README.html from README.org stuff.
-  (defun kakafarm/srht-repo-id (repository-name)
-    "Returns the unique numerical I Dentification associated with
-every sourcehut repository.
-
-https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
-
-    (interactive "sRepo name: ")
-    (let* ((srht (netrc-machine (netrc-parse "~/.netrc.gpg")
-                                "repo.git.sr.ht"))
-           (srht-token (netrc-get srht
-                                  "password"))
-           (our-response (with-temp-buffer
-                           (call-process "curl"
-                                         nil
-                                         (list (current-buffer) nil)
-                                         nil
-                                         "--oauth2-bearer" srht-token
-                                         "-G"
-                                         "--data-urlencode"
-                                         (concat "query=query { me { repository(name: \""
-                                                 repository-name
-                                                 "\") { id } } }")
-                                         "https://git.sr.ht/query")
-                           (buffer-string)))
-           (repository-id (string-trim (kakafarm/call-process-with-string-as-input "jq"
-                                                                                   our-response
-                                                                                   ".data.me.repository.id"))))
-      (if (called-interactively-p)
-          (message "Repository ID: %S" repository-id)
-        repository-id)))
-
-  (defun kakafarm/srht-set-readme (repository-id)
-    "Export the current file to HTML and set the result as README for
-the sourcehut repo identified by ID.
-
-https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
-
-    (interactive "sRepository ID: ")
-    (let* ((srht (netrc-machine (netrc-parse "~/.netrc.gpg")
-                                "repo.git.sr.ht"))
-           (srht-token (netrc-get srht
-                                  "password"))
-           (readme.html (org-export-as (org-export-get-backend 'html)
-                                       nil
-                                       nil
-                                       t))
-           (our-json-query (kakafarm/call-process-with-string-as-input
-                            "jq"
-                            readme.html
-                            "-sR"
-                            (concat "
-{ \"query\": \"mutation UpdateRepo($id: Int!, $readme: String!) { updateRepository(id: $id, input: { readme: $readme }) { id } }\",
-    \"variables\": {
-        \"id\": " repository-id ",
-        \"readme\": .
-    }
-}"))))
-      (kakafarm/call-process-with-string-as-input "curl"
-                                                  our-json-query
-                                                  "--oauth2-bearer" srht-token
-                                                  "-H" "Content-Type: application/json"
-                                                  "-d@-"
-                                                  "https://git.sr.ht/query"))))
-
-(progn
-  ;; Use another file for the ``customize'' customisations.
-  (setq custom-file (locate-user-emacs-file "custom-variables.el"))
-  (load custom-file
-        'noerror
-        'nomessage)
-
-  (load (locate-user-emacs-file "local-stuff.el")))
-
-
-(progn
-  (defun kakafarm/load-theme-stuff ()
-    (setq modus-themes-mode-line '(borderless
-                                   accented
-                                   ;; 3d
-                                   padded
-                                   ;; moody
-                                   )
-          modus-themes-region '(;;accented
-                                bg-only
-                                ;;no-extend
-                                )
-          modus-themes-paren-match '(bold
-                                     intense)
-          ;;modus-themes-syntax '(alt-syntax)
-          modus-themes-scale-headings t
-          modus-themes-org-blocks 'tinted-background)
-
-    (load-theme 'modus-vivendi)
-    '(load-theme 'wheatgrass))
-
-  (kakafarm/load-theme-stuff))
-
-
-;; Display completions continuously in minibuffer.
-(icomplete-mode 1)
-
+  (column-number-mode)
+  ;; Don't want tabs in any of my source files.
+  (setq-default indent-tabs-mode nil))
 
 (progn
   (defun kakafarm/load-emacs-from-scratch-stuff ()
@@ -223,13 +168,13 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
       (tool-bar-mode -1)
       (scroll-bar-mode -1)
       (menu-bar-mode 1)
-      (global-display-line-numbers-mode 1)
+      ;; (global-display-line-numbers-mode 1)
       (hl-line-mode 1)
       (blink-cursor-mode 1))
 
-    ;; https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
-    ;; https://www.youtube.com/watch?v=51eSeqcaikM
-    (recentf-mode 1)
+    ;;; https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
+    ;;; https://www.youtube.com/watch?v=51eSeqcaikM
+    ;;(recentf-mode 1)
     (setq history-length 25)
     (savehist-mode 1)
     (save-place-mode 1))
@@ -239,38 +184,8 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
 (set-fontset-font t 'hebrew "Noto Sans Hebrew")
 
 
-;; Don't want tabs in any of my source files.
-(setq-default indent-tabs-mode
-              nil)
-
-
-(setq geiser-active-implementations '(guile))
-
-
-(add-hook 'after-init-hook 'global-company-mode)
-
-
-;; https://www.emacswiki.org/emacs/ParEdit#h5o-1
-(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp mode." t)
-(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
-;; Fucks with my prompt.
-;; (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-(add-hook 'lisp-mode-hook #'enable-paredit-mode)
-(add-hook 'scheme-mode-hook #'enable-paredit-mode)
-
-
-(defun kakafarm/percent-read ()
-  "Display percent read by current cursor location vs. total characters in file."
-  (interactive)
-  (message "%.2f%%"
-           (* 100
-              (/ (float (- (point) 1))
-                 (+ 1 (buffer-size))))))
-
 (progn
   ;; Load org-roam stuff.
-
-  (use-package org)
 
   (defun kakafarm/org-roam-keyword-is-filetags-p (keyword-node)
     (equal (org-element-property :key
@@ -341,18 +256,17 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
           (cadr (current-time))))
 
   (setq org-publish-project-alist
-        (list
-         (list "roam"
-               :base-directory "~/mine/roam/publish/"
-               :auto-sitemap t
-               :sitemap-function 'kakafarm/org-roam-sitemap
-               :sitemap-title "Roam Notes"
-               :publishing-function 'kakafarm/org-roam-publication-wrapper
-               :publishing-directory "~/mine/roam-export"
-               :section-number nil
-               :table-of-contents nil
-               :include (directory-files "~/mine/roam/publish/" t ".*.org$")
-               :html-head "<link rel=\"stylesheet\" href=\"/index.css\" type=\"text/css\">")))
+        `(("roam"
+           :base-directory "~/mine/roam/publish/"
+           :auto-sitemap t
+           :sitemap-function kakafarm/org-roam-sitemap
+           :sitemap-title "Roam Notes"
+           :publishing-function kakafarm/org-roam-publication-wrapper
+           :publishing-directory "~/mine/roam-export"
+           :section-number nil
+           :table-of-contents nil
+           :include ,(directory-files "~/mine/roam/publish/" t ".*.org$")
+           :html-head "<link rel=\"stylesheet\" href=\"/index.css\" type=\"text/css\">")))
 
   (defun kakafarm/org-roam-custom-link-builder (node)
     (let ((node-file (org-roam-node-file node)))
@@ -376,7 +290,5 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
                                't)
                     (setq kakafarm/org-roam-project-publish-time
                           0))))))
-
-(setq dictionary-server "localhost")
 
 (setq gc-cons-threshold (* 200 1024 1024))
