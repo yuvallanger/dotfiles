@@ -11,7 +11,8 @@
 
 (require 'benchmark-init)
 
-(load (concat user-emacs-directory "kakafarm-utils.el"))
+(load (locate-user-emacs-file "kakafarm-utils.el"))
+(load (locate-user-emacs-file "local-stuff.el"))
 
 '(setq package-archives '())
 (require 'use-package)
@@ -24,8 +25,7 @@
   :config
   ;; Use another file for the ``customize'' customisations.
   (setq custom-file (locate-user-emacs-file "custom-variables.el"))
-  (load custom-file 'noerror 'nomessage)
-  (load (locate-user-emacs-file "local-stuff.el")))
+  (load custom-file 'noerror 'nomessage))
 
 (use-package dictionary
   :config
@@ -33,7 +33,7 @@
 
 (use-package elfeed
   :config
-  (load (concat user-emacs-directory "elfeeds.el")))
+  (load (locate-user-emacs-file "elfeed-feeds.el")))
 
 (use-package geiser
   :after (scheme-mode)
@@ -188,8 +188,6 @@
 
 (progn
   ;; Load org-roam stuff.
-
-  (load (concat user-emacs-directory "org-roam-stuff.el"))
 
   (setq kakafarm/org-roam-my-publish-time 0)
 
