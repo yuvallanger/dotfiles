@@ -30,6 +30,7 @@
         ("https://merveilles.town/tags/unix_surrealism.rss" comics unixsurrealism)
         ("https://mstdn.social/@erictopol.rss" activitypub covid erictopol science)
         ("https://mstdn.social/@erictopol/with_replies.rss" activitypub covid erictopol science)
+        ("https://newdiscourses.com/feed/" csj)
         ("https://odysee.com/$/rss/@ArkhamReporter:5" arkhamreporter lovecraft video)
         ("https://planet.debian.org/rss20.xml" blog debian linux)
         ("https://planet.scheme.org/atom.xml" lisp planet scheme)
