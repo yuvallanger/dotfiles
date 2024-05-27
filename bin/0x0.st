@@ -8,7 +8,10 @@ if [ -z "$(command -v xsel)" ] || [ -z "$(command -v curl)" ]; then
 fi
 
 if [ -z "${URL_FOR_0X0_DOT_ST}" ]; then
-    URL_FOR_0X0_DOT_ST="0x0.st"
+    # Default URL:
+    url_for_0x0_dot_st="0x0.st"
+else
+    url_for_0x0_dot_st="$URL_FOR_0X0_DOT_ST"
 fi
 
 self_executable="$0"
