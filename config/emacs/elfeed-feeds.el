@@ -1,8 +1,9 @@
 (require 'cl-lib)
 
 (setq elfeed-feeds
-      `(("https://acdw.casa/feed.xml" acdw activitypub blog craftering)
-        ("https://analognowhere.com/feed/rss.xml" comics)
+      '(("https://acdw.casa/feed.xml" acdw activitypub blog craftering)
+        ("https://analognowhere.com/feed/rss.xml" comics unixsurrealism)
+        ("https://beej.us/blog/rss.xml" blog programming)
         ("https://blog.benoitj.ca/posts/index.xml" blog craftering)
         ("https://blog.codeberg.org/feeds/all.atom.xml" codeberg)
         ("https://blog.vaxry.net/feed" blog linux)
@@ -21,7 +22,7 @@
         ("https://glenneth.srht.site/feed.xml" blog craftering)
         ("https://hyperboleandahalf.blogspot.com/feeds/posts/default" blog comics)
         ("https://internet-israel.com/feed/" internet israel)
-        ("https://kaka.farm/haunt/feed.xml" blog self craftering)
+        ("https://kaka.farm/haunt/feed.xml" blog craftering self)
         ("https://kaka.farm/~brownjenkin/feeds/all.atom.xml" blog self)
         ("https://lemmy.sdf.org/feeds/c/unix_surrealism.xml" comics unixsurrealism)
         ("https://libera.chat/atom.xml" blog irc liberachat news)
@@ -39,10 +40,10 @@
         ("https://richarddavis.xyz/en/blog/rss.xml" blog craftering)
         ("https://sfba.social/@danielmingram/with_replies.rss" activitypub danielmingram)
         ("https://shakuf.co.il/feed" israel news shakuf)
-        ("https://shom.dev/index.xml" blog linux craftering)
+        ("https://shom.dev/index.xml" blog craftering linux)
         ("https://spritely.institute/feed.xml" linux lisp scheme)
         ("https://status.mangadex.org/history.atom" comics)
-        ("https://systemcrafters.net/rss/news.xml" craftering emacs guile guix linux lisp news scheme)
+        ("https://systemcrafters.net/rss/news.xml" blog craftering emacs guile guix linux lisp news scheme)
         ("https://thanosapollo.org/index.xml" blog craftering)
         ("https://tooot.im/@NWengrov.rss" activitypub blog novartza)
         ("https://tooot.im/@admin.rss" activitypub admin)
@@ -64,7 +65,11 @@
         ("https://www.rifters.com/crawl/?feed=rss2" blog peterwatts scifi)
         ("https://www.snamellit.com/rss.xml" blog craftering)
         ("https://www.the7eye.org.il/feed" israel news the7eye)
-        ("https://www.wheresyoured.at/rss/" blog news tech)
-        (,(concat "https://rss.samharris.org/feed/"
-                  kakafarm/elfeed-making-sense-with-sam-harris-podcast-secret-feed-key)
-         podcast)))
+        ("https://www.wheresyoured.at/rss/" blog news tech)))
+
+(setq elfeed-feeds
+      (kakafarm/elfeed-sort-feeds
+       (add-to-list 'elfeed-feeds
+                    (list (concat "https://rss.samharris.org/feed/"
+                                  kakafarm/elfeed-making-sense-with-sam-harris-podcast-secret-feed-key)
+                          'podcast))))
