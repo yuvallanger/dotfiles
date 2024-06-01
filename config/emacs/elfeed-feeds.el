@@ -43,6 +43,7 @@
         ("https://shakuf.co.il/feed" israel news shakuf)
         ("https://shom.dev/index.xml" blog craftering linux)
         ("https://spritely.institute/feed.xml" linux lisp scheme)
+        ("https://sr.ht/~abcdw/rde-monthly/feed.rss" guix lisp newsletter scheme)
         ("https://status.mangadex.org/history.atom" comics)
         ("https://systemcrafters.net/rss/news.xml" blog craftering emacs guile guix linux lisp news scheme)
         ("https://thanosapollo.org/index.xml" blog craftering)
