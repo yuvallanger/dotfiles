@@ -38,6 +38,7 @@
         ("https://puri.sm/feed/" linux purism)
         ("https://purplg.dev/index.xml" blog craftering)
         ("https://richarddavis.xyz/en/blog/rss.xml" blog craftering)
+        ("https://samharris.substack.com/feed" blog samharris)
         ("https://sfba.social/@danielmingram/with_replies.rss" activitypub danielmingram)
         ("https://shakuf.co.il/feed" israel news shakuf)
         ("https://shom.dev/index.xml" blog craftering linux)
@@ -72,4 +73,4 @@
        (add-to-list 'elfeed-feeds
                     (list (concat "https://rss.samharris.org/feed/"
                                   kakafarm/elfeed-making-sense-with-sam-harris-podcast-secret-feed-key)
-                          'podcast))))
+                          'podcast 'samharris))))
