@@ -66,6 +66,7 @@
         ("https://www.livejournal.com/allpics.bml?user=oglafcomics" comics)
         ("https://www.midaat.org.il/feed/" conspiracy medicine midaat science)
         ("https://www.rahuljuliato.com/rss.xml" blog craftering)
+        ("https://www.realityslaststand.com/feed" csj popsci)
         ("https://www.rifters.com/crawl/?feed=rss2" blog peterwatts scifi)
         ("https://www.snamellit.com/rss.xml" blog craftering)
         ("https://www.the7eye.org.il/feed" israel news the7eye)
