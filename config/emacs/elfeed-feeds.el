@@ -30,6 +30,8 @@
         ("https://luminousnine.com/feed.xml" blog craftering)
         ("https://masto.ai/@johnsnowproject/with_replies.rss" activitypub corona covid)
         ("https://mastodon.sdf.org/@beejjorgensen.rss" activitypub beej sdf)
+        ("https://megananda.org/comments/feed/" blog comments meditation)
+        ("https://megananda.org/feed/" blog meditation)
         ("https://merveilles.town/tags/unix_surrealism.rss" comics unixsurrealism)
         ("https://mstdn.social/@erictopol.rss" activitypub covid erictopol science)
         ("https://mstdn.social/@erictopol/with_replies.rss" activitypub covid erictopol science)
