@@ -42,6 +42,7 @@
         ("https://puri.sm/feed/" linux purism)
         ("https://purplg.dev/index.xml" blog craftering)
         ("https://richarddavis.xyz/en/blog/rss.xml" blog craftering)
+        ("https://rss.art19.com/ten-percent-happier" meditation podcast)
         ("https://samharris.substack.com/feed" blog samharris)
         ("https://sfba.social/@danielmingram/with_replies.rss" activitypub danielmingram)
         ("https://shakuf.co.il/feed" israel news shakuf)
