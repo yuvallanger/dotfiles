@@ -57,6 +57,7 @@
         ("https://thanosapollo.org/index.xml" blog craftering)
         ("https://tooot.im/@NWengrov.rss" activitypub blog novartza)
         ("https://tooot.im/@admin.rss" activitypub admin)
+        ("https://torrentfreak.com/feed/" filesharing internet news pirating torrents)
         ("https://trevarj.github.io/rss.xml" blog craftering)
         ("https://tylerdback.com/index.xml" blog craftering)
         ("https://vimeo.com/user13532867/videos/rss" danielmingram meditation)
