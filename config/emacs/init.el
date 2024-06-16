@@ -17,7 +17,15 @@
 '(setq package-archives '())
 (require 'use-package)
 
+(mapcar (lambda (x)
+          (keymap-global-set x 'multi-vterm))
+        (list "C-c m m"
+              "C-c m <RET>"
+              "C-c <RET> m"
+              "C-c <RET> <RET>"))
+
 (use-package company
+  :defer t
   :init
   (add-hook 'after-init-hook 'global-company-mode))
 
@@ -49,8 +57,11 @@
   :config
   (add-hook 'greader-mode-hook
             'kakafarm/sentence-end-double-nilify-for-read-only-buffers)
-  :hook (Info-mode
+  :hook (
+         Info-mode
+         Man-mode
          elfeed-show
+         elfeed-show-mode
          elpher
          eww-after-render
          fundamental-mode
@@ -58,7 +69,8 @@
          lisp-mode
          nov-mode
          text-mode
-         w3m-mode))
+         w3m-mode
+         ))
 
 (use-package icomplete
   :config
@@ -66,11 +78,13 @@
   (icomplete-mode 1))
 
 (use-package mastodon
+  :defer t
   :init
   (setq mastodon-active-user "kakafarm"
         mastodon-instance-url "https://emacs.ch/"))
 
 (use-package modus-themes
+  :defer t
   :init
   (setq modus-themes-mode-line '(borderless
                                  accented
@@ -96,7 +110,7 @@
   (set-language-environment "utf-8"))
 
 '(use-package nano-tts
-  :hook (eww-after-render nov-mode Info-mode))
+   :hook (eww-after-render nov-mode Info-mode))
 
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
@@ -117,6 +131,12 @@
   ;;(org-roam-db-autosync-enable)
   ;;(org-roam-db-autosync-mode)
   )
+
+;; XXX: Disabled.
+'(use-package parinfer
+   :hook (emacs-lisp-mode
+          lisp-mode
+          scheme-mode))
 
 (use-package paredit
   :hook (emacs-lisp-mode
@@ -156,6 +176,12 @@
   ;; Don't want tabs in any of my source files.
   (setq-default indent-tabs-mode nil))
 
+(use-package window
+  :config
+  (advice-add 'recenter-top-bottom
+              :around
+              'kakafarm/recenter-top-bottom))
+
 (defun kakafarm/load-emacs-from-scratch-stuff ()
   "Emacs From Scratch
   https://systemcrafters.net/emacs-from-scratch/
@@ -174,8 +200,8 @@
   (hl-line-mode 1)
   (blink-cursor-mode 1)
 
-    ;;; https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
-    ;;; https://www.youtube.com/watch?v=51eSeqcaikM
+;;; https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
+;;; https://www.youtube.com/watch?v=51eSeqcaikM
   ;;(recentf-mode 1)
   (setq history-length 25)
   (savehist-mode 1)
@@ -220,3 +246,4 @@
                           0))))))
 
 (setq gc-cons-threshold (* 200 1024 1024))
+(put 'narrow-to-region 'disabled nil)

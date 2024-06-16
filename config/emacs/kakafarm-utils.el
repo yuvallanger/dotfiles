@@ -1,3 +1,5 @@
+;;; -*- lexical-binding:t -*-
+
 (defun kakafarm/call-process-with-string-as-input (program &optional input-string &rest args)
   (with-temp-buffer
     (let ((our-output-buffer (current-buffer)))
@@ -109,23 +111,28 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
     (setq-local sentence-end-double-space
                 nil)))
 
-(defun kakafarm/elfeed-sort-feeds ()
-  `(setq elfeed-feeds
-         ,(sort
-           (mapcar
-            (lambda (a-feed)
-              (let* ((feed-url (car a-feed))
-                     (tags (cdr a-feed))
-                     (tags-as-strings (mapcar #'symbol-name
-                                              tags))
-                     (sorted-tags (sort tags-as-strings
-                                        #'string-lessp))
-                     (tags-as-symbols (mapcar #'intern sorted-tags)))
-                (cons feed-url sorted-tags)))
-            elfeed-feeds)
-           (lambda (feed-a feed-b)
-             (string-lessp (car feed-a)
-                           (car feed-b))))))
+(defun kakafarm/elfeed-sort-feed-tags (a-feed)
+  (cond
+   ((stringp a-feed)
+    a-feed)
+   (t
+    (let* ((feed-url (car a-feed))
+           (tags (cdr a-feed))
+           (tags-as-strings (mapcar #'symbol-name
+                                    tags))
+           (sorted-tags (sort tags-as-strings
+                              #'string-lessp))
+           (tags-as-symbols (mapcar #'intern sorted-tags)))
+      (cons feed-url tags-as-symbols)))))
+
+(defun kakafarm/elfeed-compare-feeds-urls (feed-a feed-b)
+  (string-lessp (car feed-a)
+                (car feed-b)))
+
+(defun kakafarm/elfeed-sort-feeds (feeds)
+  (sort (mapcar #'kakafarm/elfeed-sort-feed-tags
+           feeds)
+        #'kakafarm/elfeed-compare-feeds-urls))
 
 (defun kakafarm/org-roam-keyword-is-filetags-p (keyword-node)
   (equal (org-element-property :key
@@ -142,11 +149,11 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
   (with-temp-buffer
     (insert-file-contents org-filename)
     (org-element-map (org-element-parse-buffer) 'keyword
-      (lambda (keyword)
-        (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
-             (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
-      nil
-      t)))
+                     (lambda (keyword)
+                       (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
+                            (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
+                     nil
+                     t)))
 
 (defun kakafarm/org-roam-sitemap (title list-of-org-links)
   (message (format "kakafarm/org-roam-sitemap title: %S; list-of-links: %S\n"
@@ -201,3 +208,8 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
     (message (format "kakafarm/org-roam-custom-link-builder: %S" node))
     (concat (file-name-base node-file)
             ".html")))
+
+(defun kakafarm/recenter-top-bottom (original-function &rest arguments)
+  (if (null (car arguments))
+      (apply original-function '(4))
+    (apply original-function arguments)))
