@@ -1,7 +1,8 @@
 (require 'cl-lib)
 
 (setq elfeed-feeds
-      '(("https://acdw.casa/feed.xml" acdw activitypub blog craftering)
+      '(
+        ("https://acdw.casa/feed.xml" acdw activitypub blog craftering)
         ("https://analognowhere.com/feed/rss.xml" comics unixsurrealism)
         ("https://beej.us/blog/rss.xml" blog programming)
         ("https://blog.benoitj.ca/posts/index.xml" blog craftering)
@@ -77,7 +78,9 @@
         ("https://www.rifters.com/crawl/?feed=rss2" blog peterwatts scifi)
         ("https://www.snamellit.com/rss.xml" blog craftering)
         ("https://www.the7eye.org.il/feed" israel news the7eye)
-        ("https://www.wheresyoured.at/rss/" blog news tech)))
+        ("https://www.wheresyoured.at/rss/" blog news tech)
+        ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzREuchzOqiawpEpvEM0Tyg" atheism islam youtube)
+        ))
 
 (setq elfeed-feeds
       (kakafarm/elfeed-sort-feeds
