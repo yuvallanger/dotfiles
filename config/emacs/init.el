@@ -14,20 +14,25 @@
 (load (locate-user-emacs-file "kakafarm-utils.el"))
 (load (locate-user-emacs-file "local-stuff.el"))
 
-'(setq package-archives '())
+(setq package-archives '())
 (require 'use-package)
 
-(mapcar (lambda (x)
-          (keymap-global-set x 'multi-vterm))
-        (list "C-c m m"
-              "C-c m <RET>"
-              "C-c <RET> m"
-              "C-c <RET> <RET>"))
+(dolist (x '("C-c m m"
+             "C-c m <RET>"
+             "C-c <RET> m"
+             "C-c <RET> <RET>"))
+  (keymap-global-set x 'multi-vterm))
 
-(use-package company
-  :defer t
-  :init
-  (add-hook 'after-init-hook 'global-company-mode))
+'(use-package company
+   :defer t
+   :init
+   (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package corfu
+  :config
+  (global-corfu-mode)
+  :custom
+  (corfu-auto t))
 
 (use-package cus-edit
   :config
@@ -36,12 +41,61 @@
   (load custom-file 'noerror 'nomessage))
 
 (use-package dictionary
-  :config
-  (setq dictionary-server "localhost"))
+  :custom
+  (dictionary-server "localhost"))
 
 (use-package elfeed
+  :defer t
   :config
-  (load (locate-user-emacs-file "elfeed-feeds.el")))
+  (load (locate-user-emacs-file "elfeed-feeds.el"))
+  :custom
+  (elfeed-curl-max-connections 10)
+  (elfeed-search-filter "@2-months +unread"))
+
+(use-package emacs
+  :ensure nil
+  :defer
+  :bind
+  ;;((";" . #'kakafarm/easy-underscore))
+  )
+
+(use-package fontset
+  :config
+  (set-fontset-font t 'hebrew "Noto Sans Hebrew"))
+
+(use-package orderless
+  :custom
+  (completion-styles
+   '(orderless
+     basic))
+  (completion-category-overrides
+   '((file (styles
+            basic
+            partial-completion)))))
+
+(use-package erc
+  :custom
+  (erc-server "irc.libera.chat")
+  (erc-nick "kakafarm")
+  (erc-track-shorten-start 8)
+  (erc-kill-buffer-on-part t)
+  (erc-auto-query 'bury)
+  (erc-autojoin-channels-alist '((libera-kakafarm "#systemcrafters")))
+  :bind
+  (("C-c i r c" . (lambda ()
+                    (interactive)
+                    (erc-tls :id 'libera-kakafarm))))
+  ;; :config
+  ;; (erc-tls :id 'libera-kakafarm)
+  )
+
+(use-package ffap
+  :bind
+  (("C-c f a p" . ffap-menu)))
+
+'(use-package mutli-vterm
+   :bind
+   (("C-q" . vterm-send-next-key)))
 
 (use-package geiser
   :after (scheme-mode)
@@ -58,6 +112,7 @@
   (add-hook 'greader-mode-hook
             'kakafarm/sentence-end-double-nilify-for-read-only-buffers)
   :hook (
+         help-mode
          Info-mode
          Man-mode
          elfeed-show
@@ -76,6 +131,10 @@
   :config
   ;; Display completions continuously in minibuffer.
   (icomplete-mode 1))
+
+(use-package magit-todos
+  :after magit
+  :config (magit-todos-mode 1))
 
 (use-package mastodon
   :defer t
@@ -102,12 +161,17 @@
         modus-themes-scale-headings t
         modus-themes-org-blocks 'tinted-background)
   (load-theme 'modus-vivendi)
-  '(load-theme 'wheatgrass))
+  ;;(load-theme 'wheatgrass)
+  )
 
 (use-package mule
   :config
   ;;; https://emacs.stackexchange.com/questions/34322/set-default-coding-system-utf-8
   (set-language-environment "utf-8"))
+
+(use-package info
+  :custom
+  (Info-additional-directory-list '("~/infopath/")))
 
 '(use-package nano-tts
    :hook (eww-after-render nov-mode Info-mode))
@@ -171,10 +235,20 @@
   )
 
 (use-package simple
+  :defer
+  :init
+  (advice-add 'kill-ring-save
+              :before
+              'kakafarm/pulse-current-region)
   :config
   (column-number-mode)
   ;; Don't want tabs in any of my source files.
-  (setq-default indent-tabs-mode nil))
+  (setq-default indent-tabs-mode
+                nil)
+  (advice-add 'scratch-buffer
+              :after
+              (lambda () "Switch to text-mode."
+                (text-mode))))
 
 (use-package window
   :config
@@ -182,17 +256,18 @@
               :around
               'kakafarm/recenter-top-bottom))
 
-(defun kakafarm/load-emacs-from-scratch-stuff ()
-  "Emacs From Scratch
-  https://systemcrafters.net/emacs-from-scratch/
-  https://www.youtube.com/playlist?list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ"
+(progn
+;;; Emacs From Scratch
+;;; https://systemcrafters.net/emacs-from-scratch/
+;;; https://www.youtube.com/playlist?list=PLEoMzSkcN8oPH1au7H6B7bBJ4ZO7BXjSZ
 
   (setq visible-cursor t
         visible-bell t)
 
-  ;; The Basics of Emacs Configuration
-  ;; https://systemcrafters.net/emacs-from-scratch/basics-of-emacs-configuration/
-  ;; https://www.youtube.com/watch?v=OaF-N-FuGtc
+;;; The Basics of Emacs Configuration
+;;; https://systemcrafters.net/emacs-from-scratch/basics-of-emacs-configuration/
+;;; https://www.youtube.com/watch?v=OaF-N-FuGtc
+
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (menu-bar-mode -1)
@@ -206,14 +281,9 @@
   (setq history-length 25)
   (savehist-mode 1)
   (save-place-mode 1))
-(kakafarm/load-emacs-from-scratch-stuff)
-
-
-(set-fontset-font t 'hebrew "Noto Sans Hebrew")
-
 
 (progn
-  ;; Load org-roam stuff.
+;;; Load org-roam stuff.
 
   (setq kakafarm/org-roam-my-publish-time 0)
 
@@ -247,3 +317,4 @@
 
 (setq gc-cons-threshold (* 200 1024 1024))
 (put 'narrow-to-region 'disabled nil)
+(put 'upcase-region 'disabled nil)

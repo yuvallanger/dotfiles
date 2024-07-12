@@ -1,5 +1,15 @@
 ;;; -*- lexical-binding:t -*-
 
+(require 'cl-lib)
+
+(defun kakafarm/advice-remove-all (function)
+  "Remove every advice function from FUNCTION."
+  (advice-mapc
+   (lambda (advice-function properties-alist)
+     (advice-remove function
+                    advice-function))
+   function))
+
 (defun kakafarm/call-process-with-string-as-input (program &optional input-string &rest args)
   (with-temp-buffer
     (let ((our-output-buffer (current-buffer)))
@@ -130,8 +140,9 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
                 (car feed-b)))
 
 (defun kakafarm/elfeed-sort-feeds (feeds)
+  "Sort A-FEED, an `elfeed-feeds' list."
   (sort (mapcar #'kakafarm/elfeed-sort-feed-tags
-           feeds)
+                feeds)
         #'kakafarm/elfeed-compare-feeds-urls))
 
 (defun kakafarm/org-roam-keyword-is-filetags-p (keyword-node)
@@ -210,6 +221,81 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
             ".html")))
 
 (defun kakafarm/recenter-top-bottom (original-function &rest arguments)
-  (if (null (car arguments))
-      (apply original-function '(4))
-    (apply original-function arguments)))
+  "Move view such that point is 4 lines from the top of the frame when function is `recenter-top-bottom'."
+
+  (cond
+   ((null arguments)
+    (apply function))
+   ((null (car arguments))
+    (apply original-function '(4)))
+   (t
+    (apply original-function arguments))))
+
+(defun kakafarm/easy-underscore (arg)
+  "Convert all inputs of semicolon to an underscore
+If given ARG, then it will insert an actual semicolon.
+
+from https://www.youtube.com/watch?v=6R-73hsL5wk"
+  (interactive "P")
+  (message (format "%s" arg))
+  (if arg
+      (insert ";")
+    (insert "_")))
+
+(defun kakafarm/pulse-current-region (&rest _)
+  "Pulse the selected bit, either the marked region or if there's no
+mark, the bit between mark and point... or something like
+that... I don't even work here.
+
+From Goparism (https://www.youtube.com/@goparism)
+https://www.youtube.com/watch?v=oQ9JE9kRwG8 which is from the
+user 0xMii on R***** which copied it from
+who-knows-where-and-who."
+  (if mark-active
+      (pulse-momentary-highlight-region (region-beginning)
+                                        (region-end))
+    (pulse-momentary-highlight-region (mark)
+                                      (point))))
+
+(defun kakafarm/take-while (lst predp)
+  (named-let loop ((lst lst)
+                   (accumulator '()))
+    (cond
+     ((null lst)
+      (reverse accumulator))
+     ((predp (car lst))
+      (reverse accumulator))
+     (t
+      (loop (cdr lst)
+            accumulator)))))
+
+(defun kakafarm/drop-while (lst predp)
+  (named-let loop ((lst lst))
+    (cond
+     (()
+      lst)
+     ((predp (car lst))
+      (cdr lst))
+     (t
+      (loop (cdr lst))))))
+
+(defun kakafarm/url-response-to-body (response)
+  (cdr (kakafarm/drop-while
+        (string-split response
+                      "\n")
+        (lambda (line)
+          (not (string-blank-p line))))))
+
+(defun kakafarm/list-all-http-or-https ()
+  (interactive)
+  (dolist (url (let* ((list-of-lines
+                       (split-string (substring-no-properties (buffer-string))
+                                     "[ \n]")))
+                 (cl-reduce (lambda (accumulator line)
+                              (if (string-match-p "https?://.+"
+                                                  line)
+                                  (cons line accumulator)
+                                accumulator))
+                            list-of-lines
+                            :initial-value '())))
+    (message "%s" url)))
