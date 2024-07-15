@@ -24,6 +24,7 @@
  (gnu packages guile-xyz)
  (gnu packages haskell-xyz)
  (gnu packages libreoffice)
+ (gnu packages mail)
  (gnu packages man)
  (gnu packages maths)
  (gnu packages pdf)
@@ -33,12 +34,14 @@
  (gnu packages shells)
  (gnu packages speech)
  (gnu packages sqlite)
+ (gnu packages tcl)
  (gnu packages tex)
  (gnu packages texinfo)
  (gnu packages tls)
  (gnu packages tmux)
  (gnu packages toys)
  (gnu packages version-control)
+ (gnu packages video)
 
  (kakafarm packages emacs-xyz)
  (kakafarm packages guile-xyz))
@@ -57,8 +60,6 @@
   emacs-ansi
   emacs-arei
   emacs-benchmark-init
-  emacs-company
-  emacs-company-emoji
   emacs-corfu
   emacs-corfu-doc
   emacs-darkroom
@@ -83,34 +84,37 @@
   emacs-geiser-racket
   emacs-ggtags
   emacs-greader-mode
+  emacs-gruvbox-theme
   emacs-guix
+  emacs-helm
   emacs-htmlize
   emacs-hy-mode
   emacs-hyperbole
   emacs-magit
+  emacs-magit-todos
+  emacs-markdown-mode
   emacs-mastodon
   emacs-multi-vterm
   emacs-multiple-cursors
   emacs-nano-tts-minor-mode
   emacs-nov-el
   emacs-olivetti
+  emacs-orderless
   emacs-org-roam
   emacs-paredit
   emacs-parinfer-mode
+  emacs-peg
   emacs-rainbow-blocks
   emacs-rainbow-delimiters
   emacs-rec-mode
   emacs-request
-  emacs-smartparens
-  emacs-srfi
-  emacs-srht
   emacs-synosaurus
+  emacs-tco-el
   emacs-treemacs
   emacs-undo-tree
   emacs-use-package
   emacs-vterm
   emacs-w3m
-  emacs-websocket
   emacs-wgrep
   emacs-whitespace-cleanup-mode
   emacs-wisp-mode
@@ -146,6 +150,7 @@
   guile-picture-language
   guile-pipe
   guile-png
+  guile-reader
   guile-readline
   guile-simple-zmq
   guile-srfi-128
@@ -174,6 +179,8 @@
   libhdate
   man-pages
   man-pages-posix
+  mpv
+  mumi
   mythes
   nss-certs
   pandoc
@@ -190,10 +197,13 @@
   scsh
   sicp
   sqlite
+  tcl
   texinfo
   texlive-amsmath
   texlive-ebproof
   tig
+  tk
   tmux
   units
-  universal-ctags))
+  universal-ctags
+  ))
