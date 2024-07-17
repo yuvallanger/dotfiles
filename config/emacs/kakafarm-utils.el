@@ -42,84 +42,26 @@
                                                   "-n"
                                                   "echo echo echo"))
 
-;; Uploading README.html from README.org stuff.
-(defun kakafarm/srht-repo-id (repository-name)
-  "Returns the unique numerical I Dentification associated with
-every sourcehut repository.
+(defun kakafarm/drop-while (lst predp)
+  (named-let loop ((lst lst))
+    (cond
+     (()
+      lst)
+     ((predp (car lst))
+      (cdr lst))
+     (t
+      (loop (cdr lst))))))
 
-https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
+(defun kakafarm/easy-underscore (arg)
+  "Convert all inputs of semicolon to an underscore
+If given ARG, then it will insert an actual semicolon.
 
-  (interactive "sRepo name: ")
-  (let* ((srht (netrc-machine (netrc-parse "~/.netrc.gpg")
-                              "repo.git.sr.ht"))
-         (srht-token (netrc-get srht
-                                "password"))
-         (our-response (with-temp-buffer
-                         (call-process "curl"
-                                       nil
-                                       (list (current-buffer) nil)
-                                       nil
-                                       "--oauth2-bearer" srht-token
-                                       "-G"
-                                       "--data-urlencode"
-                                       (concat "query=query { me { repository(name: \""
-                                               repository-name
-                                               "\") { id } } }")
-                                       "https://git.sr.ht/query")
-                         (buffer-string)))
-         (repository-id (string-trim (kakafarm/call-process-with-string-as-input "jq"
-                                                                                 our-response
-                                                                                 ".data.me.repository.id"))))
-    (if (called-interactively-p)
-        (message "Repository ID: %S" repository-id)
-      repository-id)))
-
-(defun kakafarm/srht-set-readme (repository-id)
-  "Export the current file to HTML and set the result as README for
-the sourcehut repo identified by ID.
-
-https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
-
-  (interactive "sRepository ID: ")
-  (let* ((srht (netrc-machine (netrc-parse "~/.netrc.gpg")
-                              "repo.git.sr.ht"))
-         (srht-token (netrc-get srht
-                                "password"))
-         (readme.html (org-export-as (org-export-get-backend 'html)
-                                     nil
-                                     nil
-                                     t))
-         (our-json-query (kakafarm/call-process-with-string-as-input
-                          "jq"
-                          readme.html
-                          "-sR"
-                          (concat "
-{ \"query\": \"mutation UpdateRepo($id: Int!, $readme: String!) { updateRepository(id: $id, input: { readme: $readme }) { id } }\",
-    \"variables\": {
-        \"id\": " repository-id ",
-        \"readme\": .
-    }
-}"))))
-    (kakafarm/call-process-with-string-as-input "curl"
-                                                our-json-query
-                                                "--oauth2-bearer" srht-token
-                                                "-H" "Content-Type: application/json"
-                                                "-d@-"
-                                                "https://git.sr.ht/query")))
-
-(defun kakafarm/percent-read ()
-  "Display percent read by current cursor location vs. total characters in file."
-  (interactive)
-  (message "%.2f%%"
-           (* 100
-              (/ (float (- (point) 1))
-                 (+ 1 (buffer-size))))))
-
-(defun kakafarm/sentence-end-double-nilify-for-read-only-buffers ()
-  "Set `sentence-end-double-space' in read-only buffer to `nil'."
-  (when buffer-read-only
-    (setq-local sentence-end-double-space
-                nil)))
+from https://www.youtube.com/watch?v=6R-73hsL5wk"
+  (interactive "P")
+  (message (format "%s" arg))
+  (if arg
+      (insert ";")
+    (insert "_")))
 
 (defun kakafarm/elfeed-sort-feed-tags (a-feed)
   (cond
@@ -144,6 +86,35 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
   (sort (mapcar #'kakafarm/elfeed-sort-feed-tags
                 feeds)
         #'kakafarm/elfeed-compare-feeds-urls))
+
+(defun kakafarm/kill-ring-save-unlines ()
+  "Like `kill-ring-save', but also unlines and trims the newly killed stuff."
+  (interactive)
+
+  (kill-ring-save (point) (mark))
+
+  (with-temp-buffer
+    (yank-pop)
+    (goto-char 1)
+    (replace-regexp "\n+" " ")
+    (let ((trimmed (string-trim (buffer-string))))
+      (with-temp-buffer
+        (insert trimmed)
+        (kill-region (point-min) (point-max))))))
+
+(defun kakafarm/list-all-http-or-https ()
+  (interactive)
+  (dolist (url (let* ((list-of-lines
+                       (split-string (substring-no-properties (buffer-string))
+                                     "[ \n]")))
+                 (cl-reduce (lambda (accumulator line)
+                              (if (string-match-p "https?://.+"
+                                                  line)
+                                  (cons line accumulator)
+                                accumulator))
+                            list-of-lines
+                            :initial-value '())))
+    (message "%s" url)))
 
 (defun kakafarm/org-roam-keyword-is-filetags-p (keyword-node)
   (equal (org-element-property :key
@@ -220,27 +191,22 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
     (concat (file-name-base node-file)
             ".html")))
 
+(defun kakafarm/percent-read ()
+  "Display percent read by current cursor location vs. total characters in file."
+  (interactive)
+  (message "%.2f%%"
+           (* 100
+              (/ (float (- (point) 1))
+                 (+ 1 (buffer-size))))))
+
 (defun kakafarm/recenter-top-bottom (original-function &rest arguments)
   "Move view such that point is 4 lines from the top of the frame when function is `recenter-top-bottom'."
 
   (cond
-   ((null arguments)
-    (apply function))
    ((null (car arguments))
     (apply original-function '(4)))
    (t
     (apply original-function arguments))))
-
-(defun kakafarm/easy-underscore (arg)
-  "Convert all inputs of semicolon to an underscore
-If given ARG, then it will insert an actual semicolon.
-
-from https://www.youtube.com/watch?v=6R-73hsL5wk"
-  (interactive "P")
-  (message (format "%s" arg))
-  (if arg
-      (insert ";")
-    (insert "_")))
 
 (defun kakafarm/pulse-current-region (&rest _)
   "Pulse the selected bit, either the marked region or if there's no
@@ -257,6 +223,77 @@ who-knows-where-and-who."
     (pulse-momentary-highlight-region (mark)
                                       (point))))
 
+(defun kakafarm/sentence-end-double-nilify-for-read-only-buffers ()
+  "Set `sentence-end-double-space' in read-only buffer to `nil'."
+  (when buffer-read-only
+    (setq-local sentence-end-double-space
+                nil)))
+
+;; Uploading README.html from README.org stuff.
+(defun kakafarm/srht-repo-id (repository-name)
+  "Returns the unique numerical I Dentification associated with
+every sourcehut repository.
+
+https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
+
+  (interactive "sRepo name: ")
+  (let* ((srht (netrc-machine (netrc-parse "~/.netrc.gpg")
+                              "repo.git.sr.ht"))
+         (srht-token (netrc-get srht
+                                "password"))
+         (our-response (with-temp-buffer
+                         (call-process "curl"
+                                       nil
+                                       (list (current-buffer) nil)
+                                       nil
+                                       "--oauth2-bearer" srht-token
+                                       "-G"
+                                       "--data-urlencode"
+                                       (concat "query=query { me { repository(name: \""
+                                               repository-name
+                                               "\") { id } } }")
+                                       "https://git.sr.ht/query")
+                         (buffer-string)))
+         (repository-id (string-trim (kakafarm/call-process-with-string-as-input "jq"
+                                                                                 our-response
+                                                                                 ".data.me.repository.id"))))
+    (if (called-interactively-p)
+        (message "Repository ID: %S" repository-id)
+      repository-id)))
+
+(defun kakafarm/srht-set-readme (repository-id)
+  "Export the current file to HTML and set the result as README for
+the sourcehut repo identified by ID.
+
+https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
+
+  (interactive "sRepository ID: ")
+  (let* ((srht (netrc-machine (netrc-parse "~/.netrc.gpg")
+                              "repo.git.sr.ht"))
+         (srht-token (netrc-get srht
+                                "password"))
+         (readme.html (org-export-as (org-export-get-backend 'html)
+                                     nil
+                                     nil
+                                     t))
+         (our-json-query (kakafarm/call-process-with-string-as-input
+                          "jq"
+                          readme.html
+                          "-sR"
+                          (concat "
+{ \"query\": \"mutation UpdateRepo($id: Int!, $readme: String!) { updateRepository(id: $id, input: { readme: $readme }) { id } }\",
+    \"variables\": {
+        \"id\": " repository-id ",
+        \"readme\": .
+    }
+}"))))
+    (kakafarm/call-process-with-string-as-input "curl"
+                                                our-json-query
+                                                "--oauth2-bearer" srht-token
+                                                "-H" "Content-Type: application/json"
+                                                "-d@-"
+                                                "https://git.sr.ht/query")))
+
 (defun kakafarm/take-while (lst predp)
   (named-let loop ((lst lst)
                    (accumulator '()))
@@ -269,16 +306,6 @@ who-knows-where-and-who."
       (loop (cdr lst)
             accumulator)))))
 
-(defun kakafarm/drop-while (lst predp)
-  (named-let loop ((lst lst))
-    (cond
-     (()
-      lst)
-     ((predp (car lst))
-      (cdr lst))
-     (t
-      (loop (cdr lst))))))
-
 (defun kakafarm/url-response-to-body (response)
   (cdr (kakafarm/drop-while
         (string-split response
@@ -286,22 +313,8 @@ who-knows-where-and-who."
         (lambda (line)
           (not (string-blank-p line))))))
 
-(defun kakafarm/list-all-http-or-https ()
-  (interactive)
-  (dolist (url (let* ((list-of-lines
-                       (split-string (substring-no-properties (buffer-string))
-                                     "[ \n]")))
-                 (cl-reduce (lambda (accumulator line)
-                              (if (string-match-p "https?://.+"
-                                                  line)
-                                  (cons line accumulator)
-                                accumulator))
-                            list-of-lines
-                            :initial-value '())))
-    (message "%s" url)))
-
 (defun kakafarm/yank-unlines ()
-  "Yank with each consecutive newlines converted to a single space, and trim both ends."
+  "`yank' with each consecutive newlines converted to a single space, and trim both ends."
   (interactive)
 
   (insert
