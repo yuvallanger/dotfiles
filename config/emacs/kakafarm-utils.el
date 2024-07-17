@@ -299,3 +299,15 @@ who-knows-where-and-who."
                             list-of-lines
                             :initial-value '())))
     (message "%s" url)))
+
+(defun kakafarm/yank-unlines ()
+  "Yank with each consecutive newlines converted to a single space, and trim both ends."
+  (interactive)
+
+  (insert
+   (string-trim
+    (with-temp-buffer
+      (yank)
+      (goto-char 1)
+      (replace-regexp "\n+" " ")
+      (buffer-string)))))
