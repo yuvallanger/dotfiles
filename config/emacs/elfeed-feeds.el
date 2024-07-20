@@ -1,11 +1,12 @@
 (require 'cl-lib)
 
-(setq elfeed-feeds
+(setq kakafarm/elfeed-feeds
       '(
         ("https://acdw.casa/feed.xml" acdw activitypub blog craftering)
         ("https://analognowhere.com/feed/rss.xml" comics unixsurrealism)
         ("https://beej.us/blog/rss.xml" blog programming)
         ("https://blog.benoitj.ca/posts/index.xml" blog craftering)
+        ("https://blog.cleancoder.com/atom.xml" blog programming unclebob)
         ("https://blog.codeberg.org/feeds/all.atom.xml" codeberg)
         ("https://blog.vaxry.net/feed" blog linux)
         ("https://botsin.space/@mechilim/with_replies.rss" activitypub covid israel)
@@ -18,6 +19,7 @@
         ("https://deidetected.com/index.php/comments/feed/" csj withreplies)
         ("https://deidetected.com/index.php/feed/" csj)
         ("https://drewdevault.com/blog/index.xml" blog drewdevault linux programming)
+        ("https://dthompson.us/feed.xml" blog dthompson programming scheme)
         ("https://erictopol.substack.com/feed" covid erictopol science)
         ("https://feeds.transistor.fm/collection-of-jhourneys" jhourney meditation podcast)
         ("https://galperel.wordpress.com/feed/" books hebrew israel)
@@ -45,6 +47,7 @@
         ("https://newdiscourses.com/feed/" csj)
         ("https://odysee.com/$/rss/@ArkhamReporter:5" arkhamreporter lovecraft video)
         ("https://planet.debian.org/rss20.xml" blog debian linux)
+        ("https://planet.emacslife.com/atom.xml" emacs emacslife planet)
         ("https://planet.scheme.org/atom.xml" lisp planet scheme)
         ("https://puri.sm/feed/" linux purism)
         ("https://purplg.dev/index.xml" blog craftering)
@@ -66,6 +69,9 @@
         ("https://tooot.im/@admin.rss" activitypub admin)
         ("https://torrentfreak.com/feed/" filesharing internet news pirating torrents)
         ("https://trevarj.github.io/rss.xml" blog craftering)
+        ("https://triapul.cz/feed/cesky.xml" blog cesky computing czech unix unixsurrealism)
+        ("https://triapul.cz/feed/english.xml" blog computing unix unixsurrealism)
+        ("https://triapul.cz/feed/gopher.xml" blog computing gopher unix unixsurrealism)
         ("https://tusharhero.codeberg.page/rss.xml" blog craftering)
         ("https://tylerdback.com/index.xml" blog craftering)
         ("https://vimeo.com/user13532867/videos/rss" danielmingram meditation)

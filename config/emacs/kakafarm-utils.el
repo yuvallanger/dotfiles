@@ -87,6 +87,22 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
                 feeds)
         #'kakafarm/elfeed-compare-feeds-urls))
 
+(defun kakafarm/ffap-browse-urls ()
+  "Open all visible URLs."
+  (interactive)
+
+  (let* ((urls (mapcar 'car (ffap-menu-rescan)))
+         (urls-newlined (mapcar (lambda (url) (concat url "\n"))
+                                urls))
+         (prompt (format "Open URLs? [y/n]
+
+%s"
+                         (apply 'concat
+                                urls-newlined))))
+    (when (y-or-n-p prompt)
+      (dolist (url urls)
+        (browse-url url)))))
+
 (defun kakafarm/kill-ring-save-unlines ()
   "Like `kill-ring-save', but also unlines and trims the newly killed stuff."
   (interactive)
@@ -131,11 +147,10 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
   (with-temp-buffer
     (insert-file-contents org-filename)
     (org-element-map (org-element-parse-buffer) 'keyword
-                     (lambda (keyword)
-                       (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
-                            (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
-                     nil
-                     t)))
+      (lambda (keyword)
+        (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
+             (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
+      nil t)))
 
 (defun kakafarm/org-roam-sitemap (title list-of-org-links)
   (message (format "kakafarm/org-roam-sitemap title: %S; list-of-links: %S\n"
