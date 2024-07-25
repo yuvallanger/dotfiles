@@ -4,6 +4,7 @@
       '(
         ("https://acdw.casa/feed.xml" acdw activitypub blog craftering)
         ("https://analognowhere.com/feed/rss.xml" comics unixsurrealism)
+        ("https://api.substack.com/feed/podcast/462466.rss" blog foss freesoftware linux lunduke news opensource unix)
         ("https://beej.us/blog/rss.xml" blog programming)
         ("https://blog.benoitj.ca/posts/index.xml" blog craftering)
         ("https://blog.cleancoder.com/atom.xml" blog programming unclebob)
