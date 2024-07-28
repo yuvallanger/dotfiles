@@ -64,7 +64,11 @@
   :defer
   :bind
   ;;((";" . #'kakafarm/easy-underscore))
-  ("M-x" . helm-M-x)
+  (
+   ("C-c w" . kakafarm/multi-vterm-weechat)
+   ("C-c p" . kakafarm/percent-read)
+   ("M-x" . helm-M-x)
+   )
   )
 
 (use-package fontset
@@ -76,7 +80,15 @@
   :defer t)
 
 (use-package helpful
-  :defer t)
+  :defer t
+  :bind
+  (
+   ("C-h f" . helpful-function)
+   ("C-h k" . helpful-key)
+   ("C-h m" . helpful-mode)
+   ("C-h v" . helpful-variable)
+   )
+  )
 
 (use-package orderless
   :defer t
@@ -145,6 +157,7 @@
          eww-after-render
          fundamental-mode
          help-mode
+         helpful-mode
          lisp-mode
          nov-mode
          text-mode
