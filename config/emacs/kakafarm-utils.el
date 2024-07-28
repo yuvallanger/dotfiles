@@ -150,7 +150,8 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
       (lambda (keyword)
         (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
              (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
-      nil t)))
+      nil
+      t)))
 
 (defun kakafarm/org-roam-sitemap (title list-of-org-links)
   (message (format "kakafarm/org-roam-sitemap title: %S; list-of-links: %S\n"
@@ -237,6 +238,21 @@ who-knows-where-and-who."
                                         (region-end))
     (pulse-momentary-highlight-region (mark)
                                       (point))))
+
+(defun kakafarm/multi-vterm-weechat ()
+  "Either start a weechat vterm buffer, or switch to it if it already exists."
+
+  (interactive)
+
+  (let* ((vterm-shell (expand-file-name "~/bin/w"))
+         (weechat-buffer-name "weechat")
+         (maybe-weechat-buffer (get-buffer "weechat")))
+    (cond
+     ((multi-vterm-buffer-exist-p maybe-weechat-buffer)
+      (switch-to-buffer maybe-weechat-buffer))
+     (t
+      (multi-vterm)
+      (rename-buffer weechat-buffer-name)))))
 
 (defun kakafarm/sentence-end-double-nilify-for-read-only-buffers ()
   "Set `sentence-end-double-space' in read-only buffer to `nil'."
