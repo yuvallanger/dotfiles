@@ -80,7 +80,7 @@
   (
    :map global-map
    ("C-c <RET> <RET>" . multi-vterm)
-   ("C-c m m" . multi-vterm)
+   ("C-c m m"         . multi-vterm)
    )
   :commands
   (
@@ -146,7 +146,7 @@
   :defer t
   :bind
   (
-   ("C-c f a p" . ffap-menu)
+   ("C-c f a p"   . ffap-menu)
    ("C-c f f a p" . kakafarm/ffap-browse-urls)
    ))
 
@@ -251,7 +251,7 @@
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((scheme . t)
+   '((scheme     . t)
      (emacs-lisp . t))))
 
 (use-package org-roam
