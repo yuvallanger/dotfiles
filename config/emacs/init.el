@@ -11,7 +11,9 @@
 
 (require 'benchmark-init)
 
-(load (locate-user-emacs-file "kakafarm-utils.el"))
+(add-to-list 'load-path (concat user-emacs-directory
+                                "local-packages/emacs-kakafarm/"))
+
 (load (locate-user-emacs-file "local-stuff.el"))
 
 (setq package-archives '())

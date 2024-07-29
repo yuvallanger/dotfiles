@@ -1,4 +1,33 @@
-;;; -*- lexical-binding:t -*-
+;;; kakafarm.el --- Various functions for my GNU Emacs configuration.  -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2024  Yuval Langer
+
+;; Author: Yuval Langer <yuval.langer@gmail.com>
+;; Version: 0.0.0
+;; Keywords: Personal, Auxiliary
+;; URL: https://codeberg.org/kakafarm/dotfiles/
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; Do not expect any of these functions to remain stable.
+;;
+;; The functions are ordered in an alphabetic order.  I do not know
+;; if it makes much sense, but so be it.
+
+;;; Code:
 
 (require 'cl-lib)
 
@@ -147,11 +176,11 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
   (with-temp-buffer
     (insert-file-contents org-filename)
     (org-element-map (org-element-parse-buffer) 'keyword
-      (lambda (keyword)
-        (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
-             (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
-      nil
-      t)))
+                     (lambda (keyword)
+                       (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
+                            (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
+                     nil
+                     t)))
 
 (defun kakafarm/org-roam-sitemap (title list-of-org-links)
   (message (format "kakafarm/org-roam-sitemap title: %S; list-of-links: %S\n"
@@ -260,11 +289,9 @@ who-knows-where-and-who."
 
   (interactive)
 
-  (require 'multi-vterm)
-
   (let* ((vterm-shell (expand-file-name "~/bin/w"))
          (weechat-buffer-name "weechat")
-         (maybe-weechat-buffer (get-buffer "weechat")))
+         (maybe-weechat-buffer (get-buffer weechat-buffer-name)))
     (cond
      ((multi-vterm-buffer-exist-p maybe-weechat-buffer)
       (switch-to-buffer maybe-weechat-buffer))
@@ -373,3 +400,10 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
       (goto-char 1)
       (replace-regexp "\n+" " ")
       (buffer-string)))))
+
+(provide 'kakafarm)
+
+;;; Local Variables:
+;; read-symbol-shorthands: (("kf/" . "kakafarm/"))
+;; End:
+;;; kakafarm.el ends here.
