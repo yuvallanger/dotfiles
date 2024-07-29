@@ -6,6 +6,7 @@
  (gnu packages calendar)
  (gnu packages certs)
  (gnu packages check)
+ (gnu packages chez)
  (gnu packages ci)
  (gnu packages code)
  (gnu packages curl)
@@ -27,6 +28,8 @@
  (gnu packages mail)
  (gnu packages man)
  (gnu packages maths)
+ (gnu packages mes)
+ (gnu packages ncdu)
  (gnu packages pdf)
  (gnu packages python-check)
  (gnu packages python-xyz)
@@ -42,6 +45,7 @@
  (gnu packages toys)
  (gnu packages version-control)
  (gnu packages video)
+ (gnu packages web-browsers)
 
  (kakafarm packages emacs-xyz)
  (kakafarm packages guile-xyz))
@@ -55,11 +59,13 @@
   bsd-games
   c-intro-and-ref
   cdecl
+  chez-scheme
   curl
   emacs
   emacs-ansi
   emacs-arei
   emacs-benchmark-init
+  emacs-buttercup
   emacs-corfu
   emacs-corfu-doc
   emacs-darkroom
@@ -80,6 +86,7 @@
   emacs-flycheck
   emacs-flycheck-haskell
   emacs-flycheck-package
+  emacs-geiser-chez
   emacs-geiser-guile
   emacs-geiser-racket
   emacs-ggtags
@@ -87,6 +94,7 @@
   emacs-gruvbox-theme
   emacs-guix
   emacs-helm
+  emacs-helpful
   emacs-htmlize
   emacs-hy-mode
   emacs-hyperbole
@@ -131,6 +139,7 @@
   glibc
   glibc-locales
   gnu-c-manual
+  gnu-make
   gnu-standards
   gnupg
   gnutls
@@ -177,11 +186,14 @@
   laminar
   le-certs
   libhdate
+  links
   man-pages
   man-pages-posix
+  mes
   mpv
   mumi
   mythes
+  ncdu
   nss-certs
   pandoc
   poppler
