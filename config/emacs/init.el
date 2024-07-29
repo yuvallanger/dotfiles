@@ -273,10 +273,12 @@
          ("C-c l" . dictionary-lookup-definition)))
 
 (use-package undo-tree
-  :defer
+  :defer t
   :config
   (global-undo-tree-mode 1)
-  (setq undo-tree-auto-save-history nil))
+  (setq undo-tree-auto-save-history nil)
+  :bind
+  ("C-x u" . undo-tree-visualize))
 
 (use-package scheme-mode
   :defer t
