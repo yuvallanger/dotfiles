@@ -209,11 +209,27 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
 
 (defun kakafarm/percent-read ()
   "Display percent read by current cursor location vs. total characters in file."
+
   (interactive)
+
   (message "%.2f%%"
            (* 100
               (/ (float (- (point) 1))
                  (+ 1 (buffer-size))))))
+
+(defun kakafarm/percent-read-point-min-max ()
+  "Display percent read by current cursor location vs. place within (point-min) and (point-max)."
+
+  (interactive)
+
+  (let* ((our-location (point))
+         (our-location-0-indexed (- our-location 1)))
+    (message "%.2f%%"
+             (* 100
+                (/ (float (- our-location-0-indexed
+                             (point-min)))
+                   (- (point-max)
+                      (point-min)))))))
 
 (defun kakafarm/recenter-top-bottom (original-function &rest arguments)
   "Move view such that point is 4 lines from the top of the frame when function is `recenter-top-bottom'."
@@ -243,6 +259,8 @@ who-knows-where-and-who."
   "Either start a weechat vterm buffer, or switch to it if it already exists."
 
   (interactive)
+
+  (require 'multi-vterm)
 
   (let* ((vterm-shell (expand-file-name "~/bin/w"))
          (weechat-buffer-name "weechat")

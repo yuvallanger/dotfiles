@@ -17,12 +17,6 @@
 (setq package-archives '())
 (require 'use-package)
 
-(dolist (x '("C-c m m"
-             "C-c m <RET>"
-             "C-c <RET> m"
-             "C-c <RET> <RET>"))
-  (keymap-global-set x 'multi-vterm))
-
 '(use-package company
    :defer t
    :init
@@ -48,12 +42,17 @@
 
 (use-package elfeed
   :defer t
-  :init
+  :config
+  ;; XXX: Not sure if I want it to be a `kakafarm/elfeed-feeds'
+  ;; variable that is then set to `elfeed-feeds' in the `:custom'
+  ;; section, or loaded inside the `elfeed-feeds.el' file using the
+  ;; `customize-set-value' function.
   (load (locate-user-emacs-file "elfeed-feeds.el"))
   :custom
   (elfeed-curl-max-connections 10)
   (elfeed-search-filter "@2-months +unread")
-  (elfeed-feeds kakafarm/elfeed-feeds))
+  ;;(elfeed-feeds kakafarm/elfeed-feeds)
+  )
 
 '(use-package elfeed-goodies
    :config
@@ -61,13 +60,30 @@
 
 (use-package emacs
   :ensure nil
-  :defer
   :bind
-  ;;((";" . #'kakafarm/easy-underscore))
   (
-   ("C-c w" . kakafarm/multi-vterm-weechat)
+   :map global-map
    ("C-c p" . kakafarm/percent-read)
-   ("M-x" . helm-M-x)
+
+   ;; (";" . #'kakafarm/easy-underscore)
+   )
+  )
+
+(use-package multi-vterm
+  :defer t
+  :init
+  (bind-key "C-c C-w" 'kakafarm/multi-vterm-weechat)
+  (bind-key "C-c w" 'kakafarm/multi-vterm-weechat)
+  :bind
+  (
+   :map global-map
+   ("C-c <RET> <RET>" . multi-vterm)
+   ("C-c m m" . multi-vterm)
+   )
+  :commands
+  (
+   multi-vterm
+   multi-vterm-buffer-exist-p
    )
   )
 
@@ -77,7 +93,13 @@
   (set-fontset-font t 'hebrew "Noto Sans Hebrew"))
 
 (use-package helm
-  :defer t)
+  :defer t
+  :bind
+  (
+   :map global-map
+   ("M-x" . helm-M-x)
+   )
+  )
 
 (use-package helpful
   :defer t
