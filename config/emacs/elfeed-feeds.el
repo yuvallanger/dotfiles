@@ -97,5 +97,6 @@
                        ("https://www.snamellit.com/rss.xml" blog craftering)
                        ("https://www.the7eye.org.il/feed" israel news the7eye)
                        ("https://www.wheresyoured.at/rss/" blog news tech)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UC4fQ-Cy8UpLPMwehPg-8ltQ" andrewgold csj podcast youtube)
                        ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzREuchzOqiawpEpvEM0Tyg" atheism islam youtube)
                        ))
