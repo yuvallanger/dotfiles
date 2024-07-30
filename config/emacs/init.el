@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (setq gc-cons-threshold (* 1024 1024 1024))
 
 (setq read-process-output-max (string-to-number
@@ -71,60 +73,6 @@
    )
   )
 
-(use-package multi-vterm
-  :defer t
-  :init
-  (bind-key "C-c C-w" 'kakafarm/multi-vterm-weechat)
-  (bind-key "C-c w" 'kakafarm/multi-vterm-weechat)
-  :bind
-  (
-   :map global-map
-   ("C-c <RET> <RET>" . multi-vterm)
-   ("C-c m m"         . multi-vterm)
-   )
-  :commands
-  (
-   multi-vterm
-   multi-vterm-buffer-exist-p
-   )
-  )
-
-(use-package fontset
-  :defer t
-  :config
-  (set-fontset-font t 'hebrew "Noto Sans Hebrew"))
-
-(use-package helm
-  :defer t
-  :bind
-  (
-   :map global-map
-   ("M-x" . helm-M-x)
-   )
-  )
-
-(use-package helpful
-  :defer t
-  :bind
-  (
-   ("C-h f" . helpful-function)
-   ("C-h k" . helpful-key)
-   ("C-h m" . helpful-mode)
-   ("C-h v" . helpful-variable)
-   )
-  )
-
-(use-package orderless
-  :defer t
-  :custom
-  (completion-styles
-   '(orderless
-     basic))
-  (completion-category-overrides
-   '((file (styles
-            basic
-            partial-completion)))))
-
 (use-package erc
   :defer t
   :custom
@@ -150,10 +98,10 @@
    ("C-c f f a p" . kakafarm/ffap-browse-urls)
    ))
 
-'(use-package mutli-vterm
-   :defer t
-   :bind
-   (("C-q" . vterm-send-next-key)))
+(use-package fontset
+  :defer t
+  :config
+  (set-fontset-font t 'hebrew "Noto Sans Hebrew"))
 
 (use-package geiser
   :defer t
@@ -188,11 +136,63 @@
          w3m-mode
          ))
 
+(use-package helm
+  :defer t
+  :bind
+  (
+   :map global-map
+   ("M-x" . helm-M-x)
+   )
+  )
+
+(use-package helpful
+  :defer t
+  :bind
+  (
+   ("C-h f" . helpful-function)
+   ("C-h k" . helpful-key)
+   ("C-h m" . helpful-mode)
+   ("C-h v" . helpful-variable)
+   )
+  )
+
 (use-package icomplete
   :defer t
   :config
   ;; Display completions continuously in minibuffer.
   (icomplete-mode 1))
+
+(use-package info
+  :defer t
+  :custom
+  (Info-additional-directory-list '("~/infopath/")))
+
+(use-package kakafarm
+  ;; :demand t
+  :bind
+  (
+   :map global-map
+   ("C-c C-w" . kakafarm/multi-vterm-weechat)
+   ("C-c w"   . kakafarm/multi-vterm-weechat)
+   )
+  )
+
+(use-package multi-vterm
+  ;; :demand t
+  :bind
+  (
+   :map global-map
+   ("C-c <RET> <RET>" . multi-vterm)
+   ("C-c m m"         . multi-vterm)
+   :map vterm-mode-map
+   ("C-q" . vterm-send-next-key)
+   )
+  :commands
+  (
+   multi-vterm
+   multi-vterm-buffer-exist-p
+   )
+  )
 
 (use-package magit-todos
   :defer t
@@ -233,11 +233,6 @@
   ;;; https://emacs.stackexchange.com/questions/34322/set-default-coding-system-utf-8
   (set-language-environment "utf-8"))
 
-(use-package info
-  :defer t
-  :custom
-  (Info-additional-directory-list '("~/infopath/")))
-
 '(use-package nano-tts
    :defer t
    :hook (eww-after-render nov-mode Info-mode))
@@ -245,6 +240,17 @@
 (use-package nov
   :defer t
   :mode ("\\.epub\\'" . nov-mode))
+
+(use-package orderless
+  :defer t
+  :custom
+  (completion-styles
+   '(orderless
+     basic))
+  (completion-category-overrides
+   '((file (styles
+            basic
+            partial-completion)))))
 
 (use-package org
   :defer t
@@ -265,13 +271,6 @@
   ;;(org-roam-db-autosync-mode)
   )
 
-;; XXX: Disabled.
-'(use-package parinfer
-   :defer t
-   :hook (emacs-lisp-mode
-          lisp-mode
-          scheme-mode))
-
 (use-package paredit
   :defer t
   :hook (emacs-lisp-mode
@@ -282,6 +281,13 @@
   :defer t
   :config
   (show-paren-mode))
+
+;; XXX: Disabled.
+'(use-package parinfer
+   :defer t
+   :hook (emacs-lisp-mode
+          lisp-mode
+          scheme-mode))
 
 (use-package rainbow-delimiters
   :defer t
@@ -295,14 +301,6 @@
   :bind (("C-S-t" . recentf-open-files)
          ("C-c t" . recentf-open-files)
          ("C-c l" . dictionary-lookup-definition)))
-
-(use-package undo-tree
-  :defer t
-  :config
-  (global-undo-tree-mode 1)
-  (setq undo-tree-auto-save-history nil)
-  :bind
-  ("C-x u" . undo-tree-visualize))
 
 (use-package scheme-mode
   :defer t
@@ -328,6 +326,14 @@
                (lambda () "Switch to text-mode."
                  (text-mode)))
   )
+
+(use-package undo-tree
+  :defer t
+  :config
+  (global-undo-tree-mode 1)
+  (setq undo-tree-auto-save-history nil)
+  :bind
+  ("C-x u" . undo-tree-visualize))
 
 (use-package window
   :defer t

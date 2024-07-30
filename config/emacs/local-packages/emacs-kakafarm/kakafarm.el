@@ -289,15 +289,15 @@ who-knows-where-and-who."
 
   (interactive)
 
-  (let* ((vterm-shell (expand-file-name "~/bin/w"))
-         (weechat-buffer-name "weechat")
+  (let* ((weechat-buffer-name "weechat")
          (maybe-weechat-buffer (get-buffer weechat-buffer-name)))
     (cond
      ((multi-vterm-buffer-exist-p maybe-weechat-buffer)
       (switch-to-buffer maybe-weechat-buffer))
      (t
-      (multi-vterm)
-      (rename-buffer weechat-buffer-name)))))
+      (let ((vterm-shell (expand-file-name "~/bin/w")))
+        (multi-vterm)
+        (rename-buffer weechat-buffer-name))))))
 
 (defun kakafarm/sentence-end-double-nilify-for-read-only-buffers ()
   "Set `sentence-end-double-space' in read-only buffer to `nil'."
@@ -404,6 +404,6 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
 (provide 'kakafarm)
 
 ;;; Local Variables:
-;; read-symbol-shorthands: (("kf/" . "kakafarm/"))
-;; End:
+;;; read-symbol-shorthands: (("kf/" . "kakafarm/"))
+;;; End:
 ;;; kakafarm.el ends here.
