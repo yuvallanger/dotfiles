@@ -31,6 +31,7 @@
 
 (require 'cl-lib)
 
+;;;###autoload
 (defun kakafarm/advice-remove-all (function)
   "Remove every advice function from FUNCTION."
   (advice-mapc
@@ -39,6 +40,7 @@
                     advice-function))
    function))
 
+;;;###autoload
 (defun kakafarm/call-process-with-string-as-input (program &optional input-string &rest args)
   (with-temp-buffer
     (let ((our-output-buffer (current-buffer)))
@@ -64,13 +66,14 @@
                args)))
     (buffer-string)))
 
-(list (kakafarm/call-process-with-string-as-input "cat"
-                                                  "cat says moo")
-      (kakafarm/call-process-with-string-as-input "echo"
-                                                  nil
-                                                  "-n"
-                                                  "echo echo echo"))
+;; (list (kakafarm/call-process-with-string-as-input "cat"
+;;                                                   "cat says moo")
+;;       (kakafarm/call-process-with-string-as-input "echo"
+;;                                                   nil
+;;                                                   "-n"
+;;                                                   "echo echo echo"))
 
+;;;###autoload
 (defun kakafarm/drop-while (lst predp)
   (named-let loop ((lst lst))
     (cond
@@ -81,6 +84,7 @@
      (t
       (loop (cdr lst))))))
 
+;;;###autoload
 (defun kakafarm/easy-underscore (arg)
   "Convert all inputs of semicolon to an underscore
 If given ARG, then it will insert an actual semicolon.
@@ -92,6 +96,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
       (insert ";")
     (insert "_")))
 
+;;;###autoload
 (defun kakafarm/elfeed-sort-feed-tags (a-feed)
   (cond
    ((stringp a-feed)
@@ -106,16 +111,19 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
            (tags-as-symbols (mapcar #'intern sorted-tags)))
       (cons feed-url tags-as-symbols)))))
 
+;;;###autoload
 (defun kakafarm/elfeed-compare-feeds-urls (feed-a feed-b)
   (string-lessp (car feed-a)
                 (car feed-b)))
 
+;;;###autoload
 (defun kakafarm/elfeed-sort-feeds (feeds)
   "Sort A-FEED, an `elfeed-feeds' list."
   (sort (mapcar #'kakafarm/elfeed-sort-feed-tags
                 feeds)
         #'kakafarm/elfeed-compare-feeds-urls))
 
+;;;###autoload
 (defun kakafarm/ffap-browse-urls ()
   "Open all visible URLs."
   (interactive)
@@ -132,6 +140,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
       (dolist (url urls)
         (browse-url url)))))
 
+;;;###autoload
 (defun kakafarm/kill-ring-save-unlines ()
   "Like `kill-ring-save', but also unlines and trims the newly killed stuff."
   (interactive)
@@ -147,6 +156,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
         (insert trimmed)
         (kill-region (point-min) (point-max))))))
 
+;;;###autoload
 (defun kakafarm/list-all-http-or-https ()
   (interactive)
   (dolist (url (let* ((list-of-lines
@@ -161,17 +171,20 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
                             :initial-value '())))
     (message "%s" url)))
 
+;;;###autoload
 (defun kakafarm/org-roam-keyword-is-filetags-p (keyword-node)
   (equal (org-element-property :key
                                keyword-node)
          "FILETAGS"))
 
+;;;###autoload
 (defun kakafarm/org-roam-filetags-keyword-is-publishable-p (filestags-keyword-node)
   (seq-contains-p (split-string (org-element-property :value
                                                       filestags-keyword-node)
                                 ":")
                   "publish"))
 
+;;;###autoload
 (defun kakafarm/org-roam-publishable-node-p (org-filename)
   (with-temp-buffer
     (insert-file-contents org-filename)
@@ -182,6 +195,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
                      nil
                      t)))
 
+;;;###autoload
 (defun kakafarm/org-roam-sitemap (title list-of-org-links)
   (message (format "kakafarm/org-roam-sitemap title: %S; list-of-links: %S\n"
                    title
@@ -218,6 +232,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
    ;;"file:sitemap.svg\n"
    ))
 
+;;;###autoload
 (defun kakafarm/org-roam-publication-wrapper (plist filename pubdir)
   ;; (when (kakafarm/org-roam-publishable-node-p filename)
   ;;   nil)
@@ -228,6 +243,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
   (setq kakafarm/org-roam-project-publish-time
         (cadr (current-time))))
 
+;;;###autoload
 (defun kakafarm/org-roam-custom-link-builder (node)
   (let ((node-file (org-roam-node-file node)))
     ;; (when (kakafarm/org-roam-publishable-node-p node-file)
@@ -236,6 +252,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
     (concat (file-name-base node-file)
             ".html")))
 
+;;;###autoload
 (defun kakafarm/percent-read ()
   "Display percent read by current cursor location vs. total characters in file."
 
@@ -246,6 +263,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
               (/ (float (- (point) 1))
                  (+ 1 (buffer-size))))))
 
+;;;###autoload
 (defun kakafarm/percent-read-point-min-max ()
   "Display percent read by current cursor location vs. place within (point-min) and (point-max)."
 
@@ -260,6 +278,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
                    (- (point-max)
                       (point-min)))))))
 
+;;;###autoload
 (defun kakafarm/recenter-top-bottom (original-function &rest arguments)
   "Move view such that point is 4 lines from the top of the frame when function is `recenter-top-bottom'."
 
@@ -269,6 +288,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
    (t
     (apply original-function arguments))))
 
+;;;###autoload
 (defun kakafarm/pulse-current-region (&rest _)
   "Pulse the selected bit, either the marked region or if there's no
 mark, the bit between mark and point... or something like
@@ -284,6 +304,7 @@ who-knows-where-and-who."
     (pulse-momentary-highlight-region (mark)
                                       (point))))
 
+;;;###autoload
 (defun kakafarm/multi-vterm-weechat ()
   "Either start a weechat vterm buffer, or switch to it if it already exists."
 
@@ -299,6 +320,7 @@ who-knows-where-and-who."
         (multi-vterm)
         (rename-buffer weechat-buffer-name))))))
 
+;;;###autoload
 (defun kakafarm/sentence-end-double-nilify-for-read-only-buffers ()
   "Set `sentence-end-double-space' in read-only buffer to `nil'."
   (when buffer-read-only
@@ -306,6 +328,7 @@ who-knows-where-and-who."
                 nil)))
 
 ;; Uploading README.html from README.org stuff.
+;;;###autoload
 (defun kakafarm/srht-repo-id (repository-name)
   "Returns the unique numerical I Dentification associated with
 every sourcehut repository.
@@ -337,6 +360,7 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
         (message "Repository ID: %S" repository-id)
       repository-id)))
 
+;;;###autoload
 (defun kakafarm/srht-set-readme (repository-id)
   "Export the current file to HTML and set the result as README for
 the sourcehut repo identified by ID.
@@ -370,6 +394,7 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
                                                 "-d@-"
                                                 "https://git.sr.ht/query")))
 
+;;;###autoload
 (defun kakafarm/take-while (lst predp)
   (named-let loop ((lst lst)
                    (accumulator '()))
@@ -382,6 +407,7 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
       (loop (cdr lst)
             accumulator)))))
 
+;;;###autoload
 (defun kakafarm/url-response-to-body (response)
   (cdr (kakafarm/drop-while
         (string-split response
@@ -389,6 +415,7 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
         (lambda (line)
           (not (string-blank-p line))))))
 
+;;;###autoload
 (defun kakafarm/yank-unlines ()
   "`yank' with each consecutive newlines converted to a single space, and trim both ends."
   (interactive)
