@@ -52,6 +52,7 @@
   ;; section, or loaded inside the `elfeed-feeds.el' file using the
   ;; `customize-set-value' function.
   (load (locate-user-emacs-file "elfeed-feeds.el"))
+  (customize-set-value elfeed-curl-program-name (expand-file-name "~/.guix-profile/bin/curl"))
   :custom
   (elfeed-curl-max-connections 10)
   (elfeed-search-filter "@2-months +unread")
@@ -168,7 +169,7 @@
   (Info-additional-directory-list '("~/infopath/")))
 
 (use-package kakafarm
-  ;; :demand t
+  :demand t
   :bind
   (
    :map global-map
