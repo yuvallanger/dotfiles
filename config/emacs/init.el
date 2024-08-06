@@ -52,11 +52,11 @@
   ;; section, or loaded inside the `elfeed-feeds.el' file using the
   ;; `customize-set-value' function.
   (load (locate-user-emacs-file "elfeed-feeds.el"))
-  (customize-set-value elfeed-curl-program-name (expand-file-name "~/.guix-profile/bin/curl"))
+  (customize-set-value 'elfeed-curl-program-name
+                       (expand-file-name "~/.guix-profile/bin/curl"))
   :custom
-  (elfeed-curl-max-connections 10)
-  (elfeed-search-filter "@2-months +unread")
-  ;;(elfeed-feeds kakafarm/elfeed-feeds)
+  ;; (elfeed-curl-max-connections 10)
+  (elfeed-search-filter "+unread")
   )
 
 '(use-package elfeed-goodies
@@ -305,6 +305,9 @@
 
 (use-package scheme-mode
   :defer t
+  :config
+  ;; TODO: Did it even work?!
+  (add-hook 'scheme-mode-hook 'hs-minor-mode)
   :mode "\\.\\(scm\\|sxml\\)\\'"
   ;; :bind (:map scheme-mode-map
   ;;             ("C-c C-e" . arei-mode-map)
