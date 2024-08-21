@@ -54,9 +54,10 @@
   (load (locate-user-emacs-file "elfeed-feeds.el"))
   (customize-set-value 'elfeed-curl-program-name
                        (expand-file-name "~/.guix-profile/bin/curl"))
-  ;; :custom
+  :custom
   ;; (elfeed-curl-max-connections 10)
   ;; (elfeed-search-filter "+unread")
+  (elfeed-curl-program-name (expand-file-name "~/.guix-profile/bin/curl"))
   )
 
 '(use-package elfeed-goodies
@@ -74,6 +75,14 @@
    )
   :config
   (set-register ?i `(file . ,(locate-user-emacs-file "init.el")))
+  :custom
+  (inhibit-startup-screen t)
+  )
+
+(use-package ement
+  :custom
+  (ement-auto-sync nil)
+  (ement-save-sessions t)
   )
 
 (use-package erc
@@ -114,7 +123,12 @@
     (setq geiser-active-implementations '(guile))
     (global-unset-key "C-c C-a")
     (unbind-key "C-c C-e" geiser-mode-map)
-    (unbind-key "C-c C-a" geiser-mode-map)))
+    (unbind-key "C-c C-a" geiser-mode-map))
+  :custom
+  (geiser-default-implementation 'guile)
+  (geiser-mode-auto-p nil)
+  (geiser-repl-per-project-p t)
+  )
 
 (use-package greader
   :defer t
@@ -180,33 +194,36 @@
    )
   )
 
-(use-package multi-vterm
-  ;; :demand t
-  :bind
-  (
-   :map global-map
-   ("C-c <RET> <RET>" . multi-vterm)
-   ("C-c m m"         . multi-vterm)
-   :map vterm-mode-map
-   ("C-q" . vterm-send-next-key)
-   )
-  :commands
-  (
-   multi-vterm
-   multi-vterm-buffer-exist-p
-   )
+(use-package magit
+  :custom
+  (magit-diff-refine-hunk t)
+  (magit-diff-refine-ignore-whitespace nil)
   )
 
 (use-package magit-todos
   :defer t
   :after magit
-  :config (magit-todos-mode 1))
+  :config
+  (magit-todos-mode 1)
+  :custom
+  (magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
+  )
 
 (use-package mastodon
   :defer t
   :init
   (setq mastodon-active-user "kakafarm"
         mastodon-instance-url "https://emacs.ch/"))
+
+(use-package menu-bar
+  :custom
+  (menu-bar-mode nil)
+  )
+
+(use-package mode-line
+  :custom
+  (mode-line-percent-position '(6 "%q"))
+  )
 
 (use-package modus-themes
   :defer t
@@ -233,16 +250,41 @@
 (use-package mule
   :defer t
   :config
-  ;;; https://emacs.stackexchange.com/questions/34322/set-default-coding-system-utf-8
+;;; https://emacs.stackexchange.com/questions/34322/set-default-coding-system-utf-8
   (set-language-environment "utf-8"))
+
+(use-package multi-vterm
+  ;; :demand t
+  :bind
+  (
+   :map global-map
+   ("C-c <RET> <RET>" . multi-vterm)
+   ("C-c m m"         . multi-vterm)
+   :map vterm-mode-map
+   ("C-q" . vterm-send-next-key)
+   )
+  :commands
+  (
+   multi-vterm
+   multi-vterm-buffer-exist-p
+   )
+  )
 
 '(use-package nano-tts
    :defer t
-   :hook (eww-after-render nov-mode Info-mode))
+   :hook (eww-after-render nov-mode Info-mode)
+   :custom
+   (nano-tts-words-per-minute 225)
+   )
 
 (use-package nov
   :defer t
   :mode ("\\.epub\\'" . nov-mode))
+
+(use-package opml-to-elfeed-feeds
+  :custom
+  (opml-to-elfeed-feeds-elfeed-feeds nil t)
+  )
 
 (use-package orderless
   :defer t
@@ -261,17 +303,40 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((scheme     . t)
-     (emacs-lisp . t))))
+     (emacs-lisp . t)))
+  :custom
+  (org-agenda-files (list (expand-file-name "~/mine/org/")))
+  (org-default-notes-file (expand-file-name "~/mine/org/org.org"))
+  (org-directory (expand-file-name "~/mine/org/"))
+  (org-export-use-babel nil)
+  (org-html-postamble t)
+  (org-html-postamble-format '(("en" "<p class=\"author\">Author: %a</p>\12<p class=\"date\">Date: %d</p>\12<p class=\"creator\">%c</p>\12<p class=\"validation\">%v</p>")))
+  (org-structure-template-alist '(
+                                  ("a" . "export ascii")
+                                  ("c" . "center")
+                                  ("C" . "comment")
+                                  ("e" . "example")
+                                  ("E" . "export")
+                                  ("h" . "export html")
+                                  ("l" . "export latex")
+                                  ("q" . "quote")
+                                  ("s" . "src")
+                                  ("v" . "verse")
+                                  ("g" . "src scheme :session moo :results output :tangle eopl3.scm")
+                                  ))
+  )
 
 (use-package org-roam
   :defer t
-  :custom (org-roam-directory "~/mine/roam/")
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert))
   :config
   ;;(org-roam-db-autosync-enable)
   ;;(org-roam-db-autosync-mode)
+  :custom
+  (org-roam-directory "~/mine/roam/")
+  (org-roam-graph-viewer '(lambda (x) nil))
   )
 
 (use-package paredit
@@ -303,7 +368,11 @@
   (recentf-mode 1)
   :bind (("C-S-t" . recentf-open-files)
          ("C-c t" . recentf-open-files)
-         ("C-c l" . dictionary-lookup-definition)))
+         ("C-c l" . dictionary-lookup-definition))
+  :custom
+  (recentf-max-menu-items 100)
+  (recentf-max-saved-items 100)
+  )
 
 (use-package scheme-mode
   :defer t
@@ -314,6 +383,11 @@
   ;; :bind (:map scheme-mode-map
   ;;             ("C-c C-e" . arei-mode-map)
   ;;             ("C-c C-a" . arei))
+  )
+
+(use-package shr
+  :custom
+  (shr-width 75)
   )
 
 (use-package simple
@@ -331,6 +405,8 @@
                :after
                (lambda () "Switch to text-mode."
                  (text-mode)))
+  :custom
+  (global-visual-line-mode t)
   )
 
 (use-package undo-tree
@@ -341,12 +417,22 @@
   :bind
   ("C-x u" . undo-tree-visualize))
 
+(use-package vterm
+  :custom
+  (vterm-environment '("LC_ALL=en_IL.utf8"))
+  )
+
+(use-package whitespace-cleanup
+  :custom
+  (global-whitespace-cleanup-mode t)
+  )
+
 (use-package window
   :defer t
   :config
   '(advice-add 'recenter-top-bottom
-              :around
-              'kakafarm/recenter-top-bottom))
+               :around
+               'kakafarm/recenter-top-bottom))
 
 (progn
 ;;; Emacs From Scratch
