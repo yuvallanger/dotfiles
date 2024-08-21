@@ -54,9 +54,9 @@
   (load (locate-user-emacs-file "elfeed-feeds.el"))
   (customize-set-value 'elfeed-curl-program-name
                        (expand-file-name "~/.guix-profile/bin/curl"))
-  :custom
+  ;; :custom
   ;; (elfeed-curl-max-connections 10)
-  (elfeed-search-filter "+unread")
+  ;; (elfeed-search-filter "+unread")
   )
 
 '(use-package elfeed-goodies
@@ -72,6 +72,8 @@
 
    ;; (";" . #'kakafarm/easy-underscore)
    )
+  :config
+  (set-register ?i `(file . ,(locate-user-emacs-file "init.el")))
   )
 
 (use-package erc
@@ -342,7 +344,7 @@
 (use-package window
   :defer t
   :config
-  (advice-add 'recenter-top-bottom
+  '(advice-add 'recenter-top-bottom
               :around
               'kakafarm/recenter-top-bottom))
 
