@@ -500,3 +500,4 @@
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
+(put 'scroll-left 'disabled nil)

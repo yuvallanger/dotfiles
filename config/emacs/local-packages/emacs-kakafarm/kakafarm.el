@@ -73,6 +73,13 @@
 ;;                                                   "-n"
 ;;                                                   "echo echo echo"))
 
+(defun kakafarm/copy-elfeed-links ()
+  (interactive)
+
+  (message (string-trim (apply 'concat (mapcar (lambda (entry)
+                                                 (concat (elfeed-entry-link entry) "\n"))
+                                               (elfeed-search-selected))))))
+
 ;;;###autoload
 (defun kakafarm/drop-while (lst predp)
   (named-let loop ((lst lst))

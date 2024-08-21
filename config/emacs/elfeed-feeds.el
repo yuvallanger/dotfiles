@@ -86,6 +86,7 @@
                        ("https://whatsup.org.il/backend.php?utf8=1" israel linux whatsup)
                        ("https://www.accursedfarms.com/rss/3-accursed-farms.xml/" accursedfarms blog)
                        ("https://www.andrewgoldheretics.com/feed" andrewgold blog csj)
+                       ("https://www.astralcodexten.com/feed" astralcodexten blog csj)
                        ("https://www.blipanika.co.il/?feed=rss2" israel scifi)
                        ("https://www.debian.org/News/news" debian linux news)
                        ("https://www.goominet.com/unspeakable-vault/?type=103" comics)
