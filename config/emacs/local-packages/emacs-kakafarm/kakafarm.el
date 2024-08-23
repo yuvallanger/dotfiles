@@ -73,12 +73,19 @@
 ;;                                                   "-n"
 ;;                                                   "echo echo echo"))
 
+;;;###autoload
 (defun kakafarm/copy-elfeed-links ()
   (interactive)
 
-  (message (string-trim (apply 'concat (mapcar (lambda (entry)
-                                                 (concat (elfeed-entry-link entry) "\n"))
-                                               (elfeed-search-selected))))))
+  (cl-letf* ((elfeed-entry-to-url-nl (lambda (entry)
+                                       (concat (elfeed-entry-link entry) "\n")))
+             (all-urls-string (apply 'concat
+                                     (mapcar elfeed-entry-to-url-nl
+                                             (elfeed-search-selected)))))
+    (with-temp-buffer
+      (insert all-urls-string)
+      (kill-region (point-min)
+                   (point-max)))))
 
 ;;;###autoload
 (defun kakafarm/drop-while (lst predp)

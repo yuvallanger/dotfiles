@@ -21,6 +21,18 @@
 (setq package-archives '())
 (require 'use-package)
 
+(use-package casual-calc
+  :ensure nil
+  :bind (:map calc-mode-map ("C-o" . casual-calc-tmenu)))
+
+(use-package casual-dired
+  :ensure nil
+  :bind (:map dired-mode-map ("C-o" . casual-dired-tmenu)))
+
+(use-package casual-info
+  :ensure nil
+  :bind (:map Info-mode-map ("C-o" . casual-info-tmenu)))
+
 '(use-package company
    :defer t
    :init
@@ -56,7 +68,7 @@
                        (expand-file-name "~/.guix-profile/bin/curl"))
   :custom
   ;; (elfeed-curl-max-connections 10)
-  ;; (elfeed-search-filter "+unread")
+  (elfeed-search-filter "@1-week-ago +unread")
   (elfeed-curl-program-name (expand-file-name "~/.guix-profile/bin/curl"))
   )
 
@@ -220,7 +232,7 @@
   (menu-bar-mode nil)
   )
 
-(use-package mode-line
+'(use-package mode-line
   :custom
   (mode-line-percent-position '(6 "%q"))
   )
@@ -281,7 +293,7 @@
   :defer t
   :mode ("\\.epub\\'" . nov-mode))
 
-(use-package opml-to-elfeed-feeds
+'(use-package opml-to-elfeed-feeds
   :custom
   (opml-to-elfeed-feeds-elfeed-feeds nil t)
   )
@@ -422,10 +434,10 @@
   (vterm-environment '("LC_ALL=en_IL.utf8"))
   )
 
-(use-package whitespace-cleanup
-  :custom
-  (global-whitespace-cleanup-mode t)
-  )
+'(use-package whitespace-cleanup
+   :custom
+   (global-whitespace-cleanup-mode t)
+   )
 
 (use-package window
   :defer t
