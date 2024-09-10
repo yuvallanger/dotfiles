@@ -21,6 +21,12 @@
 (setq package-archives '())
 (require 'use-package)
 
+(use-package browse-url
+  :demand t
+  :custom
+  (browse-url-browser-function 'eww-browse-url)
+  )
+
 (use-package casual-calc
   :ensure nil
   :bind (:map calc-mode-map ("C-o" . casual-calc-tmenu)))
@@ -37,6 +43,15 @@
    :defer t
    :init
    (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package compilation
+  :demand t
+  :requires (ansi-color)
+  )
+
+;; FIXME: Why can't I use it in the (use-package compilation :hook or :init)?
+(add-hook 'compilation-filter-hook #'kakafarm/colorize-compilation)
+
 
 (use-package corfu
   :defer t
@@ -233,9 +248,9 @@
   )
 
 '(use-package mode-line
-  :custom
-  (mode-line-percent-position '(6 "%q"))
-  )
+   :custom
+   (mode-line-percent-position '(6 "%q"))
+   )
 
 (use-package modus-themes
   :defer t
@@ -294,9 +309,9 @@
   :mode ("\\.epub\\'" . nov-mode))
 
 '(use-package opml-to-elfeed-feeds
-  :custom
-  (opml-to-elfeed-feeds-elfeed-feeds nil t)
-  )
+   :custom
+   (opml-to-elfeed-feeds-elfeed-feeds nil t)
+   )
 
 (use-package orderless
   :defer t
@@ -400,6 +415,9 @@
 (use-package shr
   :custom
   (shr-width 75)
+  (shr-use-fonts nil)
+  (shr-use-colors nil)
+  (shr-indentation 2)
   )
 
 (use-package simple

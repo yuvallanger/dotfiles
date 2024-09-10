@@ -74,6 +74,19 @@
 ;;                                                   "echo echo echo"))
 
 ;;;###autoload
+(defun kakafarm/colorize-compilation ()
+  "Colorize from `compilation-filter-start' to `point'.
+
+Used to convert raw ANSI color codes into visually (sometimes dis-)pleasing colors.
+
+From:
+
+https://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html"
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region compilation-filter-start
+                                (point))))
+
+;;;###autoload
 (defun kakafarm/copy-elfeed-links ()
   (interactive)
 
