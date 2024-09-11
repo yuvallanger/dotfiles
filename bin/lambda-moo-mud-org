@@ -1,0 +1,3 @@
+#!/bin/bash
+
+telnet lambda.moo.mud.org 8888
