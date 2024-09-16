@@ -25,6 +25,7 @@
   :demand t
   :custom
   (browse-url-browser-function 'eww-browse-url)
+  (browse-url-new-window-flag t)
   )
 
 (use-package casual-calc
@@ -102,6 +103,7 @@
    )
   :config
   (set-register ?i `(file . ,(locate-user-emacs-file "init.el")))
+  ;; (tab-bar-mode)
   :custom
   (inhibit-startup-screen t)
   )
@@ -239,8 +241,14 @@
 (use-package mastodon
   :defer t
   :init
+  ;; https://emacs.ch/†, RIP.
+  ;; Lost but not forgotten.
+  ;; Miss you, big man!
+  ;; (setq mastodon-active-user "kakafarm"
+  ;;       mastodon-instance-url "https://emacs.ch/")
   (setq mastodon-active-user "kakafarm"
-        mastodon-instance-url "https://emacs.ch/"))
+        mastodon-instance-url "https://shitposter.world/")
+  )
 
 (use-package menu-bar
   :custom
