@@ -9,6 +9,7 @@
  (gnu packages chez)
  (gnu packages ci)
  (gnu packages code)
+ (gnu packages compression)
  (gnu packages curl)
  (gnu packages databases)
  (gnu packages emacs)
@@ -21,6 +22,7 @@
  (gnu packages ghostscript)
  (gnu packages gnu-doc)
  (gnu packages gnupg)
+ (gnu packages groff)
  (gnu packages guile)
  (gnu packages guile-xyz)
  (gnu packages haskell-xyz)
@@ -35,6 +37,7 @@
  (gnu packages python-xyz)
  (gnu packages scheme)
  (gnu packages shells)
+ (gnu packages skribilo)
  (gnu packages speech)
  (gnu packages sqlite)
  (gnu packages tcl)
@@ -53,6 +56,10 @@
 (packages->manifest
  (list
   ;; guile-websocket-next
+  ;; fontconfig
+  ;; guile-picture-language
+  ;; scheme48-prescheme
+  ;; scsh
   autogen
   automake
   bison
@@ -66,6 +73,11 @@
   emacs-arei
   emacs-benchmark-init
   emacs-buttercup
+  emacs-casual-avy
+  emacs-casual-calc
+  emacs-casual-dired
+  emacs-casual-info
+  emacs-cider
   emacs-corfu
   emacs-corfu-doc
   emacs-darkroom
@@ -90,6 +102,7 @@
   emacs-geiser-guile
   emacs-geiser-racket
   emacs-ggtags
+  emacs-gnosis
   emacs-greader-mode
   emacs-gruvbox-theme
   emacs-guix
@@ -98,6 +111,7 @@
   emacs-htmlize
   emacs-hy-mode
   emacs-hyperbole
+  emacs-jabber
   emacs-magit
   emacs-magit-todos
   emacs-markdown-mode
@@ -118,6 +132,7 @@
   emacs-request
   emacs-synosaurus
   emacs-tco-el
+  emacs-transmission
   emacs-treemacs
   emacs-undo-tree
   emacs-use-package
@@ -134,8 +149,8 @@
   font-dejavu
   font-ghostscript
   font-gnu-freefont
-  fontconfig
   fortunes-jkirchartz
+  git-lfs
   glibc
   glibc-locales
   gnu-c-manual
@@ -143,6 +158,7 @@
   gnu-standards
   gnupg
   gnutls
+  groff
   guile-3.0
   guile-ac-d-bus
   guile-clipboard-speaker
@@ -156,7 +172,6 @@
   guile-hoot
   guile-json-4
   guile-lib
-  guile-picture-language
   guile-pipe
   guile-png
   guile-reader
@@ -172,6 +187,8 @@
   guile-srfi-189
   guile-srfi-197
   guile-srfi-232
+  guile-srfi-235
+  guile-srfi-253
   guile-srfi-89
   guile-websocket
   guile-wisp
@@ -206,8 +223,8 @@
   python-pylint
   r7rs-small-texinfo
   recutils
-  scsh
   sicp
+  skribilo
   sqlite
   tcl
   texinfo
@@ -218,4 +235,5 @@
   tmux
   units
   universal-ctags
+  zstd
   ))
