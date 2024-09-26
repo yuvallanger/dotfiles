@@ -215,12 +215,14 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
 (defun kakafarm/org-roam-publishable-node-p (org-filename)
   (with-temp-buffer
     (insert-file-contents org-filename)
-    (org-element-map (org-element-parse-buffer) 'keyword
-                     (lambda (keyword)
-                       (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
-                            (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
-                     nil
-                     t)))
+    (org-element-map
+     (org-element-parse-buffer)
+     'keyword
+     (lambda (keyword)
+       (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
+            (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
+     nil
+     t)))
 
 ;;;###autoload
 (defun kakafarm/org-roam-sitemap (title list-of-org-links)

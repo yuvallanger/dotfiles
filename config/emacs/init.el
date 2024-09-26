@@ -241,9 +241,6 @@
 (use-package mastodon
   :defer t
   :init
-  ;; https://emacs.ch/†, RIP.
-  ;; Lost but not forgotten.
-  ;; Miss you, big man!
   ;; (setq mastodon-active-user "kakafarm"
   ;;       mastodon-instance-url "https://emacs.ch/")
   (setq mastodon-active-user "kakafarm"
@@ -340,7 +337,8 @@
    '((scheme     . t)
      (emacs-lisp . t)))
   :custom
-  (org-agenda-files (list (expand-file-name "~/mine/org/")))
+  (org-agenda-files (list (expand-file-name "~/mine/org/")
+                          (expand-file-name "~/Documents/notes/")))
   (org-default-notes-file (expand-file-name "~/mine/org/org.org"))
   (org-directory (expand-file-name "~/mine/org/"))
   (org-export-use-babel nil)
@@ -414,6 +412,9 @@
   :config
   ;; TODO: Did it even work?!
   (add-hook 'scheme-mode-hook 'hs-minor-mode)
+  (progn ;; For SRFI-253:
+   (put 'define-checked 'scheme-indent-function 1)
+   (put 'lambda-checked 'scheme-indent-function 1))
   :mode "\\.\\(scm\\|sxml\\)\\'"
   ;; :bind (:map scheme-mode-map
   ;;             ("C-c C-e" . arei-mode-map)
