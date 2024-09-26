@@ -57,6 +57,7 @@
                        ("https://nedroid.com/feed" comics nerdroid webcomic)
                        ("https://newdiscourses.com/feed/" csj)
                        ("https://odysee.com/$/rss/@ArkhamReporter:5" arkhamreporter lovecraft video)
+                       ("https://olddeuteronomy.github.io/index.xml" blog emacs rip thisguydisappearedofftheinternethowsad)
                        ("https://planet.debian.org/rss20.xml" blog debian linux planet)
                        ("https://planet.emacslife.com/atom.xml" emacs emacslife planet)
                        ("https://planet.gnu.org/rss20.xml" blog gnu linux planet)
