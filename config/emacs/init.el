@@ -67,6 +67,10 @@
   (setq custom-file (locate-user-emacs-file "custom-variables.el"))
   (load custom-file 'noerror 'nomessage))
 
+(use-package detubifier
+  :defer t
+  )
+
 (use-package dictionary
   :defer t
   :custom
@@ -98,11 +102,18 @@
   (
    :map global-map
    ("C-c p" . kakafarm/percent-read)
+   ("C-c C-s" . (lambda (beg end)
+                  (interactive (list (region-beginning) (region-end)))
+
+                  (sort-lines '()
+                              beg
+                              end)))
 
    ;; (";" . #'kakafarm/easy-underscore)
    )
   :config
   (set-register ?i `(file . ,(locate-user-emacs-file "init.el")))
+  (ido-mode t)
   ;; (tab-bar-mode)
   :custom
   (inhibit-startup-screen t)
