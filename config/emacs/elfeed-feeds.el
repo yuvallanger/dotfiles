@@ -40,6 +40,7 @@
                        ("https://jabbo.webdings.de/blog/atom.xml" blog craftering emacs)
                        ("https://kaka.farm/feed.xml" blog craftering self)
                        ("https://kaka.farm/~brownjenkin/feeds/all.atom.xml" blog self)
+                       ("https://kakafarm.codeberg.page/feed.xml" blog craftering self)
                        ("https://killsixbilliondemons.com/feed/" comics killsixbilliondemons)
                        ("https://lemmy.sdf.org/feeds/c/unix_surrealism.xml" comics lemmy sdf unixsurrealism)
                        ("https://lemmy.sdf.org/u/beejjorgensen" beej lemmy sdf)
