@@ -367,6 +367,7 @@
                                   ("s" . "src")
                                   ("v" . "verse")
                                   ("g" . "src scheme :session moo :results output :tangle eopl3.scm")
+                                  ("z" . "src scheme")
                                   ))
   )
 
