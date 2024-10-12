@@ -21,6 +21,8 @@
 (setq package-archives '())
 (require 'use-package)
 
+(autoload 'skribilo-mode "skribilo.el" "Skribilo mode." t)
+
 (use-package browse-url
   :demand t
   :custom
@@ -322,7 +324,7 @@
 
 (use-package nov
   :defer t
-  :mode ("\\.epub\\'" . nov-mode))
+  :mode ((rx ".epub" string-end) . nov-mode))
 
 '(use-package opml-to-elfeed-feeds
    :custom
@@ -427,7 +429,7 @@
   (progn ;; For SRFI-253:
    (put 'define-checked 'scheme-indent-function 1)
    (put 'lambda-checked 'scheme-indent-function 1))
-  :mode "\\.\\(scm\\|sxml\\)\\'"
+  :mode (rx "." (| "scm" "sxml" "skb") string-end)
   ;; :bind (:map scheme-mode-map
   ;;             ("C-c C-e" . arei-mode-map)
   ;;             ("C-c C-a" . arei))
