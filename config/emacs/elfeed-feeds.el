@@ -78,6 +78,7 @@
                        ("https://rotter.net/rss/rotternews.xml" hebrew israel news rotter)
                        ("https://rss.art19.com/ten-percent-happier" meditation podcast)
                        ("https://samharris.substack.com/feed" blog samharris)
+                       ("https://sciencewtg.substack.com/feed" blog popsci sabine sabinehossenfelder science)
                        ("https://sfba.social/@danielmingram/with_replies.rss" activitypub danielmingram)
                        ("https://shakuf.co.il/feed" hebrew israel news shakuf)
                        ("https://shom.dev/index.xml" blog craftering linux)
