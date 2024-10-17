@@ -115,7 +115,7 @@
    )
   :config
   (set-register ?i `(file . ,(locate-user-emacs-file "init.el")))
-  (ido-mode t)
+  '(ido-mode t)
   ;; (tab-bar-mode)
   :custom
   (inhibit-startup-screen t)
