@@ -23,6 +23,20 @@
 
 (autoload 'skribilo-mode "skribilo.el" "Skribilo mode." t)
 
+'(progn
+;;; Weird https://www.youtube.com/watch?v=TjMTNSdhUvk stuff.
+   (setq inhibit-startup-message t)
+   (menu-bar-mode 1)
+   (fido-vertical-mode 1)
+   ;; (icomplete-vertical-mode 1)
+   (push 'flex completion-styles)
+   (eldoc-mode 1)
+   (flymake-mode 1)
+   ;; (load-theme 'modus-vivendi-tinted t)
+   (setopt mode-line-end-spaces nil)
+   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?|))
+   (xterm-mouse-mode 1))
+
 (use-package browse-url
   :demand t
   :custom
@@ -427,8 +441,8 @@
   ;; TODO: Did it even work?!
   (add-hook 'scheme-mode-hook 'hs-minor-mode)
   (progn ;; For SRFI-253:
-   (put 'define-checked 'scheme-indent-function 1)
-   (put 'lambda-checked 'scheme-indent-function 1))
+    (put 'define-checked 'scheme-indent-function 1)
+    (put 'lambda-checked 'scheme-indent-function 1))
   :mode (rx "." (| "scm" "sxml" "skb") string-end)
   ;; :bind (:map scheme-mode-map
   ;;             ("C-c C-e" . arei-mode-map)
