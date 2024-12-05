@@ -21,6 +21,8 @@
 (setq package-archives '())
 (require 'use-package)
 
+(setq major-mode-remap-alist '((emacs-lisp-mode . fundamental-mode)))
+
 (autoload 'skribilo-mode "skribilo.el" "Skribilo mode." t)
 
 '(progn
@@ -30,7 +32,7 @@
    (fido-vertical-mode 1)
    ;; (icomplete-vertical-mode 1)
    (push 'flex completion-styles)
-   (eldoc-mode 1)
+   '(eldoc-mode 1)
    (flymake-mode 1)
    ;; (load-theme 'modus-vivendi-tinted t)
    (setopt mode-line-end-spaces nil)
@@ -117,7 +119,7 @@
   :bind
   (
    :map global-map
-   ("C-c p" . kakafarm/percent-read)
+   ("C-c p p" . kakafarm/percent-read)
    ("C-c C-s" . (lambda (beg end)
                   (interactive (list (region-beginning) (region-end)))
 
@@ -340,6 +342,9 @@
   :defer t
   :mode ((rx ".epub" string-end) . nov-mode))
 
+(use-package fundamental
+  :mode ((rx ".el" string-end) . fundamental-mode))
+
 '(use-package opml-to-elfeed-feeds
    :custom
    (opml-to-elfeed-feeds-elfeed-feeds nil t)
@@ -361,8 +366,11 @@
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((scheme     . t)
-     (emacs-lisp . t)))
+   '(
+     (emacs-lisp . t)
+     (scheme     . t)
+     (shell      . t)
+     ))
   :custom
   (org-agenda-files (list (expand-file-name "~/mine/org/")
                           (expand-file-name "~/Documents/notes/")))

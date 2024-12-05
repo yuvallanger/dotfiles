@@ -151,7 +151,7 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
         #'kakafarm/elfeed-compare-feeds-urls))
 
 ;;;###autoload
-(defun kakafarm/ffap-browse-urls ()
+(defun kakafarm//ffap-browse-urls ()
   "Open all visible URLs."
   (interactive)
 
@@ -166,6 +166,27 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
     (when (y-or-n-p prompt)
       (dolist (url urls)
         (browse-url url)))))
+
+;;;###autoload
+(defun kakafarm/ffap-browse-urls ()
+  "Open wanted visible URLs.  Ya gotta type a bit of em and then ta tab complete and separate by commas ta actually select em."
+  (interactive)
+
+  (let ((urls (mapcar 'car (ffap-menu-rescan)))
+        (crm-separator "\n"))
+    (let ((urls-to-open (completing-read-multiple "Which URLs should I open?
+"
+                                                  urls)))
+      (dolist (url urls-to-open)
+        (browse-url url)))))
+
+;;;###autoload
+(defun kakafarm/greader-estimate-reading-time (&optional start end)
+  (interactive "r")
+  (let ((wpm greader-espeak-rate)
+        (number-of-words (count-words (if start start (point-min))
+                                      (if end end (point-max)))))
+    (message "%s" (/ (float number-of-words) wpm))))
 
 ;;;###autoload
 (defun kakafarm/kill-ring-save-unlines ()
