@@ -194,6 +194,12 @@
   :config
   (add-hook 'greader-mode-hook
             'kakafarm/sentence-end-double-nilify-for-read-only-buffers)
+  :bind
+  (
+   :map greader-mode-map
+   ("C-c g b" . (lambda () (interactive) (kakafarm/greader-estimate-reading-time)))
+   ("C-c g r" . (lambda () (interactive) (kakafarm/greader-estimate-reading-time (point))))
+   )
   :hook (
          Custom-mode
          Info-mode
@@ -207,9 +213,10 @@
          helpful-mode
          lisp-mode
          nov-mode
-         text-mode
+         ;; text-mode ;; It fucks up my magit commit message C-c C-c.
          w3m-mode
-         ))
+         )
+  )
 
 (use-package helm
   :defer t
@@ -229,6 +236,18 @@
    ("C-h m" . helpful-mode)
    ("C-h v" . helpful-variable)
    )
+  )
+
+(use-package howm
+  :init
+  (setq howm-directory "~/mine/howm/")
+  (setq howm-home-directory howm-directory)
+  (setq howm-file-name-format "%Y-%m-%d-%H%M%S.org")
+  (setq howm-view-title-header "*")
+  (setq howm-dtime-format "<%Y-%m-%d %a %H:%M>")
+  (setq howm-prefix (kbd "C-c ;"))
+  :bind*
+  ("C-c ; ;" . howm-menu)
   )
 
 (use-package icomplete
@@ -425,6 +444,14 @@
    :hook (emacs-lisp-mode
           lisp-mode
           scheme-mode))
+
+'(use-package perspective
+   :init
+   (persp-mode)
+   :bind
+   ("C-c M-b" . persp-list-buffers)
+   :custom
+   (persp-mode-prefix-key (kbd "C-c M-p")))
 
 (use-package rainbow-delimiters
   :defer t

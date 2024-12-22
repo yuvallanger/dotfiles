@@ -52,11 +52,17 @@ print_variables() {
     printf "    URL_FOR_0X0_DOT_ST: '%s'\n" "$URL_FOR_0X0_DOT_ST" 1>&2
 }
 
-print_provide_one_and_only_one_flag_message () {
+print_provide_one_and_only_one_flag_error_message_and_exit() {
     printf "Provide only none or one of -p / --primary, -s / --secondary, -b / --clipboard, -u / --url flags.\n"
+    help_message
+    if [ -n "$debug_flag" ]; then
+        print_variables
+    fi
+    exit 1
 }
 
 # https://www.baeldung.com/linux/bash-parse-command-line-arguments
+flags_flag=""
 OUR_ARGUMENTS="$(getopt -o hpsbu:x: --long help,debug,primary,secondary,clipboard,url:,null-dot-st-url: -- "$@" )"
 eval set -- "$OUR_ARGUMENTS"
 while [ -n "$*" ]; do
@@ -71,39 +77,51 @@ while [ -n "$*" ]; do
             shift
             ;;
         -p | --primary)
-            xsel_flag_primary="$1"
-            if [ -n "$xsel_flag_secondary" ] || [ -n "$xsel_flag_clipboard" ] || [ -n "$url_flag" ]; then
-                print_provide_one_and_only_one_flag_message
-                help_message
-                exit 1
+            if [ -z "$1" ]; then
+                continue;
+            elif [ -n "$flags_flag" ]; then
+                print_provide_one_and_only_one_flag_error_message_and_exit
+            else
+                flags_flag=1
             fi
+
+            xsel_flag="$1"
             shift
             ;;
         -s | --secondary)
-            xsel_flag_secondary="$1"
-            if [ -n "$xsel_flag_primary" ] || [ -n "$xsel_flag_clipboard" ] || [ -n "$url_flag" ]; then
-                print_provide_one_and_only_one_flag_message
-                help_message
-                exit 1
+            if [ -z "$1" ]; then
+                continue;
+            elif [ -n "$flags_flag" ]; then
+                print_provide_one_and_only_one_flag_error_message_and_exit
+            else
+                flags_flag=1
             fi
+
+            xsel_flag="$1"
             shift
             ;;
         -b | --clipboard)
-            xsel_flag_clipboard="$1"
-            if [ -n "$xsel_flag_primary" ] || [ -n "$xsel_flag_secondary" ] || [ -n "$url_flag" ]; then
-                print_provide_one_and_only_one_flag_message
-                help_message
-                exit 1
+            if [ -z "$1" ]; then
+                continue;
+            elif [ -n "$flags_flag" ]; then
+                print_provide_one_and_only_one_flag_error_message_and_exit
+            else
+                flags_flag=1
             fi
+
+            xsel_flag="$1"
             shift
             ;;
         -u | --url)
-            url_flag="$1"
-            if [ -n "$xsel_flag_primary" ] || [ -n "$xsel_flag_secondary" ] || [ -n "$xsel_flag_clipboard" ]; then
-                print_provide_one_and_only_one_flag_message
-                help_message
-                exit 1
+            if [ -z "$1" ]; then
+                continue;
+            elif [ -n "$flags_flag" ]; then
+                print_provide_one_and_only_one_flag_error_message_and_exit
+            else
+                flags_flag=1
             fi
+
+            url_flag="$1"
             target_url="$2"
             shift 2
             ;;
@@ -114,13 +132,13 @@ while [ -n "$*" ]; do
             ;;
         --)
             shift
-            filename="$1"
-            if [ -z "$filename$xsel_flag_primary$xsel_flag_secondary$xsel_flag_clipboard$url_flag" ]; then
-                print_provide_one_and_only_one_flag_message
-                help_message
-                exit 1
+            if [ -z "$1" ]; then
+                break
+            elif [ -n "$flags_flag" ]; then
+                print_provide_one_and_only_one_flag_error_message_and_exit
             fi
-            xsel_flag="$xsel_flag_primary$xsel_flag_secondary$xsel_flag_clipboard"
+
+            filename="$1"
             break
             ;;
         *)
@@ -131,12 +149,14 @@ while [ -n "$*" ]; do
 done
 
 if [ -z "$null_dot_st_url_flag" ]; then
-    null_dot_st_url="$URL_FOR_0X0_DOT_ST"
+    null_dot_st_url="$url_for_0x0_dot_st"
 fi
 
 if [ -n "$debug_flag" ]; then
     print_variables
 fi
+
+
 
 remove_temporary_file () {
     if [ -n "$debug_flag" ]; then

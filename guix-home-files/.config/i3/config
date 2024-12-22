@@ -30,6 +30,15 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
+# mine: Set display for one external monitor:
+exec --no-startup-id xrandr --output eDP-1 --off --output DP-1 --off --output HDMI-1 --off --output DP-2 --mode 1920x1080 --pos 0x0 --rotate normal --output DP-3 --off --output HDMI-2 --off
+
+# mine: Set the keybindings for English and Hebrew:
+exec --no-startup-id setxkbmap -model pc105 -layout us,il -variant ,, -option grp:win_space_toggle
+
+# mine: Let me use the mouse without using the mouse:
+exec --no-startup-id keynav
+
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
