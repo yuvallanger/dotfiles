@@ -192,6 +192,7 @@
    font-gnu-freefont
    fzf
    fzf-tab
+   git
    git-lfs
    glibc
    glibc-locales
