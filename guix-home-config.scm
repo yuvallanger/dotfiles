@@ -94,6 +94,7 @@
    bsd-games
    c-intro-and-ref
    cdecl
+   clisp
    cowsay
    curl
    darkhttpd
@@ -139,6 +140,7 @@
    emacs-guix
    emacs-helm
    emacs-helpful
+   emacs-howm
    emacs-htmlize
    emacs-hy-mode
    emacs-hyperbole
@@ -287,7 +289,6 @@
    units
    universal-ctags
    zstd
-   emacs-howm
    ))
 
  (services
