@@ -37,6 +37,7 @@
  (gnu packages haskell-xyz)
  (gnu packages irc)
  (gnu packages libreoffice)
+ (gnu packages librewolf)
  (gnu packages lisp)
  (gnu packages mail)
  (gnu packages man)
@@ -250,6 +251,7 @@
    laminar
    le-certs
    libhdate
+   librewolf
    links
    man-pages
    man-pages-posix
@@ -306,9 +308,10 @@
              (aliases
               '(
                 ("gs" . "git status")
+                ("wgi" . "wget -m -np -i-")
                 ))
-             (bash-profile (list (local-file "files/.bash_profile" "bash_profile")))
-             (bashrc (list (local-file "files/.bashrc" "bashrc")))
+             (bash-profile (list (local-file "regular-non-guix-home-files/.bash_profile" "bash_profile")))
+             (bashrc (list (local-file "regular-non-guix-home-files/.bashrc" "bashrc")))
              ))
 
    (service home-dotfiles-service-type
