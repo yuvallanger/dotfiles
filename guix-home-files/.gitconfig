@@ -25,6 +25,7 @@
 	fontdiff = -family Inconsolata -size 16 -weight normal -slant roman -underline 0 -overstrike 0
 [init]
 	defaultBranch = master
+	defaultObjectFormat = sha256
 [merge]
 	tool = meld
 [mergetool]
@@ -40,4 +41,3 @@
 	smtpUser = yuval.langer@gmail.com
 	smtpencryption = tls
 	smtpserverport = 587
-	smtpPass = "zrelomqxcwgkswou"
