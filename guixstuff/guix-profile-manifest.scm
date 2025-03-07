@@ -2,6 +2,7 @@
  (gnu packages autogen)
  (gnu packages autotools)
  (gnu packages bison)
+ (gnu packages books)
  (gnu packages c)
  (gnu packages calendar)
  (gnu packages certs)
@@ -17,30 +18,40 @@
  (gnu packages entr)
  (gnu packages fonts)
  (gnu packages fontutils)
+ (gnu packages fsf)
  (gnu packages games)
  (gnu packages gcc)
  (gnu packages ghostscript)
+ (gnu packages gnome-xyz)
  (gnu packages gnu-doc)
  (gnu packages gnupg)
  (gnu packages groff)
  (gnu packages guile)
  (gnu packages guile-xyz)
  (gnu packages haskell-xyz)
+ (gnu packages irc)
  (gnu packages libreoffice)
+ (gnu packages lisp)
  (gnu packages mail)
  (gnu packages man)
  (gnu packages maths)
+ (gnu packages matrix)
  (gnu packages mes)
  (gnu packages ncdu)
+ (gnu packages networking)
+ (gnu packages package-management)
  (gnu packages pdf)
  (gnu packages python-check)
  (gnu packages python-xyz)
+ (gnu packages racket)
  (gnu packages scheme)
  (gnu packages shells)
+ (gnu packages shellutils)
  (gnu packages skribilo)
  (gnu packages speech)
  (gnu packages sqlite)
  (gnu packages tcl)
+ (gnu packages terminals)
  (gnu packages tex)
  (gnu packages texinfo)
  (gnu packages tls)
@@ -48,29 +59,31 @@
  (gnu packages toys)
  (gnu packages version-control)
  (gnu packages video)
+ (gnu packages web)
  (gnu packages web-browsers)
 
  (kakafarm packages emacs-xyz)
- (kakafarm packages guile-xyz))
+ (kakafarm packages guile-xyz)
+
+ (guix)
+ )
+
+(define kakafarm-glibc-locales
+  (make-glibc-utf8-locales
+   glibc
+   #:locales
+   '("en_US" "en_GB" "en_IL" "he_IL")
+   #:name
+   "glibc-kakafarm-utf8-locales"))
 
 (packages->manifest
  (list
-  ;; guile-websocket-next
-  ;; fontconfig
-  ;; guile-picture-language
-  ;; scheme48-prescheme
-  ;; scsh
-  autogen
-  automake
-  bison
-  bsd-games
+  autoconf
   c-intro-and-ref
-  cdecl
-  chez-scheme
   curl
+  darkhttpd
   emacs
   emacs-ansi
-  emacs-arei
   emacs-benchmark-init
   emacs-buttercup
   emacs-casual-avy
@@ -78,6 +91,7 @@
   emacs-casual-dired
   emacs-casual-info
   emacs-cider
+  emacs-consult
   emacs-corfu
   emacs-corfu-doc
   emacs-darkroom
@@ -85,6 +99,7 @@
   emacs-dictionary
   emacs-diff-hl
   emacs-direnv
+  emacs-eat
   emacs-ef-themes
   emacs-eglot
   emacs-elfeed
@@ -98,19 +113,23 @@
   emacs-flycheck
   emacs-flycheck-haskell
   emacs-flycheck-package
-  emacs-geiser-chez
+  emacs-fzf
   emacs-geiser-guile
+  emacs-geiser-racket
   emacs-geiser-racket
   emacs-ggtags
   emacs-gnosis
-  emacs-greader-mode
+  emacs-go-mode
+  emacs-greader
   emacs-gruvbox-theme
   emacs-guix
   emacs-helm
   emacs-helpful
+  emacs-howm
   emacs-htmlize
-  emacs-hy-mode
   emacs-hyperbole
+  emacs-hyperbole
+  emacs-iedit
   emacs-jabber
   emacs-magit
   emacs-magit-todos
@@ -119,23 +138,34 @@
   emacs-multi-vterm
   emacs-multiple-cursors
   emacs-nano-tts-minor-mode
+  emacs-next
+  emacs-nginx-mode
   emacs-nov-el
   emacs-olivetti
   emacs-orderless
   emacs-org-roam
+  emacs-package-build
+  emacs-package-lint
   emacs-paredit
   emacs-parinfer-mode
   emacs-peg
+  emacs-perspective
+  emacs-racket-mode
   emacs-rainbow-blocks
   emacs-rainbow-delimiters
-  emacs-rec-mode
   emacs-request
+  emacs-rust-mode
+  emacs-scribble-mode
+  emacs-sly
+  emacs-subed
   emacs-synosaurus
   emacs-tco-el
+  emacs-tempel
   emacs-transmission
   emacs-treemacs
   emacs-undo-tree
   emacs-use-package
+  emacs-vertico
   emacs-vterm
   emacs-w3m
   emacs-wgrep
@@ -144,21 +174,11 @@
   emacs-writeroom
   emacs-yasnippet
   emacs-zotxt
-  entr
   espeak-ng
-  font-dejavu
-  font-ghostscript
-  font-gnu-freefont
-  fortunes-jkirchartz
-  git-lfs
+  fzf
+  fzf-tab
   glibc
-  glibc-locales
-  gnu-c-manual
   gnu-make
-  gnu-standards
-  gnupg
-  gnutls
-  groff
   guile-3.0
   guile-ac-d-bus
   guile-clipboard-speaker
@@ -168,6 +188,7 @@
   guile-filesystem
   guile-git
   guile-gnutls
+  guile-goblins
   guile-hall
   guile-hoot
   guile-json-4
@@ -193,47 +214,16 @@
   guile-websocket
   guile-wisp
   guile-zlib
-  guilescript
-  harmonist
+  guilescript  
+  guix
   haunt
-  hebcal
-  hello
-  hut
-  info-reader
-  laminar
+  kakafarm-glibc-locales
   le-certs
-  libhdate
-  links
-  man-pages
-  man-pages-posix
-  mes
-  mpv
-  mumi
-  mythes
-  ncdu
   nss-certs
-  pandoc
-  poppler
-  python-flake8
-  python-hissp
-  python-pep8
-  python-pycodestyle
-  python-pyflakes
-  python-pylama
-  python-pylint
   r7rs-small-texinfo
-  recutils
+  racket
   sicp
   skribilo
-  sqlite
-  tcl
-  texinfo
-  texlive-amsmath
-  texlive-ebproof
-  tig
-  tk
-  tmux
-  units
-  universal-ctags
+  slib
   zstd
   ))
