@@ -475,6 +475,11 @@
   (recentf-max-saved-items 100)
   )
 
+(use-package savehist
+  :init
+  (savehist-mode)
+  )
+
 (use-package scheme-mode
   :defer t
   :config
@@ -572,7 +577,6 @@
 ;;; https://www.youtube.com/watch?v=51eSeqcaikM
   ;;(recentf-mode 1)
   (setq history-length 25)
-  (savehist-mode 1)
   (save-place-mode 1))
 
 (progn
