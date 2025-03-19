@@ -58,6 +58,10 @@
   :ensure nil
   :bind (:map Info-mode-map ("C-o" . casual-info-tmenu)))
 
+(use-package consult
+  :defer t
+  )
+
 '(use-package company
    :defer t
    :init
@@ -218,14 +222,14 @@
          )
   )
 
-(use-package helm
-  :defer t
-  :bind
-  (
-   :map global-map
-   ("M-x" . helm-M-x)
+'(use-package helm
+   :defer t
+   :bind
+   (
+    :map global-map
+    ("M-x" . helm-M-x)
+    )
    )
-  )
 
 (use-package helpful
   :defer t
@@ -518,6 +522,14 @@
   (setq undo-tree-auto-save-history nil)
   :bind
   ("C-x u" . undo-tree-visualize))
+
+(use-package vertico
+  :init
+  (vertico-mode)
+  :config
+  (keymap-set vertico-map "?" #'minibuffer-completion-help)
+  (keymap-set vertico-map "M-RET" #'minibuffer-force-complete-and-exit)
+  (keymap-set vertico-map "M-TAB" #'minibuffer-complete))
 
 (use-package vterm
   :custom
