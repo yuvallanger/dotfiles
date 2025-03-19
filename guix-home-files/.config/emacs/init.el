@@ -109,8 +109,8 @@
   (customize-set-value 'elfeed-curl-program-name
                        (expand-file-name "~/.guix-profile/bin/curl"))
   :custom
-  ;; (elfeed-curl-max-connections 10)
-  (elfeed-search-filter "@1-week-ago +unread")
+  (elfeed-curl-max-connections 80)
+  (elfeed-search-filter "@0.000001-week-ago +unread")
   (elfeed-curl-program-name (expand-file-name "~/.guix-profile/bin/curl"))
   )
 
