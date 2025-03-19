@@ -138,6 +138,7 @@
   '(ido-mode t)
   ;; (tab-bar-mode)
   :custom
+  (enable-recursive-minibuffers t)
   (inhibit-startup-screen t)
   )
 
