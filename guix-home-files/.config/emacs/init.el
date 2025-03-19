@@ -11,7 +11,7 @@
 (unless (server-running-p)
   (server-start))
 
-(require 'benchmark-init)
+;;;;; (require 'benchmark-init)
 
 (add-to-list 'load-path (concat user-emacs-directory
                                 "local-packages/emacs-kakafarm/"))
