@@ -1,84 +1,40 @@
 (import
- (gnu packages autogen)
- (gnu packages autotools)
- (gnu packages bison)
- (gnu packages books)
- (gnu packages c)
- (gnu packages calendar)
- (gnu packages certs)
- (gnu packages check)
- (gnu packages chez)
- (gnu packages ci)
- (gnu packages code)
- (gnu packages compression)
- (gnu packages curl)
- (gnu packages databases)
- (gnu packages emacs)
- (gnu packages emacs-xyz)
- (gnu packages entr)
- (gnu packages fonts)
- (gnu packages fontutils)
- (gnu packages fsf)
- (gnu packages games)
- (gnu packages gcc)
- (gnu packages ghostscript)
- (gnu packages gnome-xyz)
- (gnu packages gnu-doc)
- (gnu packages gnupg)
- (gnu packages groff)
- (gnu packages guile)
- (gnu packages guile-xyz)
- (gnu packages haskell-xyz)
- (gnu packages irc)
- (gnu packages libreoffice)
- (gnu packages lisp)
- (gnu packages mail)
- (gnu packages man)
- (gnu packages maths)
- (gnu packages matrix)
- (gnu packages mes)
- (gnu packages ncdu)
- (gnu packages networking)
- (gnu packages package-management)
- (gnu packages pdf)
- (gnu packages python-check)
- (gnu packages python-xyz)
- (gnu packages racket)
- (gnu packages scheme)
- (gnu packages shells)
- (gnu packages shellutils)
- (gnu packages skribilo)
- (gnu packages speech)
- (gnu packages sqlite)
- (gnu packages tcl)
- (gnu packages terminals)
- (gnu packages tex)
- (gnu packages texinfo)
- (gnu packages tls)
- (gnu packages tmux)
- (gnu packages toys)
- (gnu packages version-control)
- (gnu packages video)
- (gnu packages web)
- (gnu packages web-browsers)
+ (gnu packages)
 
- (kakafarm packages emacs-xyz)
  (kakafarm packages guile-xyz)
 
  (guix)
  )
 
-(define kakafarm-glibc-locales
-  (make-glibc-utf8-locales
-   glibc
-   #:locales
-   '("en_US" "en_GB" "en_IL" "he_IL")
-   #:name
-   "glibc-kakafarm-utf8-locales"))
+(use-package-modules
+ autotools
+ base
+ bash
+ bison
+ c
+ certs
+ compression
+ curl
+ databases
+ emacs
+ emacs-xyz
+ guile
+ guile-xyz
+ racket
+ scheme
+ shellutils
+ skribilo
+ speech
+ terminals
+ tls
+ web
+ )
 
 (packages->manifest
  (list
   autoconf
+  bash
+  bison
   c-intro-and-ref
   curl
   darkhttpd
@@ -137,13 +93,13 @@
   emacs-mastodon
   emacs-multi-vterm
   emacs-multiple-cursors
-  emacs-nano-tts-minor-mode
   emacs-next
   emacs-nginx-mode
   emacs-nov-el
   emacs-olivetti
   emacs-orderless
   emacs-org-roam
+  emacs-org-transclusion
   emacs-package-build
   emacs-package-lint
   emacs-paredit
@@ -178,6 +134,7 @@
   fzf
   fzf-tab
   glibc
+  glibc-locales
   gnu-make
   guile-3.0
   guile-ac-d-bus
@@ -186,7 +143,6 @@
   guile-config
   guile-fibers
   guile-filesystem
-  guile-git
   guile-gnutls
   guile-goblins
   guile-hall
@@ -208,20 +164,19 @@
   guile-srfi-189
   guile-srfi-197
   guile-srfi-232
+  guile-srfi-234
   guile-srfi-235
-  guile-srfi-253
   guile-srfi-89
   guile-websocket
   guile-wisp
   guile-zlib
-  guilescript  
-  guix
+  guilescript
   haunt
-  kakafarm-glibc-locales
   le-certs
   nss-certs
   r7rs-small-texinfo
   racket
+  recutils
   sicp
   skribilo
   slib
