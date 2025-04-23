@@ -4,6 +4,7 @@
                      '(
                        ("https://acdw.casa/feed.xml" acdw activitypub blog craftering)
                        ("https://analognowhere.com/feed/rss.xml" comics unixsurrealism)
+                       ("https://anchor.fm/s/304b0214/podcast/rss" dad dadsanimepodcast noyoushutthefuckupdad podcast)
                        ("https://api.substack.com/feed/podcast/462466.rss" blog csj foss freesoftware linux lunduke news opensource unix)
                        ("https://baty.net/index.xml" blog emacs personal)
                        ("https://bbs.kawa-kun.com/users/gondola/feed.atom" activitypub bbs.kawa-kun.com gondola)
