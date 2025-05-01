@@ -5,67 +5,68 @@
  (gnu home services shells)
  (gnu home)
 
- (gnu packages autogen)
- (gnu packages autotools)
- (gnu packages bison)
- (gnu packages books)
- (gnu packages c)
- (gnu packages calendar)
+ ;; (gnu packages autogen)
+ ;; (gnu packages autotools)
+ ;; (gnu packages bison)
+ ;; (gnu packages books)
+ ;; (gnu packages c)
+ ;; (gnu packages calendar)
  (gnu packages certs)
- (gnu packages check)
- (gnu packages chez)
- (gnu packages ci)
- (gnu packages code)
- (gnu packages compression)
- (gnu packages curl)
- (gnu packages databases)
+ ;; (gnu packages check)
+ ;; (gnu packages chez)
+ ;; (gnu packages ci)
+ ;; (gnu packages code)
+ ;; (gnu packages compression)
+ ;; (gnu packages curl)
+ ;; (gnu packages databases)
  (gnu packages emacs)
  (gnu packages emacs-xyz)
- (gnu packages entr)
- (gnu packages fonts)
- (gnu packages fontutils)
- (gnu packages fsf)
- (gnu packages games)
- (gnu packages gcc)
- (gnu packages ghostscript)
- (gnu packages gnome-xyz)
- (gnu packages gnu-doc)
- (gnu packages gnupg)
- (gnu packages groff)
+ ;; (gnu packages entr)
+ ;; (gnu packages fonts)
+ ;; (gnu packages fontutils)
+ ;; (gnu packages fsf)
+ ;; (gnu packages games)
+ ;; (gnu packages gcc)
+ ;; (gnu packages ghostscript)
+ ;; (gnu packages gnome-xyz)
+ ;; (gnu packages gnu-doc)
+ ;; (gnu packages gnupg)
+ ;; (gnu packages groff)
  (gnu packages guile)
  (gnu packages guile-xyz)
- (gnu packages haskell-xyz)
- (gnu packages irc)
- (gnu packages libreoffice)
- (gnu packages librewolf)
- (gnu packages lisp)
- (gnu packages mail)
- (gnu packages man)
- (gnu packages maths)
- (gnu packages matrix)
- (gnu packages mes)
- (gnu packages ncdu)
- (gnu packages networking)
- (gnu packages pdf)
- (gnu packages python-check)
- (gnu packages python-xyz)
+ ;; (gnu packages haskell-xyz)
+ ;; (gnu packages irc)
+ ;; (gnu packages libreoffice)
+ ;; (gnu packages librewolf)
+ ;; (gnu packages linux)
+ ;; (gnu packages lisp)
+ ;; (gnu packages mail)
+ ;; (gnu packages man)
+ ;; (gnu packages maths)
+ ;; (gnu packages matrix)
+ ;; (gnu packages mes)
+ ;; (gnu packages ncdu)
+ ;; (gnu packages networking)
+ ;; (gnu packages pdf)
+ ;; (gnu packages python-check)
+ ;; (gnu packages python-xyz)
  (gnu packages scheme)
- (gnu packages shells)
- (gnu packages shellutils)
- (gnu packages skribilo)
+ ;; (gnu packages shells)
+ ;; (gnu packages shellutils)
+ ;; (gnu packages skribilo)
  (gnu packages speech)
- (gnu packages sqlite)
- (gnu packages tcl)
- (gnu packages terminals)
- (gnu packages tex)
- (gnu packages texinfo)
- (gnu packages tls)
- (gnu packages tmux)
- (gnu packages toys)
- (gnu packages version-control)
- (gnu packages video)
- (gnu packages web)
- (gnu packages web-browsers)
+ ;; (gnu packages sqlite)
+ ;; (gnu packages tcl)
+ ;; (gnu packages terminals)
+ ;; (gnu packages tex)
+ ;; (gnu packages texinfo)
+ ;; (gnu packages tls)
+ ;; (gnu packages tmux)
+ ;; (gnu packages toys)
+ ;; (gnu packages version-control)
+ ;; (gnu packages video)
+ ;; (gnu packages web)
+ ;; (gnu packages web-browsers)
  (gnu)
 
  (guix profiles)
@@ -88,17 +89,13 @@
    ;; guile-websocket-next
    ;; scheme48-prescheme
    ;; scsh
-   autogen
-   automake
-   bibata-cursor-theme
-   bison
-   bsd-games
-   c-intro-and-ref
-   cdecl
-   clisp
-   cowsay
-   curl
-   darkhttpd
+   ;; autogen
+   ;; automake
+   ;; c-intro-and-ref
+   ;; cdecl
+   ;; clisp
+   ;; curl
+   ;; darkhttpd
    emacs
    emacs-ansi
    emacs-arei
@@ -116,7 +113,7 @@
    emacs-dictionary
    emacs-diff-hl
    emacs-direnv
-   emacs-djvu
+   ;; emacs-djvu
    emacs-eat
    emacs-ef-themes
    emacs-eglot
@@ -168,7 +165,7 @@
    emacs-perspective
    emacs-rainbow-blocks
    emacs-rainbow-delimiters
-   emacs-rec-mode
+   ;; emacs-rec-mode
    emacs-request
    emacs-rust-mode
    emacs-sly
@@ -186,25 +183,20 @@
    emacs-writeroom
    emacs-yasnippet
    emacs-zotxt
-   entr
+   ;; entr
    espeak-ng
-   festival
-   flite
-   font-dejavu
-   font-ghostscript
-   font-gnu-freefont
-   fzf
-   fzf-tab
-   git
-   git-lfs
+   ;; fzf
+   ;; fzf-tab
+   ;; git
+   ;; git-lfs
    glibc
    glibc-locales
-   gnu-c-manual
+   ;; gnu-c-manual
    gnu-make
-   gnu-standards
-   gnupg
-   gnutls
-   groff
+   ;; gnu-standards
+   ;; gnupg
+   ;; gnutls
+   ;; groff
    guile-3.0
    guile-ac-d-bus
    guile-clipboard-speaker
@@ -213,7 +205,7 @@
    guile-fibers
    guile-filesystem
    guile-git
-   guile-gnutls
+   ;; guile-gnutls
    guile-goblins
    guile-hall
    guile-hoot
@@ -241,56 +233,39 @@
    guile-wisp
    guile-zlib
    guilescript
-   harmonist
    haunt
-   hebcal
-   hello
-   hut
-   ii
-   info-reader
-   laminar
+   ;; hebcal
+   ;; info-reader
+   ;; laminar
    le-certs
-   libhdate
-   librewolf
-   links
-   man-pages
-   man-pages-posix
-   mes
-   mpv
-   mumi
-   mythes
-   ncdu
-   nethack
+   ;; libhdate
+   ;; links
+   ;; man-pages
+   ;; man-pages-posix
+   ;; mumi ;; debbug stuff
+   ;; mythes
+   ;; ncdu
    nss-certs
-   pandoc
-   poppler
-   python-flake8
-   python-hissp
-   python-pep8
-   python-pycodestyle
-   python-pyflakes
-   python-pylama
-   python-pylint
+   ;; pandoc
    r7rs-small-texinfo
-   recutils
-   sbcl
-   scsh
+   ;; recutils
+   ;; sbcl
+   ;; scsh
    sicp
-   skribilo
+   ;; skribilo
    slib
-   socat
-   speech-dispatcher
-   sqlite
-   tcl
-   texinfo
-   texlive-amsmath
-   texlive-ebproof
-   tig
-   tk
-   tmux
-   units
-   universal-ctags
-   zstd
+   ;; socat
+   ;; sqlite
+   ;; tcl
+   ;; texinfo
+   ;; texlive-amsmath
+   ;; texlive-ebproof
+   ;; tig
+   ;; tk
+   ;; tmux
+   ;; units
+   ;; universal-ctags
+   ;; zstd
    ))
 
  (services
