@@ -32,6 +32,7 @@
                        ("https://digital-archive.org.il/feed/" culture hanancohen hebrew internet israel)
                        ("https://drewdevault.com/blog/index.xml" blog drewdevault linux programming)
                        ("https://dthompson.us/feed.xml" blog dthompson programming scheme)
+                       ("https://eli.thegreenplace.net/feeds/all.atom.xml" blog clang cpp golang personal programming python)
                        ("https://elpa.gnu.org/packages/greader.xml" elpa emacs greader package)
                        ("https://erictopol.substack.com/feed" covid erictopol science)
                        ("https://feeds.transistor.fm/collection-of-jhourneys" jhourney meditation podcast)
