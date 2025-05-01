@@ -30,6 +30,45 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'dash)
+
+;;;###autoload
+(defun kakafarm/0x0-region (&optional start end)
+  (interactive "r")
+  (let* ((start (or start (min (point) (mark))))
+         (end (or end (max (point) (mark))))
+         (filename-suffix (concat "."
+                                  (string-clean-whitespace
+                                   (shell-command-to-string "pwgen -B1 8"))))
+         (filename (make-temp-file "0x0-prefix-"
+                                   nil
+                                   filename-suffix)))
+    (write-region start end filename)
+    (let* ((it (format "curl -Ffile=@%s 0x0.st 2> /dev/null | grep http" filename))
+           (it (shell-command-to-string it))
+           (it (string-clean-whitespace it))
+           (address-of-0x0 it))
+      (message "%s" address-of-0x0)
+      (with-temp-buffer
+        (insert address-of-0x0)
+        (kill-region (point-min) (point-max))))))
+
+;;;###autoload
+(defun kakafarm/activitypubify-mastodont ()
+  (interactive)
+  (cl-do-all-symbols (symb)
+    (when (functionp symb)
+      (let ((symb-string (symbol-name symb)))
+        (when (string-prefix-p "mastodon" symb-string)
+          (let* ((x (string-replace "mastodon"
+                                    "activitypub"
+                                    symb-string))
+                 (x (string-replace "toot"
+                                    "item"
+                                    x)))
+            (let ((activitypub-symbol (intern x)))
+              (defalias activitypub-symbol symb)
+              (unintern symb))))))))
 
 ;;;###autoload
 (defun kakafarm/advice-remove-all (function)
@@ -220,6 +259,13 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
     (message "%s" url)))
 
 ;;;###autoload
+(defun kakafarm/org-html-export-to-html-file (file)
+  (let ((buffer (org-export-as 'html)))
+    (with-temp-buffer
+      (insert buffer)
+      (write-file file t))))
+
+;;;###autoload
 (defun kakafarm/org-roam-keyword-is-filetags-p (keyword-node)
   (equal (org-element-property :key
                                keyword-node)
@@ -237,13 +283,13 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
   (with-temp-buffer
     (insert-file-contents org-filename)
     (org-element-map
-     (org-element-parse-buffer)
-     'keyword
-     (lambda (keyword)
-       (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
-            (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
-     nil
-     t)))
+        (org-element-parse-buffer)
+        'keyword
+      (lambda (keyword)
+        (and (kakafarm/org-roam-keyword-is-filetags-p keyword)
+             (kakafarm/org-roam-filetags-keyword-is-publishable-p keyword)))
+      nil
+      t)))
 
 ;;;###autoload
 (defun kakafarm/org-roam-sitemap (title list-of-org-links)
@@ -355,6 +401,30 @@ who-knows-where-and-who."
                                       (point))))
 
 ;;;###autoload
+(defun kakafarm/mastodon-thread-item-source ()
+  (let* ((x (mastodon-tl--property 'item-json))
+         (x (assq 'pleroma x))
+         (x (assq 'content x))
+         (x (assq 'text/plain x))
+         (x (cdr x)))
+    x))
+
+;;;###autoload
+(defun kakafarm/mastodon-thread-item-source ()
+  (interactive)
+  (let ((item-source (kakafarm/mastodon-get-thread-item-source)))
+    (with-current-buffer (get-buffer-create "*pleroma-item-source*")
+      (erase-buffer)
+      (insert item-source))))
+
+(defun kakafarm/format-startstop-to-durations (start-stop-list)
+  (mapcar (pcase-lambda (`(,start ,stop))
+            (time-subtract
+             (iso8601-parse stop)
+             (iso8601-parse start)))
+          start-stop-list))
+
+;;;###autoload
 (defun kakafarm/multi-vterm-weechat ()
   "Either start a weechat vterm buffer, or switch to it if it already exists."
 
@@ -376,6 +446,27 @@ who-knows-where-and-who."
   (when buffer-read-only
     (setq-local sentence-end-double-space
                 nil)))
+
+;;;###autoload
+(defun kakafarm/shell-command-with-string-to-string-XXX (string command)
+  ;; XXX: Not good yet.
+  "XXX: Not good yet."
+  ;; (interactive "Mstring: \nMcommand: ")
+  (with-temp-buffer ;; start output-buffer.
+    (let ((output-buffer (current-buffer)))
+      (with-temp-buffer ;; start input-buffer.
+        (insert string)
+        (call-process "xsel"(point-min)
+                      (point-max)
+                      command
+                      output-buffer)
+        )
+      ;; end input-buffer.
+      ;; continue output-buffer.
+      )
+    (buffer-string)
+    ) ;; end output buffer.
+  )
 
 ;; Uploading README.html from README.org stuff.
 ;;;###autoload
@@ -443,6 +534,16 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
                                                 "-H" "Content-Type: application/json"
                                                 "-d@-"
                                                 "https://git.sr.ht/query")))
+
+;;;###autoload
+(defun kakafarm/string-to-clipboard (str)
+  "Takes an input string STR and sticks it into the clipboard using xsel -b."
+  (interactive "Mstring: ")
+  (with-temp-buffer
+    (insert str)
+    (shell-command-on-region (point-min)
+                             (point-max)
+                             "xsel -ib")))
 
 ;;;###autoload
 (defun kakafarm/take-while (lst predp)

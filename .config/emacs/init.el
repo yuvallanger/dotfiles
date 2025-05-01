@@ -140,7 +140,25 @@
   :custom
   (enable-recursive-minibuffers t)
   (inhibit-startup-screen t)
-  )
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  :init
+  ;; Probably got it from:
+  ;;
+  ;; https://alexforsale.github.io/posts/emacs-vertico/
+  ;;
+  ;; but I do not know really.  Alternate sources are:
+  ;;
+  ;; https://github.com/minad/vertico/blob/c3b788b6bea10e3493ebc05a96bbde294824cff6/README.org#completing-read-multiple
+  ;; https://github.com/emaphis/emacs.d/blob/41a2c1be2d07fdbb17ae039a27daa77f2a43a8f3/custom/set-vertico.el#L50
+  (when (< emacs-major-version 31)
+    (defun crm-indicator (args)
+      (cons (format "[CRM%s] %s"
+                    (replace-regexp-in-string "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'"
+                                              ""
+                                              crm-separator)
+                    (car args))
+            (cdr args)))
+    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)))
 
 (use-package ement
   :custom
