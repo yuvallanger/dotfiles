@@ -3,46 +3,37 @@ export LC_ALL=en_IL.UTF-8
 
 export INFOPATH="/usr/share/info:$INFOPATH"
 
-PATH="$HOME/.local/bin:$PATH"
+### Executables installed at home.
 
-# shellcheck source=.bash_guix_profile
-GUIX_PROFILE="$HOME/.guix-profile"
-if [ -f "$GUIX_PROFILE/etc/profile" ]; then
-    # shellcheck source=.guix-profile/etc/profile
-    source "$GUIX_PROFILE/etc/profile"
-fi
+if [ -d ~/.local/bin ]; then export PATH="$HOME/.local/bin:$PATH"; fi
 
-# Point at the Guix libraries.
-#if [ -f "$HOME/.config/guix/current/share/guile/site/3.0" ]; then
-#    export GUILE_LOAD_PATH="$HOME/.config/guix/current/share/guile/site/3.0:$GUILE_LOAD_PATH"
-#fi
-#if [ -f "$HOME/.config/guix/current/lib/guile/3.0/site-ccache" ]; then
-#    export GUILE_LOAD_COMPILED_PATH="$HOME/.config/guix/current/lib/guile/3.0/site-ccache/:$GUILE_LOAD_COMPILED_PATH"
-#fi
+### Guix stuff.
 
-GUIX_PROFILE="$HOME/.config/guix/current"
-if [ -f "$GUIX_PROFILE/etc/profile" ]; then
-    # shellcheck source=.config/guix/current/etc/profile
-    source "$GUIX_PROFILE/etc/profile"
-fi
-if [ -d "$GUIX_PROFILE/share/info" ]; then
-    export INFOPATH="$GUIX_PROFILE/share/info:$INFOPATH"
-fi
+if [ -d ~/.guix-profile/lib/locale ]; then export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"; fi
 
-if [ -d "$HOME/guixstuff/bin" ]; then
-    export PATH="$HOME/guixstuff/bin:$PATH"
-fi
+if [ -d ~/.guix-profile ]; then eval "$( guix package --search-paths=prefix -p ~/.guix-profile )"; fi
 
-if [ -d "$HOME/infopath" ]; then
-	export INFOPATH="$HOME/infopath:$INFOPATH"
-fi
+if [ -d ~/.config/guix/current ]; then eval "$( guix package --search-paths=prefix -p ~/.config/guix/current )"; fi
 
-if [ -d "$HOME/bin" ]; then
-	export PATH="$HOME/bin:$PATH"
-fi
+if [ -d "$HOME/.config/guix/current/share/info" ]; then export INFOPATH="$HOME/.config/guix/current/share/info:$INFOPATH"; fi
+
+if [ -d "$HOME/guixstuff/bin" ]; then export PATH="$HOME/guixstuff/bin:$PATH"; fi
+
+### Info path.
+
+if [ -d "$HOME/infopath" ]; then export INFOPATH="$HOME/infopath:$INFOPATH"; fi
+
+### Artisanal executables.
+
+if [ -d "$HOME/bin" ]; then export PATH="$HOME/bin:$PATH"; fi
+
+### Editory pagery stuff.
 
 export VISUAL=emacsclient
 export EDITOR="$VISUAL"
+export PAGER="less"
+
+### And we continue with bashrc for some reason.
 
 # shellcheck source=.bashrc
 source "$HOME/.bashrc"

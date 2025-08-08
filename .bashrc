@@ -119,11 +119,13 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
 [ -r "$HOME/.byobu/prompt" ] && . "$HOME/.byobu/prompt"   #byobu-prompt#
 
 export CFLAGS="-Wall -Wextra -Werror"
 
 eval "$(fzf --bash)"
 
-
 #emacs --daemon &> /dev/null &
+
+export GPG_TTY="$(tty)"
