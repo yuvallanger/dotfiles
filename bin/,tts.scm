@@ -14,20 +14,9 @@ exec guile -s "$0" "$*"
  (json)
  )
 
-(define debug? #f)
-(define output-file-port (when debug? (open-file "/home/yuval/tts.scm-command-line.log" "a")))
-
 (define piper-server-address "http://localhost:5000")
 
-(define (debug x)
-  (when debug?
-    (with-output-to-port output-file-port
-      (lambda ()
-        (pretty-print x)))
-    (flush-all-ports)))
-
 (define (tts input-text)
-  (debug input-text)
   (let ((commands `(("curl"
                      "--silent"
                      "--request" "POST"
@@ -43,9 +32,9 @@ exec guile -s "$0" "$*"
                   (pipeline commands)))
       (close pipeline-input-port)
       (close pipeline-output-port)
-      (debug 'FIN))))
+      (for-each waitpid pids))))
 
 
 (match (command-line)
   ((arg0 arg1)
-   (tts-pipeline arg1)))
+   (tts arg1)))
