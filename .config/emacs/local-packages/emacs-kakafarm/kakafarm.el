@@ -311,38 +311,38 @@ TODO: This is shite."
   (vterm-insert (read-char-by-name "Choose char: ")))
 
 
-;;; `kakafarm/insert-shrug', `kakafarm/insert-shrug-history', and
-;;; `kakafarm/insert-shrug-to-vterm', are based on the following post
+;;; `kakafarm/insert-mu', `kakafarm/insert-mu-history', and
+;;; `kakafarm/insert-mu-to-vterm', are based on the following post
 ;;; by Corwin Brust:
 ;;;
 ;;; https://corwin.bru.st/2025-09-18-emacsconf-cfp-ending-and-a-completing-read-example/
-(defvar kakafarm/insert-shrug-history nil "History for `kakafarm/insert-shrug'.")
+(defvar kakafarm/insert-mu-history nil "History for `kakafarm/insert-mu'.")
 
-(defcustom kakafarm/insert-shrug-shrugs '("mu" "無")
-  "Things for `kakafarm/insert-shrug' to insert, plist.")
+(defcustom kakafarm/insert-mu-mus '(("mu" . "無"))
+  "Things for `kakafarm/insert-mu' to insert, plist.")
 
-(defun kakafarm/insert-shrug (&optional arg)
-  (interactive
-   (list (completing-read "Emit: "
-                          kakafarm/insert-shrug-shrugs
-                          nil
-                          t
-                          nil
-                          kakafarm/insert-shrug-history
-                          "shrug")))
-  (insert (format "%s" (or (plist-get kakafarm/insert-shrug-shrugs arg 'string=) ""))))
+(defmacro kakafarm/insert-mu-macro (name insertion-function)
+  `(defun ,name (&optional arg)
+     (interactive
+      (list (completing-read "Emit: "
+                             kakafarm/insert-mu-mus
+                             nil
+                             t
+                             nil
+                             kakafarm/insert-mu-history
+                             "mu")))
+     (,insertion-function (format "%s" (or (alist-get arg
+                                                      kakafarm/insert-mu-mus
+                                                      nil
+                                                      nil
+                                                      'string=)
+                                           "")))))
 
-(defun kakafarm/insert-shrug-to-vterm ()
-  (interactive
-   (list (completing-read "Emit: "
-                          kakafarm/insert-shrug-shrugs
-                          nil
-                          t
-                          nil
-                          kakafarm/insert-shrug-history
-                          "shrug")))
-  (vterm-insert (format "%s" (or (plist-get kakafarm/insert-shrug-shrugs arg 'string=) ""))))
+(kakafarm/insert-mu-macro kakafarm/insert-mu insert)
 
+(kakafarm/insert-mu-macro kakafarm/insert-mu-to-vterm vterm-insert)
+
+(kakafarm/insert-mu "mu")
 
 ;;;###autoload
 (defun kakafarm/kill-ring-save-unlines ()
