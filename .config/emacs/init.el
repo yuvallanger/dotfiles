@@ -11,14 +11,13 @@
 (unless (server-running-p)
   (server-start))
 
-;;;;; (require 'benchmark-init)
-
 (add-to-list 'load-path (concat user-emacs-directory
                                 "local-packages/emacs-kakafarm/"))
 
 (load (locate-user-emacs-file "local-stuff.el"))
 
-(setq package-archives '())
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (require 'use-package)
 
 (setq major-mode-remap-alist '((emacs-lisp-mode . fundamental-mode)))
@@ -39,6 +38,19 @@
    (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?|))
    (xterm-mouse-mode 1))
 
+(use-package auth-source
+  :config
+  (auth-source-pass-enable)
+  )
+
+(use-package auth-source-pass
+  :custom
+  (auth-source-do-cache nil)
+  (auth-sources '(password-store))
+  :config
+  (auth-source-pass-enable)
+  )
+
 (use-package browse-url
   :demand t
   :custom
@@ -58,9 +70,9 @@
   :ensure nil
   :bind (:map Info-mode-map ("C-o" . casual-info-tmenu)))
 
-(use-package consult
-  :defer t
-  )
+'(use-package consult
+   :defer t
+   )
 
 '(use-package company
    :defer t
@@ -75,13 +87,12 @@
 ;; FIXME: Why can't I use it in the (use-package compilation :hook or :init)?
 (add-hook 'compilation-filter-hook #'kakafarm/colorize-compilation)
 
-
-(use-package corfu
-  :defer t
-  :config
-  (global-corfu-mode)
-  :custom
-  (corfu-auto t))
+'(use-package corfu
+   :defer t
+   :config
+   (global-corfu-mode)
+   :custom
+   (corfu-auto t))
 
 (use-package cus-edit
   :config
@@ -109,7 +120,7 @@
   (customize-set-value 'elfeed-curl-program-name
                        (expand-file-name "~/.guix-profile/bin/curl"))
   :custom
-  (elfeed-curl-max-connections 80)
+  (elfeed-curl-max-connections 10)
   (elfeed-search-filter "@0.000001-week-ago +unread")
   (elfeed-curl-program-name (expand-file-name "~/.guix-profile/bin/curl"))
   )
@@ -117,6 +128,10 @@
 '(use-package elfeed-goodies
    :config
    (elfeed-goodies/setup))
+
+(use-package epa
+  :custom
+  (epg-pinentry-mode 'ask))
 
 (use-package emacs
   :ensure nil
@@ -137,10 +152,29 @@
   (set-register ?i `(file . ,(locate-user-emacs-file "init.el")))
   '(ido-mode t)
   ;; (tab-bar-mode)
+
+  ;; https://www.youtube.com/watch?v=_eBlxjtOnRA&lc=Ugyy_XVIXuF4cnYaRIV4AaABAg
+  ;;
+  ;; @frankwu9659
+  ;;
+  ;; > my largest org file is 2.3M,
+  ;; > I use below setting on emacs(29, 30) on mac mini bought 10 years ago and the first generation of surface go,  scrolling experience is good
+  ;; >   (pixel-scroll-precision-mode 1)
+  ;; >   (setq redisplay-skip-fontification-on-input t)
+  (setq redisplay-skip-fontification-on-input t)
+
+  (which-key-mode)
+
+  (setq mode-line-buffer-identification '(-70 "%b"))
+
   :custom
+  ;; https://www.youtube.com/watch?v=_eBlxjtOnRA&lc=Ugyy_XVIXuF4cnYaRIV4AaABAg
+  ;; (pixel-scroll-precision-mode -1)
+
   (enable-recursive-minibuffers t)
   (inhibit-startup-screen t)
   (read-extended-command-predicate #'command-completion-default-include-p)
+
   :init
   ;; Probably got it from:
   ;;
@@ -168,19 +202,63 @@
 
 (use-package erc
   :defer t
+  :ensure nil
+  :commands (erc-tls)
   :custom
-  (erc-server "irc.libera.chat")
-  (erc-nick "kakafarm")
-  (erc-track-shorten-start 8)
-  (erc-kill-buffer-on-part t)
   (erc-auto-query 'bury)
-  (erc-autojoin-channels-alist '((libera-kakafarm "#systemcrafters")))
+  (erc-autojoin-channels-alist '()) ; (erc-autojoin-channels-alist '((libera-kakafarm "#systemcrafters")))
+  (erc-fill-column 100)
+  (erc-fill-function 'erc-fill-wrap)
+  (erc-fill-static-center 8)
+  (erc-header-line-format nil)
+  (erc-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-inhibit-multiline-input t)
+  (erc-kill-buffer-on-part nil)
+  (erc-log-channels-directory "~/mine/erc-logs/")
+  (erc-log-insert-log-on-open t)
+  (erc-log-write-after-insert t)
+  (erc-log-write-after-send t)
+  (erc-modules '(button completion fill irccontrols list log match menu netsplit networks noncommands notifications readonly ring scrolltobottom spelling stamp track))
+  (erc-nick "kakafarm")                  ; not "antti"
+  (erc-password nil)
+  (erc-port 1025)
+  (erc-scrollbottom t)
+  (erc-scrollbottom-on-input t)
+  (erc-scrollbottom-on-output t)
+  (erc-server "localhost")
+  (erc-track-shorten-start 8)
+  (erc-use-tls t)
+  ;; (erc-tls :id 'libera-kakafarm)
   :bind
   (("C-c i r c" . (lambda ()
                     (interactive)
                     (erc-tls :id 'libera-kakafarm))))
-  ;; :config
-  ;; (erc-tls :id 'libera-kakafarm)
+  )
+
+(use-package erc
+  :custom
+  )
+
+(use-package erc-hl-nicks
+  :ensure nil
+  :after erc
+  :hook (erc-mode . erc-hl-nicks-mode)
+  :config
+  (setq erc-hl-nicks-colors
+        [
+         "#FF4500"
+         "#32CD32"
+         "#1E90FF"
+         "#FFD700"
+         "#FF69B4"
+         "#00CED1"
+         "#7FFF00"
+         "#FF6347"
+         ]))
+
+(use-package eww
+  :custom
+  (eww-history-limit 999999)
   )
 
 (use-package ffap
@@ -199,24 +277,37 @@
 (use-package geiser
   :defer t
   :after (scheme-mode)
-  :config
-  '((define-key 'geiser-mode-map)
-    (setq geiser-active-implementations '(guile))
-    (global-unset-key "C-c C-a")
-    (unbind-key "C-c C-e" geiser-mode-map)
-    (unbind-key "C-c C-a" geiser-mode-map))
+  ;; :config
+  ;; ((define-key 'geiser-mode-map)
+
+  ;;  (global-unset-key "C-c C-a")
+  ;;  (unbind-key "C-c C-e" geiser-mode-map)
+  ;;  (unbind-key "C-c C-a" geiser-mode-map))
   :custom
+  (geiser-active-implementations '(guile))
   (geiser-default-implementation 'guile)
-  (geiser-mode-auto-p nil)
+  (geiser-mode-auto-p t)
   (geiser-repl-per-project-p t)
   )
 
+(use-package gnus
+  :config
+  (setq gnus-secondary-select-methods
+        '((nntp "gwene" (nntp-address "news.gwene.org"))
+          (nnrss "xkcd.com/atom.xml")
+          (nntp "yhetil" (nntp-address "news.yhetil.org")))))
+
 (use-package greader
   :defer t
-  :commands (greader-mode)
+  :commands (greader-mode greader-read)
+  :custom
+  (greader-current-backend 'greader-espeak)
+  (greader-piper-script-path "/home/yuval/bin/,tts.scm")
+  (greader-piper-script-url "http://localhost/")
   :config
   (add-hook 'greader-mode-hook
             'kakafarm/sentence-end-double-nilify-for-read-only-buffers)
+  (greader-estimated-time-mode)
   :bind
   (
    :map greader-mode-map
@@ -311,11 +402,16 @@
 
 (use-package mastodon
   :defer t
-  :init
-  ;; (setq mastodon-active-user "kakafarm"
-  ;;       mastodon-instance-url "https://emacs.ch/")
-  (setq mastodon-active-user "kakafarm"
-        mastodon-instance-url "https://shitposter.world/")
+  :custom
+  ;; (mastodon-instance-url "https://emacs.ch/")
+                                        ; <https://emacs.ch/>, RIP.
+                                        ; Lost but not forgotten.
+                                        ; Miss you, big man.
+  (mastodon-active-user "kakafarm")
+  (mastodon-instance-url "https://shitposter.world")
+  (mastodon-media--hide-sensitive-media nil)
+  (mastodon-tl--show-avatars t)
+  (mastodon-auth-use-source nil)
   )
 
 (use-package menu-bar
@@ -331,23 +427,39 @@
 (use-package modus-themes
   :defer t
   :init
-  (setq modus-themes-mode-line '(borderless
-                                 accented
-                                 ;; 3d
-                                 padded
-                                 ;; moody
-                                 )
-        modus-themes-region '(;;accented
-                              bg-only
-                              ;;no-extend
-                              )
-        modus-themes-paren-match '(bold
-                                   intense)
-        ;;modus-themes-syntax '(alt-syntax)
-        modus-themes-scale-headings t
-        modus-themes-org-blocks 'tinted-background)
+  ;; '(setq modus-themes-mode-line '(borderless
+  ;;                                 accented
+  ;;                                 ;; 3d
+  ;;                                 padded
+  ;;                                 ;; moody
+  ;;                                 )
+  ;;        modus-themes-region '(;;accented
+  ;;                              bg-only
+  ;;                              ;;no-extend
+  ;;                              )
+  ;;        modus-themes-paren-match '(bold
+  ;;                                   intense)
+  ;;        ;;modus-themes-syntax '(alt-syntax)
+  ;;        modus-themes-scale-headings t
+  ;;        modus-themes-org-blocks 'tinted-background)
   (load-theme 'modus-vivendi)
   ;;(load-theme 'wheatgrass)
+  :custom
+  (modus-themes-mode-line '(borderless
+                            accented
+                            ;; 3d
+                            padded
+                            ;; moody
+                            ))
+  (modus-themes-region '(;;accented
+                         bg-only
+                         ;;no-extend
+                         ))
+  (modus-themes-paren-match '(bold
+                              intense))
+  ;; (modus-themes-syntax '(alt-syntax))
+  (modus-themes-scale-headings t)
+  (modus-themes-org-blocks 'tinted-background)
   )
 
 (use-package mule
@@ -398,10 +510,10 @@
   (completion-styles
    '(orderless
      basic))
+  ;; (completion-category-defaults nil)
   (completion-category-overrides
-   '((file (styles
-            basic
-            partial-completion)))))
+   '((file . ((styles . (basic partial-completion)))))
+   ))
 
 (use-package org
   :defer t
@@ -476,6 +588,8 @@
    :custom
    (persp-mode-prefix-key (kbd "C-c M-p")))
 
+(use-package pass :commands password-store-get)
+
 (use-package rainbow-delimiters
   :defer t
   :config
@@ -508,8 +622,9 @@
     (put 'lambda-checked 'scheme-indent-function 1))
   :mode (rx "." (| "scm" "sxml" "skb") string-end)
   ;; :bind (:map scheme-mode-map
-  ;;             ("C-c C-e" . arei-mode-map)
-  ;;             ("C-c C-a" . arei))
+  ;;             ;; ("C-c C-e" . arei-mode-map)
+  ;;             ;; ("C-c C-a" . arei)
+  ;;             )
   )
 
 (use-package shr
@@ -536,7 +651,7 @@
                (lambda () "Switch to text-mode."
                  (text-mode)))
   :custom
-  (global-visual-line-mode t)
+  (global-visual-line-mode nil)
   )
 
 (use-package undo-tree
@@ -547,13 +662,14 @@
   :bind
   ("C-x u" . undo-tree-visualize))
 
-(use-package vertico
-  :init
-  (vertico-mode)
-  :config
-  (keymap-set vertico-map "?" #'minibuffer-completion-help)
-  (keymap-set vertico-map "M-RET" #'minibuffer-force-complete-and-exit)
-  (keymap-set vertico-map "M-TAB" #'minibuffer-complete))
+'(use-package vertico
+   :init
+   (vertico-mode)
+   ;; :config
+   ;; (keymap-set vertico-map "?" #'minibuffer-completion-help)
+   ;; (keymap-set vertico-map "M-RET" #'minibuffer-force-complete-and-exit)
+   ;; (keymap-set vertico-map "M-TAB" #'minibuffer-complete)
+   )
 
 (use-package vterm
   :custom
