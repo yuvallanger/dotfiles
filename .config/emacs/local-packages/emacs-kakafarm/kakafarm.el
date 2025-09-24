@@ -33,51 +33,95 @@
 (require 'dash)
 
 ;;;###autoload
+'(defun kakafarm/0x0-region (&optional start end)
+  "Paste the marked region onto 0x0.st.
+
+START and END are the start and end of the region in the buffer
+you would like to paste to 0x0.st."
+  (interactive "r")
+  '(cl-letf ((make-part (lambda (boundary key-values &optional body content-type)
+                         (concat part-boundary
+                                 "Content-Disposition: form-data; "
+
+                                 "name=\"file\"; filename=\"buffer-region.txt\"\r\n"
+                                 "Content-Type: text/plain\r\n"
+                                 "\r\n"
+                                 body)
+                         (concat )))))
+  (let* ((start (or start (min (point) (mark))))
+         (end (or end (max (point) (mark))))
+         (data (buffer-substring-no-properties start end))
+         (boundary (format "%X-%X-%X"
+                           (random)
+                           (random)
+                           (random)))
+         (url-request-method "POST")
+         (url-request-extra-headers
+          `(("Content-Type" . ,(concat "multipart/form-data; boundary=" boundary))))
+         (part-boundary (concat "--" boundary "\r\n"))
+         (secret-part
+          (concat
+           part-boundary
+           "Content-Disposition: form-data; name=\"secret\"\r\n\r\n"))
+         (data-part (concat part-boundary
+                            "Content-Disposition: form-data; name=\"file\"; filename=\"buffer-region.txt\"\r\n"
+                            "Content-Type: text/plain\r\n"
+                            "\r\n"
+                            data))
+         (end-boundary (concat "\r\n--" boundary "--"))
+         (url-request-data (concat
+                            secret-part
+                            data-part
+                            end-boundary
+                            )))
+    (with-current-buffer (url-retrieve-synchronously "https://0x0.st/")
+      (let* ((response (buffer-string))
+             (url (cadr (string-split response "\n\n" t "\n"))))
+
+        (message "%s" response)
+
+        ;; Displays URL.
+        (message "0x0 URL: %s" url)
+
+        ;; Copies URL to clipboard.
+        (with-temp-buffer
+          (insert url)
+          (kill-region (point-min) (point-max)))))))
+
 (defun kakafarm/0x0-region (&optional start end)
+  "Paste the marked region onto 0x0.st.
+
+START and END are the start and end of the region in the buffer
+you would like to paste to 0x0.st."
   (interactive "r")
   (let* ((start (or start (min (point) (mark))))
          (end (or end (max (point) (mark))))
-         (filename-suffix (concat "."
-                                  (string-clean-whitespace
-                                   (shell-command-to-string "pwgen -B1 8"))))
-         (filename (make-temp-file "0x0-prefix-"
-                                   nil
-                                   filename-suffix)))
+         (filename (make-temp-file "0x0-prefix-" nil)))
     (write-region start end filename)
-    (let* ((it (format "curl -Ffile=@%s 0x0.st 2> /dev/null | grep http" filename))
+    (let* ((it (format "curl -Fsecret=poop -Ffile=@%s 0x0.st 2> /dev/null | grep http" filename))
            (it (shell-command-to-string it))
            (it (string-clean-whitespace it))
            (address-of-0x0 it))
-      (message "%s" address-of-0x0)
+      (message "0x0 URL: %s" address-of-0x0)
       (with-temp-buffer
         (insert address-of-0x0)
         (kill-region (point-min) (point-max))))))
 
 ;;;###autoload
-(defun kakafarm/activitypubify-mastodont ()
-  (interactive)
-  (cl-do-all-symbols (symb)
-    (when (functionp symb)
-      (let ((symb-string (symbol-name symb)))
-        (when (string-prefix-p "mastodon" symb-string)
-          (let* ((x (string-replace "mastodon"
-                                    "activitypub"
-                                    symb-string))
-                 (x (string-replace "toot"
-                                    "item"
-                                    x)))
-            (let ((activitypub-symbol (intern x)))
-              (defalias activitypub-symbol symb)
-              (unintern symb))))))))
-
-;;;###autoload
 (defun kakafarm/advice-remove-all (function)
   "Remove every advice function from FUNCTION."
   (advice-mapc
-   (lambda (advice-function properties-alist)
+   (lambda (advice-function _properties-alist)
      (advice-remove function
                     advice-function))
    function))
+
+(defun kakafarm/ansi-color-filter-buffer ()
+  (interactive)
+  "Remove ANSI color from buffer.
+
+TODO: Is it only working in the narrowed part?"
+  (ansi-color-filter-region (point-min) (point-max)))
 
 ;;;###autoload
 (defun kakafarm/call-process-with-string-as-input (program &optional input-string &rest args)
@@ -220,6 +264,19 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
         (browse-url url)))))
 
 ;;;###autoload
+(defun kakafarm/find-init-el ()
+  (interactive)
+  (find-file "~/.config/emacs/init.el")
+  (emacs-lisp-mode))
+
+(defun kakafarm/format-startstop-to-durations (start-stop-list)
+  (mapcar (pcase-lambda (`(,start ,stop))
+            (time-subtract
+             (iso8601-parse stop)
+             (iso8601-parse start)))
+          start-stop-list))
+
+;;;###autoload
 (defun kakafarm/greader-estimate-reading-time (&optional start end)
   (interactive "r")
   (let ((wpm greader-espeak-rate)
@@ -227,6 +284,66 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
                                       (if end end (point-max)))))
     (message "%s" (/ (float number-of-words) wpm))))
 
+;;;###autoload
+(defun kakafarm/greaderize ()
+  "Make the text in the current buffer friendlier to greader.
+
+TODO: This is shite."
+  (interactive)
+  (save-excursion
+    (whitespace-cleanup)
+    (goto-char (point-min))
+    ;; Replace all consecutive newline sequences with exactly two
+    ;; newlines.
+    (while (search-forward "\n" nil t)
+      (replace-match "\n\n" nil t))
+    (goto-char (point-min))
+    (while (search-forward "\n\n\n" nil t)
+      (replace-match "\n\n" nil t)
+      (while (search-forward "\n\n\n" nil t)
+        (replace-match "\n\n" nil t))
+      (goto-char (point-min)))
+    (fill-region (point-min) (point-max))))
+
+;;;###autoload
+(defun kakafarm/insert-char-to-vterm ()
+  (interactive)
+  (vterm-insert (read-char-by-name "Choose char: ")))
+
+
+;;; `kakafarm/insert-shrug', `kakafarm/insert-shrug-history', and
+;;; `kakafarm/insert-shrug-to-vterm', are based on the following post
+;;; by Corwin Brust:
+;;;
+;;; https://corwin.bru.st/2025-09-18-emacsconf-cfp-ending-and-a-completing-read-example/
+(defvar kakafarm/insert-shrug-history nil "History for `kakafarm/insert-shrug'.")
+
+(defcustom kakafarm/insert-shrug-shrugs '(("mu" "無"))
+  "Things for `kakafarm/insert-shrug' to insert, plist.")
+
+(defun kakafarm/insert-shrug (&optional arg)
+  (interactive
+   (list (completing-read "Emit: "
+                          kakafarm/insert-shrug-shrugs
+                          nil
+                          t
+                          nil
+                          kakafarm/insert-shrug-history
+                          "shrug")))
+  (insert (format "%s" (or (plist-get insert-shrug-shrugs arg 'string=) ""))))
+
+(defun kakafarm/insert-shrug-to-vterm ()
+  (interactive
+   (list (completing-read "Emit: "
+                          kakafarm/insert-shrug-shrugs
+                          nil
+                          t
+                          nil
+                          kakafarm/insert-shrug-history
+                          "shrug")))
+  (vterm-insert (read-char-by-name "Choose char: ")))
+
+
 ;;;###autoload
 (defun kakafarm/kill-ring-save-unlines ()
   "Like `kill-ring-save', but also unlines and trims the newly killed stuff."
@@ -417,13 +534,6 @@ who-knows-where-and-who."
       (erase-buffer)
       (insert item-source))))
 
-(defun kakafarm/format-startstop-to-durations (start-stop-list)
-  (mapcar (pcase-lambda (`(,start ,stop))
-            (time-subtract
-             (iso8601-parse stop)
-             (iso8601-parse start)))
-          start-stop-list))
-
 ;;;###autoload
 (defun kakafarm/multi-vterm-weechat ()
   "Either start a weechat vterm buffer, or switch to it if it already exists."
@@ -436,7 +546,7 @@ who-knows-where-and-who."
      ((multi-vterm-buffer-exist-p maybe-weechat-buffer)
       (switch-to-buffer maybe-weechat-buffer))
      (t
-      (let ((vterm-shell (expand-file-name "~/bin/w")))
+      (let ((vterm-shell (expand-file-name "~/bin/,w")))
         (multi-vterm)
         (rename-buffer weechat-buffer-name))))))
 
