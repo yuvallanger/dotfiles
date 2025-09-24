@@ -318,7 +318,7 @@ TODO: This is shite."
 ;;; https://corwin.bru.st/2025-09-18-emacsconf-cfp-ending-and-a-completing-read-example/
 (defvar kakafarm/insert-shrug-history nil "History for `kakafarm/insert-shrug'.")
 
-(defcustom kakafarm/insert-shrug-shrugs '(("mu" "無"))
+(defcustom kakafarm/insert-shrug-shrugs '("mu" "無")
   "Things for `kakafarm/insert-shrug' to insert, plist.")
 
 (defun kakafarm/insert-shrug (&optional arg)
@@ -330,7 +330,7 @@ TODO: This is shite."
                           nil
                           kakafarm/insert-shrug-history
                           "shrug")))
-  (insert (format "%s" (or (plist-get insert-shrug-shrugs arg 'string=) ""))))
+  (insert (format "%s" (or (plist-get kakafarm/insert-shrug-shrugs arg 'string=) ""))))
 
 (defun kakafarm/insert-shrug-to-vterm ()
   (interactive
@@ -341,7 +341,7 @@ TODO: This is shite."
                           nil
                           kakafarm/insert-shrug-history
                           "shrug")))
-  (vterm-insert (read-char-by-name "Choose char: ")))
+  (vterm-insert (format "%s" (or (plist-get kakafarm/insert-shrug-shrugs arg 'string=) ""))))
 
 
 ;;;###autoload
