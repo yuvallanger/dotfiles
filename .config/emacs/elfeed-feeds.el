@@ -172,6 +172,7 @@
                        ("https://www.youtube.com/feeds/videos.xml?channel_id=UCkK9UDm_ZNrq_rIXCz3xCGA" blog csj foss freesoftware linux lunduke news opensource unix youtube)
                        ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzREuchzOqiawpEpvEM0Tyg" atheism islam video youtube)
                        ("https://xonotic.org/index.xml" computergames games official xonotic)
-                       )
+                       ))
 
-(load (locate-user-emacs-file "local-elfeed-feeds.el"))
+(let ((path (locate-user-emacs-file "local-elfeed-feeds.el")))
+  (when (file-exists-p path) (load path)))
