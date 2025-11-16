@@ -30,7 +30,53 @@
 ;;; Code:
 
 (require 'cl-lib)
-(require 'dash)
+
+(defun kakafarm/programmatic-replace-regexp (regexp to-string)
+  (while (re-search-forward regexp nil t)
+    (replace-match to-string nil nil)))
+
+(defun kakafarm/programmatic-replace-string (from-string to-string)
+  (while (search-forward from-string nil t)
+    (replace-match to-string nil t)))
+
+(defun kakafarm/double-spaceify-period ()
+  (interactive)
+  (save-excursion
+    (kakafarm/programmatic-replace-string ". "
+                                          ".   "))
+  (save-excursion
+    (while (search-forward ".   " nil t)
+      (replace-match ".  " nil t)
+      (while (search-forward ".   " nil t)
+        (replace-match ".  " nil t))
+      (goto-char (point-min)))))
+
+(defun kakafarm/double-spaceify-question-mark ()
+  (interactive)
+  (save-excursion
+    (kakafarm/programmatic-replace-string "? "
+                                          "?   "))
+  (save-excursion
+    (while (search-forward "?   " nil t)
+      (replace-match ".  " nil t)
+      (while (search-forward ".   " nil t)
+        (replace-match ".  " nil t))
+      (goto-char (point-min)))))
+
+(defun kakafarm/double-spaceify ()
+  (interactive)
+  (kakafarm/double-spaceify-period)
+  (kakafarm/double-spaceify-question-mark))
+
+(defun kakafarm/youtube-transcript-untimestamps ()
+  (interactive)
+  (save-excursion (kakafarm/programmatic-replace-regexp "\n[[:digit:]]+:[[:digit:]]+:[[:digit:]]+\n" " "))
+  (save-excursion (kakafarm/programmatic-replace-regexp "\n[[:digit:]]+:[[:digit:]]+\n" " "))
+  (save-excursion (kakafarm/double-spaceify))
+  (save-excursion (kakafarm/programmatic-replace-string ".  " ".\n"))
+  (save-excursion (kakafarm/programmatic-replace-string "?  " "?\n"))
+  (save-excursion (while (= (forward-paragraph) 0) (fill-paragraph)))
+  )
 
 ;;;###autoload
 '(defun kakafarm/0x0-region (&optional start end)
@@ -233,6 +279,75 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
                 feeds)
         #'kakafarm/elfeed-compare-feeds-urls))
 
+(defun kakafarm/krepalakh-soju-password ()
+  (interactive)
+  (auth-info-password
+   (nth 0 (auth-source-search
+           :host "localhost"
+           :user "krepalakh"
+           :port "6667"))))
+
+;;;###autoload
+(defun kakafarm/erc-libera-chat ()
+  (interactive)
+  (let ((auth-source-debug 'trivia)
+        (erc-sasl-user "krepalakh")
+        (erc-sasl-auth-source-function 'erc-auth-source-search))
+    (erc-tls :id 'libera-kakafarm)))
+
+;;;###autoload
+(defun kakafarm/erc-soju-krepalakh ()
+  (interactive)
+  (erc :id 'soju-krepalakh
+       :server "localhost"
+       :port 6667
+       :nick "krepalakh"
+       :user "krepalakh"
+       :password (kakafarm/krepalakh-soju-password)
+       ))
+
+;;;###autoload
+(defun kakafarm/erc-soju-libera ()
+  (interactive)
+  (erc :id 'libera-krepalakh
+       :server "localhost"
+       :port 6667
+       :nick "krepalakh"
+       :user "krepalakh/libera"
+       :password (kakafarm/krepalakh-soju-password)
+       ))
+
+;;;###autoload
+(defun kakafarm/erc-soju-quakenet ()
+  (interactive)
+  (erc :id 'quakenet-krepalakh
+       :server "localhost"
+       :port 6667
+       :nick "krepalakh"
+       :user "krepalakh/quakenet"
+       :password (kakafarm/krepalakh-soju-password)
+       ))
+
+;;;###autoload
+(defun kakafarm/erc-soju-rizon ()
+  (interactive)
+  (erc :id 'rizon-krepalakh
+       :server "localhost"
+       :port 6667
+       :nick "krepalakh"
+       :user "krepalakh/rizon"
+       :password (kakafarm/krepalakh-soju-password)
+       ))
+
+;;;###autoload
+(defun kakafarm/erc-soju ()
+  (interactive)
+  (kakafarm/erc-soju-krepalakh)
+  (kakafarm/erc-soju-libera)
+  (kakafarm/erc-soju-quakenet)
+  (kakafarm/erc-soju-rizon)
+  )
+
 ;;;###autoload
 (defun kakafarm//ffap-browse-urls ()
   "Open all visible URLs."
@@ -255,13 +370,14 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
   "Open wanted visible URLs.  Ya gotta type a bit of em and then ta tab complete and separate by commas ta actually select em."
   (interactive)
 
-  (let ((urls (mapcar 'car (ffap-menu-rescan)))
-        (crm-separator "\n"))
-    (let ((urls-to-open (completing-read-multiple "Which URLs should I open?
+  (with-restriction (window-start) (window-end)
+    (let ((urls (mapcar 'car (ffap-menu-rescan)))
+          (crm-separator "\n"))
+      (let ((urls-to-open (completing-read-multiple "Which URLs should I open?
 "
-                                                  urls)))
-      (dolist (url urls-to-open)
-        (browse-url url)))))
+                                                    urls)))
+        (dolist (url urls-to-open)
+          (browse-url url))))))
 
 ;;;###autoload
 (defun kakafarm/find-init-el ()
@@ -342,7 +458,6 @@ TODO: This is shite."
 
 (kakafarm/insert-mu-macro kakafarm/insert-mu-to-vterm vterm-insert)
 
-(kakafarm/insert-mu "mu")
 
 ;;;###autoload
 (defun kakafarm/kill-ring-save-unlines ()
@@ -554,8 +669,7 @@ who-knows-where-and-who."
 (defun kakafarm/sentence-end-double-nilify-for-read-only-buffers ()
   "Set `sentence-end-double-space' in read-only buffer to `nil'."
   (when buffer-read-only
-    (setq-local sentence-end-double-space
-                nil)))
+    (setq-local sentence-end-double-space nil)))
 
 ;;;###autoload
 (defun kakafarm/shell-command-with-string-to-string-XXX (string command)

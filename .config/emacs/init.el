@@ -11,8 +11,7 @@
 (unless (server-running-p)
   (server-start))
 
-(add-to-list 'load-path (concat user-emacs-directory
-                                "local-packages/emacs-kakafarm/"))
+(add-to-list 'load-path (concat user-emacs-directory "kakafarm"))
 
 (load (locate-user-emacs-file "local-stuff.el"))
 
@@ -38,12 +37,12 @@
    (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?|))
    (xterm-mouse-mode 1))
 
-(use-package auth-source
+'(use-package auth-source
   :config
   (auth-source-pass-enable)
   )
 
-(use-package auth-source-pass
+'(use-package auth-source-pass
   :custom
   (auth-source-do-cache nil)
   (auth-sources '(password-store))
@@ -120,7 +119,7 @@
   (customize-set-value 'elfeed-curl-program-name
                        (expand-file-name "~/.guix-profile/bin/curl"))
   :custom
-  (elfeed-curl-max-connections 10)
+  (elfeed-curl-max-connections 1)
   (elfeed-search-filter "@0.000001-week-ago +unread")
   (elfeed-curl-program-name (expand-file-name "~/.guix-profile/bin/curl"))
   )
@@ -175,6 +174,10 @@
   (inhibit-startup-screen t)
   (read-extended-command-predicate #'command-completion-default-include-p)
 
+  (global-so-long-mode t)
+
+  (history-length t)
+
   :init
   ;; Probably got it from:
   ;;
@@ -194,7 +197,7 @@
             (cdr args)))
     (advice-add #'completing-read-multiple :filter-args #'crm-indicator)))
 
-(use-package ement
+'(use-package ement
   :custom
   (ement-auto-sync nil)
   (ement-save-sessions t)
@@ -205,38 +208,54 @@
   :ensure nil
   :commands (erc-tls)
   :custom
+  (erc-ask-about-multiline-input nil)
   (erc-auto-query 'bury)
-  (erc-autojoin-channels-alist '()) ; (erc-autojoin-channels-alist '((libera-kakafarm "#systemcrafters")))
+  (erc-autojoin-channels-alist '())
   (erc-fill-column 100)
   (erc-fill-function 'erc-fill-wrap)
   (erc-fill-static-center 8)
   (erc-header-line-format nil)
   (erc-hide-list '("JOIN" "PART" "QUIT"))
-  (erc-inhibit-multiline-input t)
+  (erc-inhibit-multiline-input nil)
   (erc-kill-buffer-on-part nil)
   (erc-log-channels-directory "~/mine/erc-logs/")
   (erc-log-insert-log-on-open t)
   (erc-log-write-after-insert t)
   (erc-log-write-after-send t)
-  (erc-modules '(button completion fill irccontrols list log match menu netsplit networks noncommands notifications readonly ring scrolltobottom spelling stamp track))
-  (erc-nick "kakafarm")                  ; not "antti"
-  (erc-password nil)
-  (erc-port 1025)
+  (erc-modules '(
+                 bufbar
+                 button
+                 completion
+                 fill
+                 irccontrols
+                 list
+                 log
+                 match
+                 menu
+                 netsplit
+                 networks
+                 nickbar
+                 noncommands
+                 notifications
+                 readonly
+                 ring
+                 sasl
+                 scrolltobottom
+                 spelling
+                 stamp
+                 track
+                 ))
+  (erc-nick "krepalakh")                ; not "antti"
+  (erc-port 6697)
+  (erc-sasl-mechanism 'plain)
   (erc-scrollbottom t)
   (erc-scrollbottom-on-input t)
   (erc-scrollbottom-on-output t)
-  (erc-server "localhost")
+  ;; (erc-server "irc.libera.chat")
   (erc-track-shorten-start 8)
   (erc-use-tls t)
-  ;; (erc-tls :id 'libera-kakafarm)
   :bind
-  (("C-c i r c" . (lambda ()
-                    (interactive)
-                    (erc-tls :id 'libera-kakafarm))))
-  )
-
-(use-package erc
-  :custom
+  (("C-c i r c" . 'kakafarm/erc-soju))
   )
 
 (use-package erc-hl-nicks
@@ -255,6 +274,14 @@
          "#7FFF00"
          "#FF6347"
          ]))
+
+(use-package erc-track
+  :custom
+  ;; Without this our MODE LINE is spammed with a list of buffer names
+  ;; of active buffers.  Use erc-bufbar-mode to show buffer activity
+  ;; in a better way!
+  (erc-track-position-in-mode-line nil)
+  )
 
 (use-package eww
   :custom
@@ -305,15 +332,14 @@
   (greader-piper-script-path "/home/yuval/bin/,tts.scm")
   (greader-piper-script-url "http://localhost/")
   :config
-  (add-hook 'greader-mode-hook
-            'kakafarm/sentence-end-double-nilify-for-read-only-buffers)
+  (add-hook 'greader-mode-hook 'kakafarm/sentence-end-double-nilify-for-read-only-buffers)
   (greader-estimated-time-mode)
-  :bind
-  (
-   :map greader-mode-map
-   ("C-c g b" . (lambda () (interactive) (kakafarm/greader-estimate-reading-time)))
-   ("C-c g r" . (lambda () (interactive) (kakafarm/greader-estimate-reading-time (point))))
-   )
+  ;; :bind
+  ;; (
+  ;;  :map greader-mode-map
+  ;;  ("C-c g b" . (lambda () (interactive) (kakafarm/greader-estimate-reading-time)))
+  ;;  ("C-c g r" . (lambda () (interactive) (kakafarm/greader-estimate-reading-time (point))))
+  ;;  )
   :hook (
          Custom-mode
          Info-mode
@@ -324,7 +350,7 @@
          eww-after-render
          fundamental-mode
          help-mode
-         helpful-mode
+         ;; helpful-mode
          lisp-mode
          nov-mode
          ;; text-mode ;; It fucks up my magit commit message C-c C-c.
@@ -341,16 +367,16 @@
     )
    )
 
-(use-package helpful
-  :defer t
-  :bind
-  (
-   ("C-h f" . helpful-function)
-   ("C-h k" . helpful-key)
-   ("C-h m" . helpful-mode)
-   ("C-h v" . helpful-variable)
-   )
-  )
+;; (use-package helpful
+;;   :defer t
+;;   :bind
+;;   (
+;;    ("C-h f" . helpful-function)
+;;    ("C-h k" . helpful-key)
+;;    ("C-h m" . helpful-mode)
+;;    ("C-h v" . helpful-variable)
+;;    )
+;;   )
 
 (use-package howm
   :init
@@ -595,6 +621,26 @@
   :config
   (rainbow-delimiters-mode))
 
+(use-package rcirc
+  :custom
+  (rcirc-default-full-name "")
+  (rcirc-default-nick "")
+  (rcirc-default-part-reason "")
+  (rcirc-default-port 0)
+  (rcirc-default-quit-reason "")
+  (rcirc-default-user-name "")
+  :config
+  (setq rcirc-server-alist
+        (list (list "127.0.0.1"
+                    :port 6667
+                    :nick "krepalakh"
+                    :user-name "krepalakh/libera"
+                    :full-name "real name"
+                    :password (kakafarm/krepalakh-soju-password)
+                    ))
+        )
+  )
+
 (use-package recentf
   :defer t
   :config
@@ -710,7 +756,6 @@
 ;;; https://systemcrafters.net/emacs-from-scratch/the-best-default-settings/
 ;;; https://www.youtube.com/watch?v=51eSeqcaikM
   ;;(recentf-mode 1)
-  (setq history-length 25)
   (save-place-mode 1))
 
 (progn
