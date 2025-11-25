@@ -70,7 +70,6 @@ while [ -n "$*" ]; do
         -h | --help)
             help_message
             exit 0
-            shift
             ;;
         --debug)
             debug_flag=1
