@@ -156,6 +156,7 @@
                        ("https://www.messynessychic.com/feed/" messynessy blog curios)
                        ("https://www.midaat.org.il/feed/" conspiracy medicine midaat science)
                        ("https://www.more-magic.net/feed.atom" blog computing lisp programming scheme unix)
+                       ("https://www.ngocomment.com/feed" andyngo antifa blog news)
                        ("https://www.okmij.org/ftp/atom.xml" blog okmij personal programming scheme)
                        ("https://www.okmij.org/ftp/rss.xml" blog okmij personal programming scheme)
                        ("https://www.rahuljuliato.com/rss.xml" blog craftering)
