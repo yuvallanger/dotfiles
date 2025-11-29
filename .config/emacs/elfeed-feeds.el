@@ -137,6 +137,7 @@
                        ("https://whatsup.org.il/backend-forums.php?utf8=1" hebrew israel linux whatsup)
                        ("https://whatsup.org.il/backend.php?utf8=1" hebrew israel linux whatsup)
                        ("https://whhone.com/index.xml" blog emacs freesoftware linux programming waihon)
+                       ("https://world.hey.com/dhh/feed.atom" blog dhh omarchy)
                        ("https://write.as/jeko/feed/" blog guile lisp personal programming scheme)
                        ("https://www.accursedfarms.com/rss/3-accursed-farms.xml/" accursedfarms blog)
                        ("https://www.andrewgoldheretics.com/feed" andrewgold blog csj)
