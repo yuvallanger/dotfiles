@@ -114,7 +114,7 @@
                        ("https://shom.dev/index.xml" blog craftering linux)
                        ("https://snac.lab8.cz/js.rss" unixsurrealism triapul)
                        ("https://speechcode.com/blog/rss" arthuragleckler blog lisp personal scheme srfi)
-                       ("https://spritely.institute/feed.xml" linux lisp official scheme)
+                       ("https://spritely.institute/feed.xml" goblins hoot linux lisp official scheme spritely)
                        ("https://sr.ht/~abcdw/rde-monthly/feed.rss" guix lisp newsletter rde scheme)
                        ("https://stallmansupport.org/feed.xml" csj richardmathewstallman rms stallman)
                        ("https://status.mangadex.org/history.atom" comics)
