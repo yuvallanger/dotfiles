@@ -31,6 +31,96 @@
 
 (require 'cl-lib)
 
+(defun kakafarm/substack-video-transcript ()
+  (interactive)
+  (save-excursion
+    (set-buffer (get-buffer-create "*substack-video-transcript*"))
+    (insert (read-string "Please enter base64 of transcript: "))
+    (let* ((thing (read-string "Please enter base64 of transcript: "))
+           (thing (base64-decode-string thing))
+           (thing (json-parse-string thing))
+           (thing (cl-map 'list (lambda (text)
+                                  (cl-map 'list
+                                          (lambda (x)
+                                            (list (gethash "speaker" x)
+                                                  (gethash "word" x)))
+                                          (gethash "words" text)))
+                          thing))
+           (thing (apply 'append thing))
+           (thing
+            (named-let loop ((words thing)
+                             current-speaker
+                             accumulator)
+              (cond
+               ((null words) (apply 'concat (reverse accumulator)))
+               (t
+                (loop (cdr words)
+                      (cl-first (car words))
+                      (cons
+                       (cond
+                        ((equal (cl-first (car words)) current-speaker)
+                         (cl-second (car words)))
+                        (t
+                         (concat
+                          "\n\n"
+                          (cl-first (car words))
+                          ":\n\n"
+                          (cl-second (car words)))))
+                       accumulator
+                       )))))))
+      thing
+      )))
+
+(defun kakafarm/greaderise-weechat-log ()
+  (interactive)
+  (let ((old-speaker nil)
+        (original-buffer (current-buffer))
+        (new-buffer (get-buffer-create "*Weechatlog*")))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward "^........................ <.\\([a-zA-Z0-9]+\\)> \\(.*\\)" nil t)
+        (let ((new-speaker (match-string 1))
+              (new-message (match-string 2)))
+          (when (not (string-equal new-speaker old-speaker))
+            (setq old-speaker new-speaker)
+            (with-current-buffer new-buffer
+              (insert "Nickname " old-speaker " said:\n\n")))
+          (with-current-buffer new-buffer
+            (insert new-message "\n\n"))))
+      (with-current-buffer new-buffer
+        (fill-region (point-min) (point-max)))
+      (switch-to-buffer new-buffer)
+      (goto-char (point-min))
+      (greader-mode 1))))
+
+(defun kakafarm/convert-hash-tags-to-haunt-tags ()
+  (interactive)
+  (unless (use-region-p) (error "A region must be marked."))
+  (let ((beginning (region-beginning))
+        (end (region-end)))
+    (save-excursion
+      (goto-char beginning)
+      (replace-string "#" "" nil 0 1)
+      (while (search-forward "#" nil t)
+        (replace-match "" nil nil nil 0))
+      (goto-char beginning)
+      (while (search-forward "\n" nil t)
+        (replace-match ", " nil nil nil 0))
+      (goto-char (- (point-at-eol) 2))
+      (while (search-forward ", " nil t)
+        (replace-match "" nil t)))))
+
+(defun kakafarm/convert-haunt-tags-to-hash-tags ()
+  (interactive)
+  (unless (use-region-p) (error "A region must be marked."))
+  (let ((beginning (region-beginning))
+        (end (region-end)))
+    (save-excursion
+      (goto-char beginning)
+      (insert "#")
+      (while (search-forward ", " nil t)
+        (replace-match "\n#" nil t nil 0)))))
+
 (defun kakafarm/programmatic-replace-regexp (regexp to-string)
   (while (re-search-forward regexp nil t)
     (replace-match to-string nil nil)))
@@ -606,6 +696,28 @@ TODO: This is shite."
                    (- (point-max)
                       (point-min)))))))
 
+(defun kakafarm/goto-random-line ()
+  (interactive)
+  (let* ((beginning (if (use-region-p) (region-beginning) (point-min)))
+         (end (if (use-region-p) (region-end) (point-max)))
+         (first-line-number (line-number-at-pos beginning))
+         (number-of-possible-lines (count-lines beginning end))
+         (random-line-number (+ (random number-of-possible-lines)
+                                first-line-number)))
+    (message "use-region-p: %s
+beg: %s
+end: %s
+first-line-number: %s
+number-of-possible-lines: %s
+random-line-number: %s"
+             (use-region-p)
+             beginning
+             end
+             first-line-number
+             number-of-possible-lines
+             random-line-number)
+    (goto-line random-line-number)))
+
 ;;;###autoload
 (defun kakafarm/recenter-top-bottom (original-function &rest arguments)
   "Move view such that point is 4 lines from the top of the frame when function is `recenter-top-bottom'."
@@ -781,6 +893,12 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
      (t
       (loop (cdr lst)
             accumulator)))))
+
+;;;###autoload
+(defun kakafarm/unfill-region ()
+  (interactive)
+  (let ((fill-column nil))
+    (fill-region (point-min) (point-max))))
 
 ;;;###autoload
 (defun kakafarm/url-response-to-body (response)
