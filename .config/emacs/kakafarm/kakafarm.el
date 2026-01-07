@@ -371,18 +371,19 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
 ;;;###autoload
 (defun kakafarm/elfeed-feeds-pretty-print-insert ()
   (interactive)
-  (insert "   '(")
+  (insert "(customize-set-value 'elfeed-feeds
+                     '(")
   (let ((sorted-feeds (kakafarm/elfeed-feeds-sort elfeed-feeds)))
     (cl-loop
      for feed in sorted-feeds
      do
-     (insert (format "\n      (%S" (car feed)))
+     (insert (format "\n                       (%S" (car feed)))
      (cl-loop
       for tag in (cdr feed)
       do
       (insert (format " %s" tag)))
      (insert ")")))
-  (insert ")"))
+  (insert "\n                       ))"))
 
 ;;;###autoload
 (defun kakafarm/elfeed-sort-feeds (feeds)
