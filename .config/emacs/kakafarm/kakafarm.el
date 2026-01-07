@@ -362,6 +362,28 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
   (string-lessp (car feed-a)
                 (car feed-b)))
 
+(defun kakafarm/elfeed-feeds-sort (elfeed-feeds)
+  (sort (mapcar (lambda (feed)
+                  (cons (car feed)
+                        (sort (cdr feed))))
+                elfeed-feeds)))
+
+;;;###autoload
+(defun kakafarm/elfeed-feeds-pretty-print-insert ()
+  (interactive)
+  (insert "   '(")
+  (let ((sorted-feeds (kakafarm/elfeed-feeds-sort elfeed-feeds)))
+    (cl-loop
+     for feed in sorted-feeds
+     do
+     (insert (format "\n      (%S" (car feed)))
+     (cl-loop
+      for tag in (cdr feed)
+      do
+      (insert (format " %s" tag)))
+     (insert ")")))
+  (insert ")"))
+
 ;;;###autoload
 (defun kakafarm/elfeed-sort-feeds (feeds)
   "Sort A-FEED, an `elfeed-feeds' list."
@@ -895,10 +917,12 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
             accumulator)))))
 
 ;;;###autoload
-(defun kakafarm/unfill-region ()
-  (interactive)
-  (let ((fill-column nil))
-    (fill-region (point-min) (point-max))))
+(defun kakafarm/unfill-region (&optional start end)
+  (interactive "r")
+  (let ((start (if start start (point-min)))
+        (end (if end end (point-max))))
+    (let ((fill-column nil))
+      (fill-region start end))))
 
 ;;;###autoload
 (defun kakafarm/url-response-to-body (response)
