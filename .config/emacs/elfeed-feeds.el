@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (require 'cl-lib)
 
 (customize-set-value 'elfeed-feeds
