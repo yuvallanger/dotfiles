@@ -604,6 +604,17 @@ TODO: This is shite."
     (message "%s" url)))
 
 ;;;###autoload
+(defun kakafarm/org-create-ids ()
+  "Create ID properties to each header in the file."
+  (save-excursion
+    (goto-char (point-max))
+    (let ((p t))
+      (while p
+        (let ((x (outline-previous-heading)))
+          (when (not x) (setq p x))
+          (org-id-get-create))))))
+
+;;;###autoload
 (defun kakafarm/org-html-export-to-html-file (file)
   (let ((buffer (org-export-as 'html)))
     (with-temp-buffer
