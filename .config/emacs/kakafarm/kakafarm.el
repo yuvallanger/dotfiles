@@ -606,6 +606,7 @@ TODO: This is shite."
 ;;;###autoload
 (defun kakafarm/org-create-ids ()
   "Create ID properties to each header in the file."
+  (interactive)
   (save-excursion
     (goto-char (point-max))
     (let ((p t))
