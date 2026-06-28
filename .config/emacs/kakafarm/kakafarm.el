@@ -129,6 +129,35 @@
   (while (search-forward from-string nil t)
     (replace-match to-string nil t)))
 
+(defun kakafarm/denote-export ()
+  (interactive)
+  (let* ((source-directory (expand-file-name "~/foo/kaka.farm/src/denote/"))
+         (target-html-directory (expand-file-name "~/foo/kaka.farm/site/pub/denote/html/"))
+         (target-org-directory (expand-file-name "~/foo/kaka.farm/site/pub/denote/src/")))
+    (mkdir target-html-directory t)
+    (mkdir target-org-directory t)
+    (cl-loop
+     for source-org-file-name in (directory-files source-directory)
+     if (string-suffix-p ".org" source-org-file-name)
+     do (let* ((source-org-file-path (concat source-directory source-org-file-name))
+               (target-org-file-path (concat target-org-directory source-org-file-name))
+               (target-html-file-path (concat target-html-directory
+                                              (file-name-base source-org-file-name)
+                                              ".html"))
+               (source-org-file-modification-time (file-attribute-modification-time (file-attributes source-org-file-path)))
+               (target-org-file-modification-time (file-attribute-modification-time (file-attributes target-org-file-path))))
+          (when (or (not target-org-file-modification-time)
+                    (time-less-p target-org-file-modification-time source-org-file-modification-time))
+            (save-excursion
+              (let* ((source-org-buffer (find-file-noselect source-org-file-path)))
+                (with-current-buffer source-org-buffer
+                  (let* ((exported-html-file-name (org-html-export-to-html))
+                         (exported-html-file-path exported-html-file-name))
+                    (rename-file exported-html-file-path target-html-file-path t))))
+              (copy-file source-org-file-path target-org-file-path t)
+              (set-file-modes target-html-file-path #o644)
+              (set-file-modes target-org-file-path #o644)))))))
+
 (defun kakafarm/double-spaceify-period ()
   (interactive)
   (save-excursion
@@ -817,6 +846,10 @@ who-knows-where-and-who."
   "Set `sentence-end-double-space' in read-only buffer to `nil'."
   (when buffer-read-only
     (setq-local sentence-end-double-space nil)))
+
+;;;###autoload
+(defun kakafarm/set-truncate-partial-width-windows-to-nil ()
+  (setq-local truncate-partial-width-windows nil))
 
 ;;;###autoload
 (defun kakafarm/shell-command-with-string-to-string-XXX (string command)
