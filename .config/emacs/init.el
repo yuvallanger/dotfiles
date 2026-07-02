@@ -40,6 +40,15 @@
    (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?|))
    (xterm-mouse-mode 1))
 
+(use-package ace-window
+;;; Used for quick window switching.
+  :bind
+  (:map global-map
+        (([(f2)] . ace-window)))
+  :custom
+  (aw-scope 'frame)
+  )
+
 '(use-package auth-source
   :config
   (auth-source-pass-enable)
@@ -108,6 +117,8 @@
 
 (use-package dictionary
   :defer t
+  :bind
+  (("C-c l" . dictionary-lookup-definition))
   :custom
   (dictionary-server "localhost"))
 
@@ -122,24 +133,24 @@
   (customize-set-value 'elfeed-curl-program-name
                        (expand-file-name "~/.guix-profile/bin/curl"))
   :custom
-  (elfeed-curl-max-connections 1)
+  (elfeed-curl-max-connections 5)
   (elfeed-search-filter "@0.000001-week-ago +unread")
   (elfeed-curl-program-name (expand-file-name "~/.guix-profile/bin/curl"))
   )
 
-'(use-package elfeed-goodies
-   :config
-   (elfeed-goodies/setup))
+(setq epa-pinentry-mode 'loopback)
+(pinentry-start)
 
 (use-package epa
   :custom
-  (epg-pinentry-mode 'ask))
+  (epg-pinentry-mode 'loopback))
 
 (use-package emacs
   :ensure nil
   :bind
   (
    :map global-map
+   ("C-c C-x C-x" . redraw-display)
    ("C-c p p" . kakafarm/percent-read)
    ("C-c C-s" . (lambda (beg end)
                   (interactive (list (region-beginning) (region-end)))
@@ -355,7 +366,6 @@
          help-mode
          ;; helpful-mode
          lisp-mode
-         nov-mode
          ;; text-mode ;; It fucks up my magit commit message C-c C-c.
          w3m-mode
          )
@@ -406,12 +416,12 @@
 
 (use-package kakafarm
   :demand t
-  :bind
-  (
-   :map global-map
-   ("C-c C-w" . kakafarm/multi-vterm-weechat)
-   ("C-c w"   . kakafarm/multi-vterm-weechat)
-   )
+  ;; :bind
+  ;; (
+  ;;  :map global-map
+  ;;  ("C-c C-w" . kakafarm/multi-vterm-weechat)
+  ;;  ("C-c w"   . kakafarm/multi-vterm-weechat)
+  ;;  )
   )
 
 (use-package magit
@@ -521,9 +531,14 @@
    (nano-tts-words-per-minute 225)
    )
 
-(use-package nov
+'(use-package nov
   :defer t
-  :mode ((rx ".epub" string-end) . nov-mode))
+  :mode ((rx ".epub" string-end) . nov-mode)
+  :hook (
+         follow-mode
+         greader-mode
+         kakafarm/set-truncate-partial-width-windows-to-nil
+         ))
 
 (use-package fundamental
   :mode ((rx ".el" string-end) . fundamental-mode))
@@ -576,6 +591,8 @@
                                   ("g" . "src scheme :session moo :results output :tangle eopl3.scm")
                                   ("z" . "src scheme")
                                   ))
+  (org-tags-sort-function #'lessp)
+  (org-todo-keywords '((sequence "TODO" "|" "DONE" "DNFT")))
   )
 
 (use-package org-roam
@@ -649,8 +666,7 @@
   :config
   (recentf-mode 1)
   :bind (("C-S-t" . recentf-open-files)
-         ("C-c t" . recentf-open-files)
-         ("C-c l" . dictionary-lookup-definition))
+         ("C-c t" . recentf-open-files))
   :custom
   (recentf-max-menu-items 100)
   (recentf-max-saved-items 100)
