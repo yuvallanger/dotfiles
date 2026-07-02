@@ -23,6 +23,9 @@
 
 (autoload 'skribilo-mode "skribilo.el" "Skribilo mode." t)
 
+;;; Good for reading long files!
+(save-place-mode t)
+
 '(progn
 ;;; Weird https://www.youtube.com/watch?v=TjMTNSdhUvk stuff.
    (setq inhibit-startup-message t)

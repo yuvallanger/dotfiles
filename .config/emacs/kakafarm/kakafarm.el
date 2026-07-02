@@ -393,8 +393,11 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
 
 (defun kakafarm/elfeed-feeds-sort (elfeed-feeds)
   (sort (mapcar (lambda (feed)
-                  (cons (car feed)
-                        (sort (cdr feed))))
+                  (cond*
+                   ((match* (cons url tags) feed)
+                    (cons url (cl-remove-duplicates (sort tags))))
+                   ((match* (stringp url) feed)
+                    (list url))))
                 elfeed-feeds)))
 
 ;;;###autoload
@@ -406,12 +409,14 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
     (cl-loop
      for feed in sorted-feeds
      do
-     (insert (format "\n                       (%S" (car feed)))
-     (cl-loop
-      for tag in (cdr feed)
-      do
-      (insert (format " %s" tag)))
-     (insert ")")))
+     (cond*
+      ((match* (cons url tags) feed)
+       (insert (format "\n                       (%S" url))
+       (cl-loop
+        for tag in tags
+        do
+        (insert (format " %s" tag)))
+       (insert ")")))))
   (insert "\n                       ))"))
 
 ;;;###autoload
