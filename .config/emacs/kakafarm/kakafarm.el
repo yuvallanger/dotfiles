@@ -155,8 +155,10 @@
                          (exported-html-file-path exported-html-file-name))
                     (rename-file exported-html-file-path target-html-file-path t))))
               (copy-file source-org-file-path target-org-file-path t)
-              (set-file-modes target-html-file-path #o644)
-              (set-file-modes target-org-file-path #o644)))))))
+              (dolist (path (list source-org-filepath
+                                  target-html-file-path
+                                  target-org-file-path))
+                (set-file-modes path #o644))))))))
 
 (defun kakafarm/double-spaceify-period ()
   (interactive)
