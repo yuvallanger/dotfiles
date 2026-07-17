@@ -789,6 +789,39 @@ random-line-number: %s"
              random-line-number)
     (goto-line random-line-number)))
 
+(defun kakafarm/random-shuffle (number-or-lst &optional print-message)
+  "Return a shuffled list.
+
+NUMBER-OR-LIST can be either a number or a list.
+
+If NUMBER-OR-LIST is a number, the function returns a shuffled list
+containing all integer numbers from 0 to NUMBER-OR-LIST, not including
+NUMBER-OR-LIST.
+
+If NUMBER-OR-LIST is a list, the result would be a shuffled shallow copy
+of NUMBER-OR-LIST.
+
+If called interactively, the user is prompted for a number.  A message
+is printed showing the shuffled list of all integer numbers from 0 to
+the entered number, not including the entered number.
+"
+  (interactive "nNumber of options: \np")
+  (let* ((number-or-lst (if (numberp number-or-lst)
+                  (cl-loop for i upto (1- number-or-lst) collect i)
+                number-or-lst))
+         (len (length number-or-lst))
+         (tmp (cl-loop for element in number-or-lst collect element))
+         new-lst
+         (result
+          (dotimes (i len new-lst)
+            (let* ((random-index (cl-random (length tmp)))
+                   (random-element (elt tmp random-index)))
+              (setq tmp (seq-remove-at-position tmp random-index))
+              (setq new-lst (cons random-element new-lst))))))
+    (when print-message
+      (message "kakafarm/random-shuffle: %s" result))
+    result))
+
 ;;;###autoload
 (defun kakafarm/recenter-top-bottom (original-function &rest arguments)
   "Move view such that point is 4 lines from the top of the frame when function is `recenter-top-bottom'."
