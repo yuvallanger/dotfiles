@@ -807,10 +807,10 @@ the entered number, not including the entered number.
 "
   (interactive "nNumber of options: \np")
   (let* ((number-or-lst (if (numberp number-or-lst)
-                  (cl-loop for i upto (1- number-or-lst) collect i)
-                number-or-lst))
+                            (cl-loop for i to (1- number-or-lst) collect i)
+                          number-or-lst))
          (len (length number-or-lst))
-         (tmp (cl-loop for element in number-or-lst collect element))
+         (tmp (cl-copy-list number-or-lst))
          new-lst
          (result
           (dotimes (i len new-lst)
