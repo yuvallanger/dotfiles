@@ -373,60 +373,36 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
       (insert ";")
     (insert "_")))
 
-;;;###autoload
-(defun kakafarm/elfeed-sort-feed-tags (a-feed)
-  (cond
-   ((stringp a-feed)
-    a-feed)
-   (t
-    (let* ((feed-url (car a-feed))
-           (tags (cdr a-feed))
-           (tags-as-strings (mapcar #'symbol-name
-                                    tags))
-           (sorted-tags (sort tags-as-strings
-                              #'string-lessp))
-           (tags-as-symbols (mapcar #'intern sorted-tags)))
-      (cons feed-url tags-as-symbols)))))
-
-;;;###autoload
-(defun kakafarm/elfeed-compare-feeds-urls (feed-a feed-b)
-  (string-lessp (car feed-a)
-                (car feed-b)))
-
-(defun kakafarm/elfeed-feeds-sort (elfeed-feeds)
+(defun kakafarm/elfeed-feeds-sort (feeds)
+  "Sort FEEDS, which is an `elfeed-feeds' list."
   (sort (mapcar (lambda (feed)
                   (cond*
                    ((match* (cons url tags) feed)
                     (cons url (cl-remove-duplicates (sort tags))))
                    ((match* (stringp url) feed)
                     (list url))))
-                elfeed-feeds)))
+                feeds)))
 
 ;;;###autoload
 (defun kakafarm/elfeed-feeds-pretty-print-insert ()
   (interactive)
-  (insert "(customize-set-value 'elfeed-feeds
-                     '(")
-  (let ((sorted-feeds (kakafarm/elfeed-feeds-sort elfeed-feeds)))
-    (cl-loop
-     for feed in sorted-feeds
-     do
-     (cond*
-      ((match* (cons url tags) feed)
-       (insert (format "\n                       (%S" url))
-       (cl-loop
-        for tag in tags
-        do
-        (insert (format " %s" tag)))
-       (insert ")")))))
-  (insert "\n                       ))"))
 
-;;;###autoload
-(defun kakafarm/elfeed-sort-feeds (feeds)
-  "Sort A-FEED, an `elfeed-feeds' list."
-  (sort (mapcar #'kakafarm/elfeed-sort-feed-tags
-                feeds)
-        #'kakafarm/elfeed-compare-feeds-urls))
+  (save-excursion
+    (insert "(customize-set-value 'elfeed-feeds
+                     '(")
+    (let ((sorted-feeds (kakafarm/elfeed-feeds-sort elfeed-feeds)))
+      (cl-loop
+       for feed in sorted-feeds
+       do
+       (cond*
+        ((match* (cons url tags) feed)
+         (insert (format "\n                       (%S" url))
+         (cl-loop
+          for tag in tags
+          do
+          (insert (format " %s" tag)))
+         (insert ")")))))
+    (insert "\n                       ))")))
 
 (defun kakafarm/krepalakh-soju-password ()
   (interactive)
