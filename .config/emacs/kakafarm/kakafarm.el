@@ -338,17 +338,16 @@ https://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
 
 ;;;###autoload
 (defun kakafarm/copy-elfeed-links ()
+  "I don't remember why I wrote it, but probably probably to easily copy
+links. :DDD"
   (interactive)
-
-  (cl-letf* ((elfeed-entry-to-url-nl (lambda (entry)
-                                       (concat (elfeed-entry-link entry) "\n")))
-             (all-urls-string (apply 'concat
-                                     (mapcar elfeed-entry-to-url-nl
-                                             (elfeed-search-selected)))))
-    (with-temp-buffer
-      (insert all-urls-string)
-      (kill-region (point-min)
-                   (point-max)))))
+  (save-excursion
+    (let ((entries (elfeed-search-selected)))
+      (with-temp-buffer
+        (dolist (entry entries)
+          (insert (elfeed-entry-link url))
+          (insert "\n"))
+        (kill-region (point-min) (point-max))))))
 
 ;;;###autoload
 (defun kakafarm/drop-while (lst predp)
@@ -489,6 +488,20 @@ from https://www.youtube.com/watch?v=6R-73hsL5wk"
     (when (y-or-n-p prompt)
       (dolist (url urls)
         (browse-url url)))))
+
+;;;###autoload
+(defun kakafarm/farside-clipboard ()
+  "Converts your clipboard into a https://farside.link/ link."
+  (interactive)
+  (kakafarm/farside-string (gui-get-selection)))
+
+;;;###autoload
+(defun kakafarm/farside-string (&optional url)
+  "Converts your URL into a https://farside.link/URL link."
+  (interactive "sURL: ")
+  (let ((new-url (concat "https://farside.link/" url)))
+    (gui-set-selection 'CLIPBOARD new-url)
+    (kill-new new-url)))
 
 ;;;###autoload
 (defun kakafarm/ffap-browse-urls ()
@@ -977,6 +990,26 @@ https://www.tomsdiner.org/blog/post_0003_sourcehut_readme_org_export.html"
      (t
       (loop (cdr lst)
             accumulator)))))
+
+;;;###autoload
+(defun kakafarm/totd ()
+  "Show Tip Of The Day for GNU Emacs commands.
+
+Thanks Raymond Zeitler who wrote \"Emacs Tip Of The Day in a Popup
+Frame\"
+
+https://ray-on-emacs.blogspot.com/2026/07/emacs-tip-of-day-in-popup-frame.html"
+  (interactive)
+  (with-output-to-temp-buffer "*Tip of the day*"
+    (let* ((commands (cl-loop for s being the symbols
+                              when (commandp s) collect s))
+           (command (nth (random (length commands)) commands)))
+      (princ "Your tip for the day is:\n========================\n\n")
+      (princ (describe-function command))
+      (princ "\n\nInvoke with:\n\n")
+      (princ (with-temp-buffer
+               (where-is command t)
+               (buffer-string))))))
 
 ;;;###autoload
 (defun kakafarm/unfill-region (&optional start end)
