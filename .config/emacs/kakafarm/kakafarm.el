@@ -345,7 +345,7 @@ links. :DDD"
     (let ((entries (elfeed-search-selected)))
       (with-temp-buffer
         (dolist (entry entries)
-          (insert (elfeed-entry-link url))
+          (insert (elfeed-entry-link entry))
           (insert "\n"))
         (kill-region (point-min) (point-max))))))
 
