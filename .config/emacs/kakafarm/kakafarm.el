@@ -155,7 +155,7 @@
                          (exported-html-file-path exported-html-file-name))
                     (rename-file exported-html-file-path target-html-file-path t))))
               (copy-file source-org-file-path target-org-file-path t)
-              (dolist (path (list source-org-filepath
+              (dolist (path (list source-org-file-path
                                   target-html-file-path
                                   target-org-file-path))
                 (set-file-modes path #o644))))))))
